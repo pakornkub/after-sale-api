@@ -31,7 +31,7 @@ class PC_TrialProductForCustomer extends REST_Controller {
      */
     public function get_product_spec_post(){
 
-        header("Access-Controll-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: *");
 
         # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
         $_POST = $this->security->xss_clean($_POST);
@@ -132,7 +132,7 @@ class PC_TrialProductForCustomer extends REST_Controller {
      */
     public function save_product_spec_post(){
 
-        header("Access-Controll-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: *");
 
         # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
         $_POST = $this->security->xss_clean($_POST);
@@ -288,7 +288,7 @@ class PC_TrialProductForCustomer extends REST_Controller {
      */
     public function approve_product_spec_post(){
 
-        header("Access-Controll-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: *");
 
         # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
         $_POST = $this->security->xss_clean($_POST);
@@ -406,7 +406,7 @@ class PC_TrialProductForCustomer extends REST_Controller {
      */
     public function delete_product_spec_post(){
 
-        header("Access-Controll-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: *");
 
         # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
         $_POST = $this->security->xss_clean($_POST);
@@ -512,7 +512,7 @@ class PC_TrialProductForCustomer extends REST_Controller {
      */
     public function list_product_spec_post(){
 
-        header("Access-Controll-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: *");
 
         # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
         $_POST = $this->security->xss_clean($_POST);

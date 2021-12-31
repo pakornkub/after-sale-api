@@ -65,3 +65,20 @@ $route['pc/list_product_spec']      = 'api/PC_TrialProductForCustomer/list_produ
 $route['pc/approve_product_spec']   = 'api/PC_TrialProductForCustomer/approve_product_spec';
 $route['pc/delete_product_spec']    = 'api/PC_TrialProductForCustomer/delete_product_spec';
 
+// MKT API Routes
+$route['mkt/get_export_pending']    = 'api/MKT_ExportPending/get_export_pending';
+
+$route['mkt/get_port']              = 'api/MKT_Bidding/get_port';
+$route['mkt/get_vessel']            = 'api/MKT_Bidding/get_vessel';
+$route['mkt/get_sea_freight']       = 'api/MKT_Bidding/get_sea_freight';
+$route['mkt/save_bidding']          = 'api/MKT_Bidding/save_bidding';
+
+$route['mkt/get_port_country']      = 'api/MKT_FreightBidding/get_port_country';
+$route['mkt/get_vessel']            = 'api/MKT_FreightBidding/get_vessel';
+$route['mkt_bidding/get_freight_bidding']   = 'api/MKT_FreightBidding/get_freight_bidding';
+$route['mkt/save_freight_bidding']  = 'api/MKT_FreightBidding/save_freight_bidding';
+
+$route['mkt/get_shipment_status']   = 'api/MKT_FreightBooking/get_shipment_status';
+$route['mkt/get_freight_bidding']   = 'api/MKT_FreightBooking/get_freight_bidding'; 
+$route['mkt/save_freight_booking']  = 'api/MKT_FreightBooking/save_freight_booking';
+

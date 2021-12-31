@@ -34,7 +34,7 @@ class User extends REST_Controller {
      */
     public function login_post(){
         //test
-        header("Access-Controll-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: *");
 
         # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
         $_POST = $this->security->xss_clean($_POST);
@@ -140,7 +140,7 @@ class User extends REST_Controller {
      */
     public function list_all_user_get(){
 
-        header("Access-Controll-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: *");
 
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
@@ -199,7 +199,7 @@ class User extends REST_Controller {
      */
     public function validate_user_token_get(){
 
-        header("Access-Controll-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: *");
 
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');

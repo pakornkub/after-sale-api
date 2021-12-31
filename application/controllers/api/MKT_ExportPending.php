@@ -26,38 +26,66 @@ class MKT_ExportPending extends REST_Controller {
     /**  
      * Get Export Pending API
      * ---------------------------------
-     * @method : GET 
+     * @method : POST 
      * @link : mkt/get_export_pending
      */
-    public function get_export_pending_get(){
+    public function get_export_pending_post(){
 
-        header("Access-Controll-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: *");
 
-        // Select Export Pending Function
-        $result_output = $this->MKT_ExportPending_Model->select_export_pending();
+        # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
+        $_POST = $this->security->xss_clean($_POST);
 
-        if(isset($spec_output) && $spec_output) {
+        # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
+        $this->form_validation->set_rules('startDate', 'startDate', 'trim');
+        $this->form_validation->set_rules('endDate', 'endDate', 'trim');
+        $this->form_validation->set_rules('priority', 'priority', 'trim');
 
-            // Get Export Pending Success
-            $message = [
-                'status'    => TRUE,
-                'data'      => $result_output,
-                'message'   => 'Get Export Pending Successful'
-            ];
-
-            $this->response($message, REST_Controller::HTTP_OK);
-
-        }
-        else{
-
-            // Get Export Pending Error
+        if ($this->form_validation->run() == FALSE)
+        {
+            // Form Validation Error
             $message = [
                 'status'    => FALSE,
-                'message'   => 'Export Pending not in Database : [Data Not Found]'
+                'error'     => $this->form_validation->error_array(),
+                'message'   => validation_errors()
             ];
 
-            $this->response($message, REST_Controller::HTTP_OK);
+            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        else
+        {   
+            $form_data = [
+                "startDate" => $this->input->post('startDate'), 
+                "endDate"   => $this->input->post('endDate'),
+                "priority"  => $this->input->post('priority'),
+            ];
 
+            // Select Export Pending Function
+            $result_output = $this->MKT_ExportPending_Model->select_export_pending($form_data);
+
+            if(isset($result_output) && $result_output) {
+
+                // Get Export Pending Success
+                $message = [
+                    'status'    => TRUE,
+                    'data'      => $result_output,
+                    'message'   => 'Get Export Pending Successful'
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+            else{
+
+                // Get Export Pending Error
+                $message = [
+                    'status'    => FALSE,
+                    'message'   => 'Export Pending not in Database : [Data Not Found]'
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
         }
 
     }
