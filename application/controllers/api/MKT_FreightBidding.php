@@ -180,7 +180,10 @@ class MKT_FreightBidding extends REST_Controller {
         $_POST = $this->security->xss_clean($_POST);
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
-        $this->form_validation->set_rules('Quotation_No', 'Quotation_No', 'trim|required');
+        $this->form_validation->set_rules('Quoter', 'Quoter', 'trim|required');
+        $this->form_validation->set_rules('Quotation', 'Quotation', 'trim|required');
+        $this->form_validation->set_rules('Quotation_No', 'Quotation_No', 'trim');
+        $this->form_validation->set_rules('Vessel_Index', 'Vessel_Index', 'trim|required');
         $this->form_validation->set_rules('PortCountry_Index', 'PortCountry_Index', 'trim|required');
 
         if ($this->form_validation->run() == FALSE)
@@ -196,19 +199,23 @@ class MKT_FreightBidding extends REST_Controller {
         }
         else
         {   
-            $param_quotation_no = [
-                'PortCountry_Index' => $this->input->post('PortCountry_Index'),
-                'Quotation_No'=> $this->input->post('Quotation_No')
+            $param_duplicate = [
+                'PortCountry_Index'     => $this->input->post('PortCountry_Index'),
+                'Quoter'                => $this->input->post('Quoter'),
+                'Quotation'             => $this->input->post('Quotation'),
+                'Quotation_No'          => $this->input->post('Quotation_No'),
+                'Vessel_Index'          => $this->input->post('Vessel_Index'),
+                'FreightBidding_Index'  => $this->input->post('FreightBidding_Index') ? $this->input->post('FreightBidding_Index') : ''
             ];
 
-            $result_quotation_no = $this->MKT_FreightBidding_Model->select_quotation_no($param_quotation_no);
+            $result_duplicate = $this->MKT_FreightBidding_Model->select_freight_bidding_duplicate($param_duplicate);
 
-            if(isset($result_quotation_no) && $result_quotation_no && !$this->input->post('FreightBidding_Index')) {
+            if(isset($result_duplicate) && $result_duplicate) {
 
-                // Check Quotation No Fail
+                // Check Duplicate Fail
                 $message = [
                     'status'    => FALSE,
-                    'message'   => 'Check Quotation No Fail : [Data Duplicate]'
+                    'message'   => 'Check Freight Bidding Fail : [Data Duplicate]'
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
@@ -256,6 +263,9 @@ class MKT_FreightBidding extends REST_Controller {
                         'DEM'                   => floatval($this->input->post('DEM'.$con)),
                         'DET'                   => floatval($this->input->post('DET'.$con)),
                         'STO'                   => floatval($this->input->post('STO'.$con)),
+                        'Str1'                   => floatval($this->input->post('Str1'.$con)),
+                        'Str2'                   => floatval($this->input->post('Str2'.$con)),
+                        'Str3'                   => floatval($this->input->post('Str3'.$con)),
                         'Status'                => $form_data['FreightBidding_Index'] ? 4 : 1, //? 1 = new, 4 = edit,
                         'add_by'                => null,
                         'add_date'              => date('Y-m-d H:i:s'),

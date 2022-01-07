@@ -45,11 +45,11 @@ class MKT_FreightBidding_Model extends MY_Model {
     }
 
     /**
-     * Select Freight Bidding
+     * Select Freight Bidding Duplicate
      * ---------------------------------
      * @param : {array} ***form_data
      */
-    public function select_quotation_no($param = []){
+    public function select_freight_bidding_duplicate($param = []){
 
         $this->set_db('default');
 
@@ -58,14 +58,18 @@ class MKT_FreightBidding_Model extends MY_Model {
             select 
                         fb.PortCountry_Index
                         ,fb.Quotation_No
+                        ,fb.Quoter
+                        ,fb.Quotation
+                        ,fb.Vessel_Index
             
             from        tb_FreightBidding fb 
 
-            where       1=1 and fb.PortCountry_Index = ? and fb.Quotation_No = ?
+            where       1=1 and fb.PortCountry_Index = ? and fb.Quotation_No = ? and fb.Quoter = ? and fb.Quotation = ? and fb.Vessel_Index = ?
+                        and FreightBidding_Index <> ?
            
         ";
       
-        $query = $this->db->query($sql,[$param['PortCountry_Index'],$param['Quotation_No']]);
+        $query = $this->db->query($sql,[$param['PortCountry_Index'],$param['Quotation_No'],$param['Quoter'],$param['Quotation'],$param['Vessel_Index'],$param['FreightBidding_Index']]);
 
         return ($query->num_rows() > 0) ? $query->result_array() : false;
 
