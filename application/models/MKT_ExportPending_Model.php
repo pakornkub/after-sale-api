@@ -60,27 +60,29 @@ class MKT_ExportPending_Model extends MY_Model {
 
         $sql = "
             select 
-                        ex.ExportPending_Index as id
-                        ,convert(date,ex.Confirm_Date) as Confirm_Date_EX
-                        ,ex.Vessel_Name as Vessel_Name_EX
+                        ep.ExportPending_Index as id
+                        ,convert(date,ep.Confirm_Date) as Confirm_Date_EP
+                        ,ep.Vessel_Name as Vessel_Name_EP
                         ,fb.Vessel_Name as Vessel_Name_FB
-                        ,ex.Booking_No as Booking_No_EX
+                        ,ep.Booking_No as Booking_No_EP
                         ,fb.Booking_No as Booking_No_FB
-                        ,convert(date,ex.Latest_Date) as Latest_Date_EX
-                        ,convert(date,ex.Expiry_Date_) as Expiry_Date_EX
+                        ,convert(date,ep.Latest_Date) as Latest_Date_EP
+                        ,convert(date,ep.Expiry_Date_) as Expiry_Date_EP
+                        ,convert(date,ep.LatestPresent_Date) as LatestPresent_Date_EP 
+                        ,convert(date,ep.Loading_Date) as Loading_Date_EP
                         ,fb.Status as Status_FB
                         ,*
                         ,(
 
-                            select count(*) from tb_FreightBooking_History where ExportPending_Index = ex.ExportPending_Index
+                            select count(*) from tb_FreightBooking_History where ExportPending_Index = ep.ExportPending_Index
 
                         ) as countImprove
-            from        VIEW_TPIPL_MKT_ExportPending ex left join tb_FreightBooking fb on ex.ExportPending_Index = fb.ExportPending_Index
+            from        VIEW_TPIPL_MKT_ExportPending ep left join tb_FreightBooking fb on ep.ExportPending_Index = fb.ExportPending_Index
             where       1=1
         ";
 
         $sql_order = "
-            order by    ex.ExportPending_Index 
+            order by    ep.ExportPending_Index 
         ";
 
         $query = $this->db->query($sql_var.$sql.$sql_where.$sql_order,$sql_param);

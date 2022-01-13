@@ -181,6 +181,7 @@ class MKT_FreightBooking extends REST_Controller {
                 'Con_40'                => $this->input->post('Con_40'),
                 'SH_CO'                 => $this->input->post('SH_CO'),
                 'Quotation_No'          => $this->input->post('Quotation_No'),
+                'Freight_Charge'                   => floatval($this->input->post('Freight_Charge')),
                 'Status'                => $form_data['FreightBooking_Index'] ? 4 : 1, //? 1 = new, 4 = edit
                 'Ref_Index'             => $form_data['FreightBooking_Index'],
                 'Rev'                   => $this->input->post('Status') ? intval($this->input->post('Rev')) + 1 : 0,
