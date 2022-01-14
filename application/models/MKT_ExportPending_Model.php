@@ -66,9 +66,14 @@ class MKT_ExportPending_Model extends MY_Model {
                         ,fb.Vessel_Name as Vessel_Name_FB
                         ,ep.Booking_No as Booking_No_EP
                         ,fb.Booking_No as Booking_No_FB
+                        ,ep.Agent_Line as Agent_Line_EP
                         ,convert(date,ep.Latest_Date) as Latest_Date_EP
                         ,convert(date,ep.Expiry_Date_) as Expiry_Date_EP
-                        ,convert(date,ep.LatestPresent_Date) as LatestPresent_Date_EP 
+                        ,convert(date,ep.ETA_Date) as ETA_Date_EP
+                        ,convert(date,ep.ETD_Date) as ETD_Date_EP
+                        ,convert(varchar(10),convert(date,ep.Closing_Date))+'T'+ep.Closing_Time as Closing_Date_EP
+                        ,fb.Closing_Date as Closing_Date_FB
+                        ,ep.LatestPresent_Date as LatestPresent_Date_EP 
                         ,convert(date,ep.Loading_Date) as Loading_Date_EP
                         ,fb.Status as Status_FB
                         ,*
