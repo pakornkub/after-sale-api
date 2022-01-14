@@ -78,7 +78,8 @@ class MKT_ExportPending_Model extends MY_Model {
 
                         ) as countImprove
             from        VIEW_TPIPL_MKT_ExportPending ep left join tb_FreightBooking fb on ep.ExportPending_Index = fb.ExportPending_Index
-            where       1=1
+                        inner join [192.168.21.59\hrserver_tpipl].HR_TPIPL.dbo.emUserSpecial hr on ep.add_by = hr.UserName
+            where       1=1 and ( DATEDIFF(day, ETD_Date, GETDATE()) <= 60 or ETD_Date is null ) and hr.Group_Index = '88'
         ";
 
         $sql_order = "
