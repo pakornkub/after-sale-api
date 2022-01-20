@@ -176,6 +176,7 @@ class MKT_FreightBooking extends REST_Controller {
                 'CY_RT_Location'        => $this->input->post('CY_RT_Location'),
                 'Closing_Date'          => $this->input->post('Closing_Date'),
                 'Special_Condition'     => $this->input->post('Special_Condition'),
+                'Tel_Des'               => $this->input->post('Tel_Des'),
                 'Remark'                => $this->input->post('Remark'),
                 'Con_20'                => $this->input->post('Con_20'),
                 'Con_40'                => $this->input->post('Con_40'),
