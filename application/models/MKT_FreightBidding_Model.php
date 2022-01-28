@@ -11,13 +11,31 @@ class MKT_FreightBidding_Model extends MY_Model {
 
         $this->set_db('default');
 
+        $sql_where = '';
+        $sql_param = [];
+
+        if(isset($param) && $param)
+        {
+            foreach ($param as $key => $value) {
+
+                $sql_where .= " and ".$key." = ? ";
+                array_push($sql_param,$value);
+            }
+        }
+
         $sql = "
 
-            select PortCountry_Index as id, Port_Name as name , Country as country from ms_PortCountry order by Country,Port_Name
+            select      PortCountry_Index as id, Port_Name as name , Country as country 
+            from        ms_PortCountry 
+            where       1=1  
            
         ";
 
-        $query = $this->db->query($sql);
+        $sql_order = "
+            order by    Country,Port_Name
+        ";
+
+        $query = $this->db->query($sql.$sql_where.$sql_order,$sql_param);
 
         return ($query->num_rows() > 0) ? $query->result_array() : false;
 
@@ -32,13 +50,30 @@ class MKT_FreightBidding_Model extends MY_Model {
 
         $this->set_db('default');
 
+        $sql_where = '';
+        $sql_param = [];
+
+        if(isset($param) && $param)
+        {
+            foreach ($param as $key => $value) {
+
+                $sql_where .= " and ".$key." = ? ";
+                array_push($sql_param,$value);
+            }
+        }
+
         $sql = "
 
-            select Vessel_Index as id , Vessel_Name as name from ms_Vessel order by Vessel_Name
+            select      Vessel_Index as id , Vessel_Name as name from ms_Vessel 
+            where       1=1  
            
         ";
 
-        $query = $this->db->query($sql);
+        $sql_order = "
+            order by    Vessel_Name
+        ";
+
+        $query = $this->db->query($sql.$sql_where.$sql_order,$sql_param);
 
         return ($query->num_rows() > 0) ? $query->result_array() : false;
 
@@ -191,5 +226,34 @@ class MKT_FreightBidding_Model extends MY_Model {
         return $this->check_begintrans() ? $FreightBidding_Index_New : false;
 
     }
+
+    /**
+     * Insert Vessel
+     * ---------------------------------
+     * @param : {array} ***form_data
+     */
+    public function insert_vessel($param = [])
+    {
+        $this->set_db('default');
+
+        return ($this->db->insert('ms_Vessel',$param['data'])) ? $this->db->insert_id() : false /*$this->db->error()*/;
+
+    }
+
+    /**
+     * Insert Port Country
+     * ---------------------------------
+     * @param : {array} ***form_data
+     */
+    public function insert_port_country($param = [])
+    {
+        $this->set_db('default');
+
+        return ($this->db->insert('ms_PortCountry',$param['data'])) ? $this->db->insert_id() : false /*$this->db->error()*/;
+
+    }
+
+
+    
 
 }

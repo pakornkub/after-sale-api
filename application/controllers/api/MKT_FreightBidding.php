@@ -170,7 +170,7 @@ class MKT_FreightBidding extends REST_Controller {
      * Save Freight Bidding API
      * ---------------------------------
      * @method : POST 
-     * @link : pc/save_freight_bidding
+     * @link : mkt/save_freight_bidding
      */
     public function save_freight_bidding_post(){
 
@@ -218,7 +218,7 @@ class MKT_FreightBidding extends REST_Controller {
                     'message'   => 'Check Freight Bidding Fail : [Data Duplicate]'
                 ];
 
-                $this->response($message, REST_Controller::HTTP_OK);
+                $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
 
             }
             else{
@@ -315,6 +315,178 @@ class MKT_FreightBidding extends REST_Controller {
         }
 
     }
+
+    /**  
+     * Save Vessel API
+     * ---------------------------------
+     * @method : POST 
+     * @link : mkt/save_vessel
+     */
+    public function save_vessel_post(){
+
+        header("Access-Control-Allow-Origin: *");
+
+        # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
+        $_POST = $this->security->xss_clean($_POST);
+
+        # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
+        $this->form_validation->set_rules('Vessel_Name', 'Vessel_Name', 'trim|required');
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            // Form Validation Error
+            $message = [
+                'status'    => FALSE,
+                'error'     => $this->form_validation->error_array(),
+                'message'   => validation_errors()
+            ];
+
+            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        else
+        {   
+            $param_duplicate = [
+                'Vessel_Name'     => $this->input->post('Vessel_Name'),
+            ];
+
+            $result_duplicate = $this->MKT_FreightBidding_Model->select_vessel($param_duplicate);
+
+            if(isset($result_duplicate) && $result_duplicate) {
+
+                // Check Duplicate Fail
+                $message = [
+                    'status'    => FALSE,
+                    'message'   => 'Check Vessel Fail : [Data Duplicate]'
+                ];
+
+                $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+            }
+            else{
+
+                $form_data['data'] = [
+                    'Vessel_Name'       => $this->input->post('Vessel_Name'),
+                    'Vessel_Des'        => $this->input->post('Vessel_Des'),
+                    'Contract'          => $this->input->post('Contract'),
+                ];
+               
+                // Insert Vessel Function
+                $insert_output = $this->MKT_FreightBidding_Model->insert_vessel($form_data);
+
+                if(isset($insert_output) && $insert_output) {
+
+                    // Save Vessel Success
+                    $message = [
+                        'status'    => TRUE,
+                        'message'   => 'Save Vessel Successful'
+                    ];
+
+                    $this->response($message, REST_Controller::HTTP_OK);
+
+                }
+                else{
+
+                    // Save Vessel Error
+                    $message = [
+                        'status'    => FALSE,
+                        'message'   => 'Save Vessel Fail : [Insert Data Fail]'
+                    ];
+
+                    $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+                }
+            }
+           
+        }
+
+    }
+
+    /**  
+     * Save Port Country API
+     * ---------------------------------
+     * @method : POST 
+     * @link : mkt/save_port_country
+     */
+    public function save_port_country_post(){
+
+        header("Access-Control-Allow-Origin: *");
+
+        # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
+        $_POST = $this->security->xss_clean($_POST);
+
+        # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
+        $this->form_validation->set_rules('Port_Name', 'Port_Name', 'trim|required');
+        $this->form_validation->set_rules('Country', 'Country', 'trim|required');
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            // Form Validation Error
+            $message = [
+                'status'    => FALSE,
+                'error'     => $this->form_validation->error_array(),
+                'message'   => validation_errors()
+            ];
+
+            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        else
+        {   
+            $param_duplicate = [
+                'Port_Name'     => $this->input->post('Port_Name'),
+                'Country'       => $this->input->post('Country'),
+            ];
+
+            $result_duplicate = $this->MKT_FreightBidding_Model->select_port_country($param_duplicate);
+
+            if(isset($result_duplicate) && $result_duplicate) {
+
+                // Check Duplicate Fail
+                $message = [
+                    'status'    => FALSE,
+                    'message'   => 'Check Port Country Fail : [Data Duplicate]'
+                ];
+
+                $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+            }
+            else{
+
+                $form_data['data'] = [
+                    'Port_Name'     => $this->input->post('Port_Name'),
+                    'Country'       => $this->input->post('Country'),
+                ];
+               
+                // Insert Port Country Function
+                $insert_output = $this->MKT_FreightBidding_Model->insert_port_country($form_data);
+
+                if(isset($insert_output) && $insert_output) {
+
+                    // Save Port Country Success
+                    $message = [
+                        'status'    => TRUE,
+                        'message'   => 'Save Port Country Successful'
+                    ];
+
+                    $this->response($message, REST_Controller::HTTP_OK);
+
+                }
+                else{
+
+                    // Save Port Country Error
+                    $message = [
+                        'status'    => FALSE,
+                        'message'   => 'Save Port Country Fail : [Insert Data Fail]'
+                    ];
+
+                    $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+                }
+            }
+           
+        }
+
+    }
+
 
 
 }
