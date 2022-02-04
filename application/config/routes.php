@@ -56,26 +56,5 @@ $route['translate_uri_dashes'] = FALSE;
 // User API Routes
 $route['user/login']                = 'api/user/login';
 $route['user/list_all_user']        = 'api/user/list_all_user';
+$route['user/list_all_user_test']   = 'api/user/list_all_user_test';
 $route['user/validate_user_token']  = 'api/user/validate_user_token';
-
-// PC API Routes
-$route['pc/get_product_spec']       = 'api/PC_TrialProductForCustomer/get_product_spec';
-$route['pc/save_product_spec']      = 'api/PC_TrialProductForCustomer/save_product_spec';
-$route['pc/list_product_spec']      = 'api/PC_TrialProductForCustomer/list_product_spec';
-$route['pc/approve_product_spec']   = 'api/PC_TrialProductForCustomer/approve_product_spec';
-$route['pc/delete_product_spec']    = 'api/PC_TrialProductForCustomer/delete_product_spec';
-
-// MKT API Routes
-$route['mkt/get_export_pending']    = 'api/MKT_ExportPending/get_export_pending';
-
-$route['mkt/get_port_country']      = 'api/MKT_FreightBidding/get_port_country';
-$route['mkt/save_port_country']     = 'api/MKT_FreightBidding/save_port_country';
-$route['mkt/get_vessel']            = 'api/MKT_FreightBidding/get_vessel';
-$route['mkt/save_vessel']           = 'api/MKT_FreightBidding/save_vessel';
-$route['mkt_bidding/get_freight_bidding']   = 'api/MKT_FreightBidding/get_freight_bidding';
-$route['mkt/save_freight_bidding']  = 'api/MKT_FreightBidding/save_freight_bidding';
-
-$route['mkt/get_shipment_status']   = 'api/MKT_FreightBooking/get_shipment_status';
-$route['mkt/get_freight_bidding']   = 'api/MKT_FreightBooking/get_freight_bidding'; 
-$route['mkt/save_freight_booking']  = 'api/MKT_FreightBooking/save_freight_booking';
-
