@@ -54,7 +54,7 @@ class User extends REST_Controller
                 'message' => validation_errors(),
             ];
 
-            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
         } else {
             $login_data = [
                 'username' => $this->input->post('username'),
@@ -111,7 +111,7 @@ class User extends REST_Controller
                     'message' => 'Invalid Username or Password',
                 ];
 
-                $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
             }
         }
 
@@ -149,7 +149,7 @@ class User extends REST_Controller
                 'message' => $is_valid_token['message'],
             ];
 
-            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
         }
 
     }
@@ -194,7 +194,7 @@ class User extends REST_Controller
                     'message' => 'User not in Database',
                 ];
 
-                $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
 
             }
 
@@ -205,7 +205,7 @@ class User extends REST_Controller
                 'message' => $is_valid_token['message'],
             ];
 
-            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
         }
 
     }
@@ -243,7 +243,7 @@ class User extends REST_Controller
                 'message' => 'User not in Database',
             ];
 
-            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
 
         }
 
