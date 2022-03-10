@@ -57,6 +57,7 @@ $route['translate_uri_dashes'] = false;
 $route['login'] = 'api/auth/login';
 $route['logout'] = 'api/auth/logout';
 $route['validate_token'] = 'api/auth/validate_token';
+$route['refresh_token'] = 'api/auth/refresh_token';
 
 // User API Routes
 $route['user'] = 'api/user/index';

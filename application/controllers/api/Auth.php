@@ -24,7 +24,7 @@ class Auth extends REST_Controller
      * @param: password
      * ---------------------------------
      * @method : POST
-     * @link : user/login
+     * @link : auth/login
      */
     public function login_post()
     {
@@ -111,7 +111,7 @@ class Auth extends REST_Controller
      * Validate Token API
      * ---------------------------------
      * @method : GET
-     * @link : user/validate_token
+     * @link : auth/validate_token
      */
     public function validate_token_get()
     {
@@ -143,5 +143,70 @@ class Auth extends REST_Controller
         }
 
     }
+
+     /**
+     * Refresh Token API
+     * ---------------------------------
+     * @method : GET
+     * @link : auth/refresh_token
+     */
+    public function refresh_token_get()
+    {
+
+        header("Access-Control-Allow-Origin: *");
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // User Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            
+            $old_data = (array)($this->authorization_token->userData());
+
+            // Generate Token
+            $token_data = [
+                'id' => $old_data['id'], //Recommend for Token
+                'EmpCode' => $old_data['EmpCode'],
+                'UserName' => $old_data['UserName'],
+                'FirstName' => $old_data['FirstName'],
+                'LastName' => $old_data['LastName'],
+                //'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
+                'time' => time(), //Recommend for Token
+            ];
+
+            $user_token = $this->authorization_token->generateToken($token_data);
+
+            $return_data = [
+                'id' => $old_data['id'],
+                'EmpCode' => $old_data['EmpCode'],
+                'UserName' => $old_data['UserName'],
+                'FirstName' => $old_data['FirstName'],
+                'LastName' => $old_data['LastName'],
+                //'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
+                'token' => $user_token,
+            ];
+
+            // Refresh Token Success
+            $message = [
+                'status' => true,
+                'data' => $return_data,
+                'message' => 'Refresh token successful',
+            ];
+
+            $this->response($message, REST_Controller::HTTP_OK);
+            
+        } else {
+            // Validate User Token Error
+            $message = [
+                'status' => false,
+                'message' => $is_valid_token['message'],
+            ];
+
+            $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+        }
+
+    } 
 
 }
