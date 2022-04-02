@@ -61,7 +61,7 @@ class Auth extends REST_Controller
                 $this->load->library('Authorization_Token');
 
                 // Get Permission
-                //$permission_output = $this->Auth_Model->select_permission($login_data);
+                $permission_output = $this->Auth_Model->select_permission($login_data);
 
                 // Generate Token
                 $token_data = [
@@ -70,7 +70,7 @@ class Auth extends REST_Controller
                     'UserName' => $login_output[0]['UserName'],
                     'FirstName' => $login_output[0]['FirstName'],
                     'LastName' => $login_output[0]['LastName'],
-                    //'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
+                    'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
                     'time' => time(), //Recommend for Token
                 ];
 
@@ -82,7 +82,7 @@ class Auth extends REST_Controller
                     'UserName' => $login_output[0]['UserName'],
                     'FirstName' => $login_output[0]['FirstName'],
                     'LastName' => $login_output[0]['LastName'],
-                    //'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
+                    'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
                     'token' => $user_token,
                 ];
 
@@ -172,7 +172,7 @@ class Auth extends REST_Controller
                 'UserName' => $old_data['UserName'],
                 'FirstName' => $old_data['FirstName'],
                 'LastName' => $old_data['LastName'],
-                //'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
+                'permission' => $old_data['permission'],
                 'time' => time(), //Recommend for Token
             ];
 
@@ -184,7 +184,7 @@ class Auth extends REST_Controller
                 'UserName' => $old_data['UserName'],
                 'FirstName' => $old_data['FirstName'],
                 'LastName' => $old_data['LastName'],
-                //'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
+                'permission' => $old_data['permission'],
                 'token' => $user_token,
             ];
 
