@@ -4,26 +4,26 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class User extends REST_Controller
+class Group extends REST_Controller
 {
 
-    protected $MenuId = 'User';
+    protected $MenuId = 'Group';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load User_Model
-        $this->load->model('User_Model');
+        // Load Group_Model
+        $this->load->model('Group_Model');
 
     }
 
     /**
-     * Show User All API
+     * Show Group All API
      * ---------------------------------
      * @method : GET
-     * @link : user/index
+     * @link : group/index
      */
     public function index_get()
     {
@@ -33,30 +33,30 @@ class User extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // User Token Validation
+        // Group Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load User Function
-            $output = $this->User_Model->select_user();
+            // Load Group Function
+            $output = $this->Group_Model->select_group();
 
             if (isset($output) && $output) {
 
-                // Show User All Success
+                // Show Group All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show user all successful',
+                    'message' => 'Show group all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show User All Error
+                // Show Group All Error
                 $message = [
                     'status' => false,
-                    'message' => 'User data was not found in the database',
+                    'message' => 'Group data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_NOT_FOUND);
@@ -76,12 +76,12 @@ class User extends REST_Controller
     }
 
     /**
-     * Create User API
+     * Create Group API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : user/create
+     * @link : group/create
      */
     public function create_post()
     {
@@ -93,8 +93,6 @@ class User extends REST_Controller
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('Id', 'Id', 'trim|required');
-        $this->form_validation->set_rules('UserName', 'UserName', 'trim|required');
-        $this->form_validation->set_rules('Password', 'Password', 'trim|required');
         $this->form_validation->set_rules('IsUse', 'IsUse', 'trim|required');
 
         if ($this->form_validation->run() == false) {
@@ -111,56 +109,50 @@ class User extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // User Token Validation
+            // Group Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $user_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $user_permission = array_filter($user_token['permission'], function ($permission) {
+                $group_token = json_decode(json_encode($this->authorization_token->groupData()), true);
+                $group_permission = array_filter($group_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($user_permission[array_keys($user_permission)[0]]['Created']) {
+                if ($group_permission[array_keys($group_permission)[0]]['Created']) {
 
-                    $user_data['data'] = [
+                    $group_data['data'] = [
                         'Id' => $this->input->post('Id'),
-                        'UserName' => $this->input->post('UserName'),
-                        'InitialPassword' => md5($this->input->post('Password')),
-                        'CurrentPassword' => md5($this->input->post('Password')),
-                        'Title' => $this->input->post('Title'),
-                        'FirstName' => $this->input->post('FirstName'),
-                        'LastName' => $this->input->post('LastName'),
-                        'Email' => $this->input->post('Email'),
+                        'Name' => $this->input->post('Name'),
+                        'Des' => $this->input->post('Des'),
                         'IsUse' => intval($this->input->post('IsUse')),
-                        'AddBy' => $user_token['UserName'],
+                        'AddBy' => $group_token['UserName'],
                         'AddDate' => date('Y-m-d H:i:s'),
                         'UpdateBy' => null,
                         'UpdateDate' => null,
                         'CancelBy' => null,
                         'CancelDate' => null,
-                        'Group_Index' => null,
                     ];
 
-                    // Create User Function
-                    $user_output = $this->User_Model->insert_user($user_data);
+                    // Create Group Function
+                    $group_output = $this->Group_Model->insert_group($group_data);
 
-                    if (isset($user_output) && $user_output) {
+                    if (isset($group_output) && $group_output) {
 
-                        // Create User Success
+                        // Create Group Success
                         $message = [
                             'status' => true,
-                            'message' => 'Create User Successful',
+                            'message' => 'Create Group Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Create User Error
+                        // Create Group Error
                         $message = [
                             'status' => false,
-                            'message' => 'Create User Fail : [Insert Data Fail]',
+                            'message' => 'Create Group Fail : [Insert Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -192,12 +184,12 @@ class User extends REST_Controller
     }
 
     /**
-     * Update User API
+     * Update Group API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : user/update
+     * @link : group/update
      */
     public function update_post()
     {
@@ -209,8 +201,6 @@ class User extends REST_Controller
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('Id', 'Id', 'trim|required');
-        $this->form_validation->set_rules('UserName', 'UserName', 'trim|required');
-        //$this->form_validation->set_rules('Password', 'Password', 'trim|required');
         $this->form_validation->set_rules('IsUse', 'IsUse', 'trim|required');
 
         if ($this->form_validation->run() == false) {
@@ -227,57 +217,48 @@ class User extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // User Token Validation
+            // Group Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $user_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $user_permission = array_filter($user_token['permission'], function ($permission) {
+                $group_token = json_decode(json_encode($this->authorization_token->groupData()), true);
+                $group_permission = array_filter($group_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($user_permission[array_keys($user_permission)[0]]['Updated']) {
+                if ($group_permission[array_keys($group_permission)[0]]['Updated']) {
 
-                    $user_data['index'] = $this->input->post('User_Index');
+                    $group_data['index'] = $this->input->post('Group_Index');
 
-                    $user_data['data'] = [
+                    $group_data['data'] = [
                         'Id' => $this->input->post('Id'),
-                        'UserName' => $this->input->post('UserName'),
-                        //'CurrentPassword' => md5($this->input->post('Password')),
-                        'Title' => $this->input->post('Title'),
-                        'FirstName' => $this->input->post('FirstName'),
-                        'LastName' => $this->input->post('LastName'),
-                        'Email' => $this->input->post('Email'),
+                        'Name' => $this->input->post('Name'),
+                        'Des' => $this->input->post('Des'),
                         'IsUse' => intval($this->input->post('IsUse')),
-                        'UpdateBy' => $user_token['UserName'],
+                        'UpdateBy' => $group_token['GroupName'],
                         'UpdateDate' => date('Y-m-d H:i:s'),
                     ];
 
-                    if($this->input->post('Password'))
-                    {
-                        $user_data['data']['CurrentPassword'] =  md5($this->input->post('Password'));
-                    }
+                    // Update Group Function
+                    $group_output = $this->Group_Model->update_group($group_data);
 
-                    // Update User Function
-                    $user_output = $this->User_Model->update_user($user_data);
+                    if (isset($group_output) && $group_output) {
 
-                    if (isset($user_output) && $user_output) {
-
-                        // Update User Success
+                        // Update Group Success
                         $message = [
                             'status' => true,
-                            'message' => 'Update User Successful',
+                            'message' => 'Update Group Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Update User Error
+                        // Update Group Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update User Fail : [Update Data Fail]',
+                            'message' => 'Update Group Fail : [Update Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -309,12 +290,12 @@ class User extends REST_Controller
     }
 
     /**
-     * Delete User API
+     * Delete Group API
      * ---------------------------------
-     * @param: User_Index
+     * @param: Group_Index
      * ---------------------------------
      * @method : POST
-     * @link : user/delete
+     * @link : group/delete
      */
     public function delete_post()
     {
@@ -325,7 +306,7 @@ class User extends REST_Controller
         $_POST = $this->security->xss_clean($_POST);
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
-        $this->form_validation->set_rules('User_Index', 'User_Index', 'trim|required');
+        $this->form_validation->set_rules('Group_Index', 'Group_Index', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             // Form Validation Error
@@ -341,39 +322,39 @@ class User extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // User Token Validation
+            // Group Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $user_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $user_permission = array_filter($user_token['permission'], function ($permission) {
+                $group_token = json_decode(json_encode($this->authorization_token->groupData()), true);
+                $group_permission = array_filter($group_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($user_permission[array_keys($user_permission)[0]]['Deleted']) {
+                if ($group_permission[array_keys($group_permission)[0]]['Deleted']) {
 
-                    $user_data['index'] = $this->input->post('User_Index');
+                    $group_data['index'] = $this->input->post('Group_Index');
 
-                    // Delete User Function
-                    $user_output = $this->User_Model->delete_user($user_data);
+                    // Delete Group Function
+                    $group_output = $this->Group_Model->delete_group($group_data);
 
-                    if (isset($user_output) && $user_output) {
+                    if (isset($group_output) && $group_output) {
 
-                        // Delete User Success
+                        // Delete Group Success
                         $message = [
                             'status' => true,
-                            'message' => 'Delete User Successful',
+                            'message' => 'Delete Group Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Delete User Error
+                        // Delete Group Error
                         $message = [
                             'status' => false,
-                            'message' => 'Delete User Fail : [Delete Data Fail]',
+                            'message' => 'Delete Group Fail : [Delete Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);

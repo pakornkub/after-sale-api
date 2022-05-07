@@ -1,20 +1,20 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class User_Model extends MY_Model
+class Group_Model extends MY_Model
 {
 
     /**
-     * User
+     * Group
      * ---------------------------------
      * @param : null
      */
-    public function select_user()
+    public function select_group()
     {
 
         $this->set_db('default');
 
         $sql = "
-           select Title+' '+FirstName+' '+LastName as FullName ,* from se_User
+           select * from se_Group
         ";
 
         $query = $this->db->query($sql);
@@ -26,41 +26,41 @@ class User_Model extends MY_Model
     }
 
     /**
-     * Insert User
+     * Insert Group
      * ---------------------------------
      * @param : FormData
      */
-    public function insert_user($param = [])
+    public function insert_group($param = [])
     {
         $this->set_db('default');
 
-        return ($this->db->insert('se_User', $param['data'])) ? true : false/*$this->db->error()*/;
+        return ($this->db->insert('se_Group', $param['data'])) ? true : false/*$this->db->error()*/;
 
     }
 
      /**
-     * Update User
+     * Update Group
      * ---------------------------------
      * @param : FormData
      */
-    public function update_user($param = [])
+    public function update_group($param = [])
     {
         $this->set_db('default');
 
-        return ($this->db->update('se_User', $param['data'], ['User_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('se_Group', $param['data'], ['Group_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
      /**
-     * Delete User
+     * Delete Group
      * ---------------------------------
-     * @param : User_Index
+     * @param : Group_Index
      */
-    public function delete_user($param = [])
+    public function delete_group($param = [])
     {
         $this->set_db('default');
 
-        return ($this->db->delete('se_User', ['User_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('se_Group', ['Group_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
