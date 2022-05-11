@@ -73,9 +73,13 @@ $route['create_menu'] = 'api/menu/create';
 $route['update_menu'] = 'api/menu/update';
 $route['delete_menu'] = 'api/menu/delete';
 
+// Menu Type API Routes
+$route['menu_type'] = 'api/MenuType/index';
+$route['menu_type/:(any)'] = 'api/MenuType/show/$1';
+
 // Group API Routes
 $route['group'] = 'api/group/index';
 $route['group/:(any)'] = 'api/group/show/$1';
 $route['create_group'] = 'api/group/create';
 $route['update_group'] = 'api/group/update';
-$route['delete_group'] = 'api/menu/delete';
+$route['delete_group'] = 'api/group/delete';

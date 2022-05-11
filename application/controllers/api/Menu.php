@@ -4,26 +4,26 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class Group extends REST_Controller
+class Menu extends REST_Controller
 {
 
-    protected $MenuId = 'Group';
+    protected $MenuId = 'Menu';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load Group_Model
-        $this->load->model('Group_Model');
+        // Load Menu_Model
+        $this->load->model('Menu_Model');
 
     }
 
     /**
-     * Show Group All API
+     * Show Menu All API
      * ---------------------------------
      * @method : GET
-     * @link : group/index
+     * @link : menu/index
      */
     public function index_get()
     {
@@ -33,30 +33,30 @@ class Group extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // Group Token Validation
+        // Menu Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load Group Function
-            $output = $this->Group_Model->select_group();
+            // Load Menu Function
+            $output = $this->Menu_Model->select_menu();
 
             if (isset($output) && $output) {
 
-                // Show Group All Success
+                // Show Menu All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show group all successful',
+                    'message' => 'Show menu all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show Group All Error
+                // Show Menu All Error
                 $message = [
                     'status' => false,
-                    'message' => 'Group data was not found in the database',
+                    'message' => 'Menu data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_NOT_FOUND);
@@ -76,12 +76,12 @@ class Group extends REST_Controller
     }
 
     /**
-     * Create Group API
+     * Create Menu API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : group/create
+     * @link : menu/create
      */
     public function create_post()
     {
@@ -109,24 +109,24 @@ class Group extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // Group Token Validation
+            // Menu Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $group_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $group_permission = array_filter($group_token['permission'], function ($permission) {
+                $menu_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $menu_permission = array_filter($menu_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($group_permission[array_keys($group_permission)[0]]['Created']) {
+                if ($menu_permission[array_keys($menu_permission)[0]]['Created']) {
 
-                    $group_data['data'] = [
+                    $menu_data['data'] = [
                         'Id' => $this->input->post('Id'),
                         'Name' => $this->input->post('Name'),
                         'Des' => $this->input->post('Des'),
                         'IsUse' => intval($this->input->post('IsUse')),
-                        'AddBy' => $group_token['UserName'],
+                        'AddBy' => $menu_token['UserName'],
                         'AddDate' => date('Y-m-d H:i:s'),
                         'UpdateBy' => null,
                         'UpdateDate' => null,
@@ -134,25 +134,25 @@ class Group extends REST_Controller
                         'CancelDate' => null,
                     ];
 
-                    // Create Group Function
-                    $group_output = $this->Group_Model->insert_group($group_data);
+                    // Create Menu Function
+                    $menu_output = $this->Menu_Model->insert_menu($menu_data);
 
-                    if (isset($group_output) && $group_output) {
+                    if (isset($menu_output) && $menu_output) {
 
-                        // Create Group Success
+                        // Create Menu Success
                         $message = [
                             'status' => true,
-                            'message' => 'Create Group Successful',
+                            'message' => 'Create Menu Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Create Group Error
+                        // Create Menu Error
                         $message = [
                             'status' => false,
-                            'message' => 'Create Group Fail : [Insert Data Fail]',
+                            'message' => 'Create Menu Fail : [Insert Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -184,12 +184,12 @@ class Group extends REST_Controller
     }
 
     /**
-     * Update Group API
+     * Update Menu API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : group/update
+     * @link : menu/update
      */
     public function update_post()
     {
@@ -217,48 +217,48 @@ class Group extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // Group Token Validation
+            // Menu Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $group_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $group_permission = array_filter($group_token['permission'], function ($permission) {
+                $menu_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $menu_permission = array_filter($menu_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($group_permission[array_keys($group_permission)[0]]['Updated']) {
+                if ($menu_permission[array_keys($menu_permission)[0]]['Updated']) {
 
-                    $group_data['index'] = $this->input->post('Group_Index');
+                    $menu_data['index'] = $this->input->post('Menu_Index');
 
-                    $group_data['data'] = [
+                    $menu_data['data'] = [
                         'Id' => $this->input->post('Id'),
                         'Name' => $this->input->post('Name'),
                         'Des' => $this->input->post('Des'),
                         'IsUse' => intval($this->input->post('IsUse')),
-                        'UpdateBy' => $group_token['UserName'],
+                        'UpdateBy' => $menu_token['UserName'],
                         'UpdateDate' => date('Y-m-d H:i:s'),
                     ];
 
-                    // Update Group Function
-                    $group_output = $this->Group_Model->update_group($group_data);
+                    // Update Menu Function
+                    $menu_output = $this->Menu_Model->update_menu($menu_data);
 
-                    if (isset($group_output) && $group_output) {
+                    if (isset($menu_output) && $menu_output) {
 
-                        // Update Group Success
+                        // Update Menu Success
                         $message = [
                             'status' => true,
-                            'message' => 'Update Group Successful',
+                            'message' => 'Update Menu Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Update Group Error
+                        // Update Menu Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Group Fail : [Update Data Fail]',
+                            'message' => 'Update Menu Fail : [Update Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -290,12 +290,12 @@ class Group extends REST_Controller
     }
 
     /**
-     * Delete Group API
+     * Delete Menu API
      * ---------------------------------
-     * @param: Group_Index
+     * @param: Menu_Index
      * ---------------------------------
      * @method : POST
-     * @link : group/delete
+     * @link : menu/delete
      */
     public function delete_post()
     {
@@ -306,7 +306,7 @@ class Group extends REST_Controller
         $_POST = $this->security->xss_clean($_POST);
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
-        $this->form_validation->set_rules('Group_Index', 'Group_Index', 'trim|required');
+        $this->form_validation->set_rules('Menu_Index', 'Menu_Index', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             // Form Validation Error
@@ -322,39 +322,39 @@ class Group extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // Group Token Validation
+            // Menu Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $group_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $group_permission = array_filter($group_token['permission'], function ($permission) {
+                $menu_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $menu_permission = array_filter($menu_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($group_permission[array_keys($group_permission)[0]]['Deleted']) {
+                if ($menu_permission[array_keys($menu_permission)[0]]['Deleted']) {
 
-                    $group_data['index'] = $this->input->post('Group_Index');
+                    $menu_data['index'] = $this->input->post('Menu_Index');
 
-                    // Delete Group Function
-                    $group_output = $this->Group_Model->delete_group($group_data);
+                    // Delete Menu Function
+                    $menu_output = $this->Menu_Model->delete_menu($menu_data);
 
-                    if (isset($group_output) && $group_output) {
+                    if (isset($menu_output) && $menu_output) {
 
-                        // Delete Group Success
+                        // Delete Menu Success
                         $message = [
                             'status' => true,
-                            'message' => 'Delete Group Successful',
+                            'message' => 'Delete Menu Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Delete Group Error
+                        // Delete Menu Error
                         $message = [
                             'status' => false,
-                            'message' => 'Delete Group Fail : [Delete Data Fail]',
+                            'message' => 'Delete Menu Fail : [Delete Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
