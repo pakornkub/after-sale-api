@@ -37,6 +37,7 @@ class Menu extends REST_Controller
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+
             // Load Menu Function
             $output = $this->Menu_Model->select_menu();
 
@@ -123,8 +124,13 @@ class Menu extends REST_Controller
 
                     $menu_data['data'] = [
                         'Id' => $this->input->post('Id'),
-                        'Name' => $this->input->post('Name'),
+                        'Name' => 'fdfdfdf',
                         'Des' => $this->input->post('Des'),
+                        'Route' => '1.1.1.1.1',
+                        'Seq' => null,
+                        'Part' => null,
+                        'Icon' => null,
+                        'IsParent' => null,
                         'IsUse' => intval($this->input->post('IsUse')),
                         'AddBy' => $menu_token['UserName'],
                         'AddDate' => date('Y-m-d H:i:s'),
@@ -132,7 +138,10 @@ class Menu extends REST_Controller
                         'UpdateDate' => null,
                         'CancelBy' => null,
                         'CancelDate' => null,
+                        'MenuType_Index' => 1,
                     ];
+
+                    $upload_output = $this->do_upload($_FILES['Picture']);
 
                     // Create Menu Function
                     $menu_output = $this->Menu_Model->insert_menu($menu_data);
@@ -142,7 +151,8 @@ class Menu extends REST_Controller
                         // Create Menu Success
                         $message = [
                             'status' => true,
-                            'message' => 'Create Menu Successful',
+                            // 'message' => 'Create Menu Successful',
+                            'message' => $upload_output,
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -382,6 +392,120 @@ class Menu extends REST_Controller
             }
 
         }
+
+    }
+
+    /**
+     * Parent Menu API
+     * ---------------------------------
+     * @param: FormData
+     * ---------------------------------
+     * @method : POST
+     * @link : menu/parent
+     */
+    public function parent_get()
+    {
+
+        header("Access-Control-Allow-Origin: *");
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // Menu Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+
+            $menu_token = json_decode(json_encode($this->authorization_token->userData()), true);
+            $menu_permission = array_filter($menu_token['permission'], function ($permission) {
+                return $permission['MenuId'] == $this->MenuId;
+            });
+
+            if ($menu_permission[array_keys($menu_permission)[0]]['Readed']) {
+
+                // Load Parent Menu Function
+                $parent_menu_output = $this->Menu_Model->select_parent_menu();
+
+                if (isset($parent_menu_output) && $parent_menu_output) {
+
+                    // Show Parent Menu Success
+                    $message = [
+                        'status' => true,
+                        'data' => $parent_menu_output,
+                        'message' => 'Show Parent Menu Successful',
+                    ];
+
+                    $this->response($message, REST_Controller::HTTP_OK);
+
+                } else {
+
+                    // Show Parent Menu Error
+                    $message = [
+                        'status' => false,
+                        'message' => 'Parent Menu data was not found in the database',
+                    ];
+
+                    $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+                }
+
+            } else {
+                // Permission Error
+                $message = [
+                    'status' => false,
+                    'message' => 'You don’t currently have permission to Readed',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+            }
+
+        }
+
+    }
+
+    protected function do_upload($Picture = null)
+    {
+
+        $config['upload_path'] = 'uploads/'; // โฟลเดอร์ ตำแหน่งเดียวกับ root ของโปรเจ็ค
+        $config['allowed_types'] = 'gif|jpg|png'; // ปรเเภทไฟล์
+        $config['max_size'] = '0'; // ขนาดไฟล์ (kb)  0 คือไม่จำกัด ขึ้นกับกำหนดใน php.ini ปกติไม่เกิน 2MB
+        $config['max_width'] = '6000'; // ความกว้างรูปไม่เกิน
+        $config['max_height'] = '6000'; // ความสูงรูปไม่เกิน
+
+        $image = $Picture['name'];
+        $file = explode('.', $image);
+        $file_name = $file[0];
+        $extension = $file[1];
+
+        $config['file_name'] = $file_name; // ชื่อไฟล์ ถ้าไม่กำหนดจะเป็นตามชื่อเดิม
+        $image_type = array('gif', 'jpg', 'png');
+
+        $this->load->library('upload', $config);
+
+        $this->upload->do_upload('Picture');
+
+        if ($this->upload->display_errors()) { // ถ้าเกิดข้อมผิดพลาดในการอัพโหลดไฟล์
+
+            return $this->upload->display_errors();
+
+        } else { // หากไม่มีข้อผิดพลาดใดๆ เกิดข้อ ก็บันทึกข้อมูลส่วนอื่นตามปกติ
+
+            return true;
+        }
+
+        /* $this->upload->initialize($config); // เรียกใช้การตั้งค่า
+    $this->upload->do_upload('Picture'); // ทำการอัพโหลดไฟล์จาก input file ชื่อ service_image
+
+    $file_upload = $this->upload->data('file_name'); // ถ้าอัพโหลดได้ เราสามารถเรียกดูข้อมูลไฟล์ที่อัพได้
+
+    if ($this->upload->display_errors()) { // ถ้าเกิดข้อมผิดพลาดในการอัพโหลดไฟล์
+
+    return $this->upload->display_errors();
+
+    } else { // หากไม่มีข้อผิดพลาดใดๆ เกิดข้อ ก็บันทึกข้อมูลส่วนอื่นตามปกติ
+
+    return $file_upload;
+    } */
 
     }
 

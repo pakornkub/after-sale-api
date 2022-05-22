@@ -72,6 +72,7 @@ $route['menu/:(any)'] = 'api/menu/show/$1';
 $route['create_menu'] = 'api/menu/create';
 $route['update_menu'] = 'api/menu/update';
 $route['delete_menu'] = 'api/menu/delete';
+$route['parent_menu'] = 'api/menu/parent';
 
 // Menu Type API Routes
 $route['menu_type'] = 'api/MenuType/index';

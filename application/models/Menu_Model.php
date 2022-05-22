@@ -64,5 +64,27 @@ class Menu_Model extends MY_Model
 
     }
 
+    /**
+     * Parent Menu
+     * ---------------------------------
+     * @param : MenuType_Index
+     */
+    public function select_parent_menu()
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+           select * from se_Menu where MenuType_Index in (1,2,5,6) and IsUse = 1 order by MenuType_Index asc, Seq asc
+        ";
+
+        $query = $this->db->query($sql);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    }
+
 
 }
