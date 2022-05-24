@@ -94,7 +94,10 @@ class Menu extends REST_Controller
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('Id', 'Id', 'trim|required');
+        $this->form_validation->set_rules('Name', 'Name', 'trim|required');
+        $this->form_validation->set_rules('Route', 'Route', 'trim|required');
         $this->form_validation->set_rules('IsUse', 'IsUse', 'trim|required');
+        $this->form_validation->set_rules('MenuType_Index', 'MenuType_Index', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             // Form Validation Error
@@ -124,13 +127,14 @@ class Menu extends REST_Controller
 
                     $menu_data['data'] = [
                         'Id' => $this->input->post('Id'),
-                        'Name' => 'fdfdfdf',
+                        'Name' => $this->input->post('Name'),
                         'Des' => $this->input->post('Des'),
-                        'Route' => '1.1.1.1.1',
-                        'Seq' => null,
-                        'Part' => null,
-                        'Icon' => null,
-                        'IsParent' => null,
+                        'Route' => $this->do_route($this->input->post('MenuType_Index'), $this->input->post('Route')),
+                        'Seq' => $this->do_seq($this->input->post('MenuType_Index'), $this->input->post('Route'),$this->input->post('Seq')),
+                        'Part' => $this->input->post('Part'),
+                        'Icon' => $this->input->post('Icon'),
+                        'Picture' => $_FILES['Picture']['name'],
+                        'IsParent' => intval($this->input->post('IsParent')),
                         'IsUse' => intval($this->input->post('IsUse')),
                         'AddBy' => $menu_token['UserName'],
                         'AddDate' => date('Y-m-d H:i:s'),
@@ -138,10 +142,10 @@ class Menu extends REST_Controller
                         'UpdateDate' => null,
                         'CancelBy' => null,
                         'CancelDate' => null,
-                        'MenuType_Index' => 1,
+                        'MenuType_Index' => $this->input->post('MenuType_Index'),
                     ];
 
-                    $upload_output = $this->do_upload($_FILES['Picture']);
+                    //$upload_output = $this->do_upload($_FILES['Picture']);
 
                     // Create Menu Function
                     $menu_output = $this->Menu_Model->insert_menu($menu_data);
@@ -151,8 +155,8 @@ class Menu extends REST_Controller
                         // Create Menu Success
                         $message = [
                             'status' => true,
-                            // 'message' => 'Create Menu Successful',
-                            'message' => $upload_output,
+                            'message' => 'Create Menu Successful',
+                            //'message' => $upload_output,
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -460,6 +464,50 @@ class Menu extends REST_Controller
             }
 
         }
+
+    }
+
+    protected function do_seq($MenuType_Index = null,$Route = null,$Seq = null)
+    {
+        if($Route)
+        {
+            $parent = explode('|', $Route);
+            $menu_parent = $parent[1];
+            $route_parent = $parent[2];
+        }
+        else
+        {
+            
+        }
+    }
+
+    protected function do_route($MenuType_Index = null,$Route = null)
+    {
+        $parent = explode('|', $Route);
+        $menu_parent = $parent[1];
+        $route_parent = $parent[2];
+
+        $mask = explode('.', $route_parent);
+
+        $route = '';
+        $count = 0;
+
+        foreach ($mask as $key => $value) {
+            if ($value == 0) {
+                if ($count == 0) {
+                    $route .= $menu_parent;
+                } else {
+                    $route .= $value;
+                }
+
+                $count++;
+            } else {
+                $route .= $value;
+            }
+            $route .= ".";
+        }
+
+        return substr($route, 0, strlen($route) - 1);
 
     }
 
