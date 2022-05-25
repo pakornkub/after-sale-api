@@ -95,7 +95,6 @@ class Menu extends REST_Controller
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('Id', 'Id', 'trim|required');
         $this->form_validation->set_rules('Name', 'Name', 'trim|required');
-        $this->form_validation->set_rules('Route', 'Route', 'trim|required');
         $this->form_validation->set_rules('IsUse', 'IsUse', 'trim|required');
         $this->form_validation->set_rules('MenuType_Index', 'MenuType_Index', 'trim|required');
 
@@ -129,9 +128,9 @@ class Menu extends REST_Controller
                         'Id' => $this->input->post('Id'),
                         'Name' => $this->input->post('Name'),
                         'Des' => $this->input->post('Des'),
-                        'Route' => $this->do_route($this->input->post('MenuType_Index'), $this->input->post('Route')),
-                        'Seq' => $this->do_seq($this->input->post('MenuType_Index'), $this->input->post('Route'),$this->input->post('Seq')),
-                        'Part' => $this->input->post('Part'),
+                        'Route' => null,
+                        'Seq' => null,
+                        'Part' => '/'.$this->input->post('Id'),
                         'Icon' => $this->input->post('Icon'),
                         'Picture' => $_FILES['Picture']['name'],
                         'IsParent' => intval($this->input->post('IsParent')),
@@ -143,23 +142,49 @@ class Menu extends REST_Controller
                         'CancelBy' => null,
                         'CancelDate' => null,
                         'MenuType_Index' => $this->input->post('MenuType_Index'),
+                        'ParentMenuType_Index' => $this->input->post('Route') ? explode('|', $this->input->post('Route'))[0] : null,
+                        'ParentMenu_Index' =>  $this->input->post('Route') ? explode('|', $this->input->post('Route'))[1] : null,
+                        'ParentRoute' =>  $this->input->post('Route') ? explode('|', $this->input->post('Route'))[2] : null,
                     ];
 
                     //$upload_output = $this->do_upload($_FILES['Picture']);
 
-                    // Create Menu Function
-                    $menu_output = $this->Menu_Model->insert_menu($menu_data);
+                    // Create Menu Function & return Menu_Index
+                    $Menu_Index = $this->Menu_Model->insert_menu($menu_data);
 
-                    if (isset($menu_output) && $menu_output) {
+                    if (isset($Menu_Index) && $Menu_Index) {
 
-                        // Create Menu Success
-                        $message = [
-                            'status' => true,
-                            'message' => 'Create Menu Successful',
-                            //'message' => $upload_output,
+                        $menu_update_data['index'] = $Menu_Index;
+
+                        $menu_update_data['data'] = [
+                            'Route' => $this->do_route($Menu_Index, $this->input->post('Route')),
+                            'Seq' => $this->do_seq($Menu_Index, $this->input->post('MenuType_Index'), $this->input->post('Route'), $this->input->post('Seq')),
                         ];
 
-                        $this->response($message, REST_Controller::HTTP_OK);
+                        // Update Route, Seq Menu Function
+                        $menu_update_output = $this->Menu_Model->update_menu($menu_update_data);
+
+                        if (isset($menu_update_output) && $menu_update_output) {
+
+                            // Create Menu Success
+                            $message = [
+                                'status' => true,
+                                'message' => 'Create Menu Successful',
+                                //'message' => $upload_output,
+                            ];
+
+                            $this->response($message, REST_Controller::HTTP_OK);
+
+                        } else {
+
+                            // Create Menu Update Route,Seq Error
+                            $message = [
+                                'status' => false,
+                                'message' => 'Create Menu Fail : [Update Route,Seq Data Fail]',
+                            ];
+
+                            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                        }
 
                     } else {
 
@@ -467,47 +492,73 @@ class Menu extends REST_Controller
 
     }
 
-    protected function do_seq($MenuType_Index = null,$Route = null,$Seq = null)
+    protected function do_seq($Menu_Index = null, $MenuType_Index = null, $Route = null, $Seq = null)
     {
-        if($Route)
-        {
+        //check route input is null (null = PRM, PUM)
+        if ($Route) {
+
             $parent = explode('|', $Route);
+
             $menu_parent = $parent[1];
             $route_parent = $parent[2];
-        }
-        else
-        {
+
+            $mask = explode('.', $route_parent);
+
+            $zero = '';
+
+            foreach ($mask as $key => $value) {
+                if ($value == 0) {
+                    $zero  .= '.0';
+                } 
+            }
+
+            $seq_menu_output = $this->Menu_Model->update_seq_sub_menu(['Menu_Index' => $Menu_Index, 'Seq' => $Seq, 'Zero' => substr($zero, 0, strlen($zero) - 2), 'ParentMenu_Index' => $menu_parent, 'ParentRoute' => $route_parent]);
+
+            return $seq_menu_output ? $Seq : null;
             
+        } else {
+
+            $seq_menu_output = $this->Menu_Model->update_seq_main_menu(['Menu_Index' => $Menu_Index, 'MenuType_Index' => $MenuType_Index, 'Seq' => $Seq]);
+
+            return $seq_menu_output ? $Seq : null;
         }
     }
 
-    protected function do_route($MenuType_Index = null,$Route = null)
+    protected function do_route($Menu_Index = null, $Route = null)
     {
-        $parent = explode('|', $Route);
-        $menu_parent = $parent[1];
-        $route_parent = $parent[2];
+        //check route input is null (null = PRM, PUM)
+        if ($Route) {
 
-        $mask = explode('.', $route_parent);
+            $parent = explode('|', $Route);
+            $route_parent = $parent[2];
 
-        $route = '';
-        $count = 0;
+            $mask = explode('.', $route_parent);
 
-        foreach ($mask as $key => $value) {
-            if ($value == 0) {
-                if ($count == 0) {
-                    $route .= $menu_parent;
+            $route = '';
+            $count = 0;
+
+            foreach ($mask as $key => $value) {
+                if ($value == 0) {
+                    if ($count == 0) {
+                        $route .= $Menu_Index;
+                    } else {
+                        $route .= $value;
+                    }
+
+                    $count++;
                 } else {
                     $route .= $value;
                 }
-
-                $count++;
-            } else {
-                $route .= $value;
+                $route .= ".";
             }
-            $route .= ".";
-        }
 
-        return substr($route, 0, strlen($route) - 1);
+            return substr($route, 0, strlen($route) - 1); // remove last "."
+
+        } else {
+
+            return $Menu_Index . '.0.0.0';
+
+        }
 
     }
 

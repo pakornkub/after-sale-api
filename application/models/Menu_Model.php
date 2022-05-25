@@ -34,7 +34,7 @@ class Menu_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('se_Menu', $param['data'])) ? true : false/*$this->db->error()*/;
+        return ($this->db->insert('se_Menu', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
@@ -67,7 +67,7 @@ class Menu_Model extends MY_Model
     /**
      * Parent Menu
      * ---------------------------------
-     * @param : MenuType_Index
+     * @param : null
      */
     public function select_parent_menu()
     {
@@ -83,6 +83,95 @@ class Menu_Model extends MY_Model
         $result = ($query->num_rows() > 0) ? $query->result_array() : false;
 
         return $result;
+
+    }
+
+    /**
+     * Update Seq Main Menu
+     * ---------------------------------
+     * @param : [Menu_Index,MenuType_Index,Seq]
+     */
+    public function update_seq_main_menu($param = [])
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+           
+            declare @Menu_Index int
+            declare @MenuType_Index int
+            declare @NewSeq int
+            declare @OldSeq	int
+            
+            set @Menu_Index = ?
+            set @MenuType_Index = ?
+            set @NewSeq = ?
+            
+            select @OldSeq = Seq from se_Menu where Menu_Index = @Menu_Index --get old Seq
+            
+            if @OldSeq is null --new record
+            begin
+                
+                update se_Menu set Seq = (select MAX(Seq)+1 from se_Menu where MenuType_Index = @MenuType_Index) where MenuType_Index = @MenuType_Index and Seq = @NewSeq
+            
+            end
+            else --update record
+            begin
+            
+                update se_Menu set Seq = @OldSeq where MenuType_Index = @MenuType_Index and Seq = @NewSeq
+            
+            end
+
+        ";
+
+        return $this->db->query($sql,[$param['Menu_Index'],$param['MenuType_Index'],$param['Seq']]) ? true : false;
+
+    }
+
+    /**
+     * Update Seq Sub Menu
+     * ---------------------------------
+     * @param : [Menu_Index,Seq,Zero,ParentMenu_Index,ParentRoute]
+     */
+    public function update_seq_sub_menu($param = [])
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+           
+            declare @Menu_Index int
+            declare @NewSeq int
+            declare @OldSeq	int
+
+            declare @Zero nvarchar(50)
+            declare @ParentMenu_Index int
+            declare @ParentRoute nvarchar(50)
+            
+            set @Menu_Index = ?
+            set @NewSeq = ?
+            set @Zero = ?
+            set @ParentMenu_Index = ?
+            set @ParentRoute = ?
+            
+            select @OldSeq = Seq from se_Menu where Menu_Index = @Menu_Index --get old Seq
+            
+            if @OldSeq is null --new record
+            begin
+                
+                update se_Menu set Seq = (select MAX(Seq)+1 from se_Menu where Route like replace(@ParentRoute,'.0','')+'%' and Route like '%'+ @Zero and Menu_Index <> @ParentMenu_Index) where Route like replace(@ParentRoute,'.0','')+'%' and Route like '%'+ @Zero and Menu_Index <> @ParentMenu_Index and Seq = @NewSeq
+            
+            end
+            else --update record
+            begin
+            
+                update se_Menu set Seq = @OldSeq where Route like replace(@ParentRoute,'.0','')+'%' and Route like '%'+ @Zero and Menu_Index <> @ParentMenu_Index and Seq = @NewSeq
+            
+            end
+
+        ";
+
+        return $this->db->query($sql,[$param['Menu_Index'],$param['Seq'],$param['Zero'],$param['ParentMenu_Index'],$param['ParentRoute']]) ? true : false;
 
     }
 
