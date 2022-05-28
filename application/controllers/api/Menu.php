@@ -95,6 +95,8 @@ class Menu extends REST_Controller
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('Id', 'Id', 'trim|required');
         $this->form_validation->set_rules('Name', 'Name', 'trim|required');
+        $this->form_validation->set_rules('Seq', 'Seq', 'trim|required');
+        $this->form_validation->set_rules('IsParent', 'IsParent', 'trim|required');
         $this->form_validation->set_rules('IsUse', 'IsUse', 'trim|required');
         $this->form_validation->set_rules('MenuType_Index', 'MenuType_Index', 'trim|required');
 
@@ -130,9 +132,9 @@ class Menu extends REST_Controller
                         'Des' => $this->input->post('Des'),
                         'Route' => null,
                         'Seq' => null,
-                        'Part' => '/'.$this->input->post('Id'),
+                        'Part' => '/' . $this->input->post('Id'),
                         'Icon' => $this->input->post('Icon'),
-                        'Picture' => $_FILES['Picture']['name'],
+                        'Picture' => null,
                         'IsParent' => intval($this->input->post('IsParent')),
                         'IsUse' => intval($this->input->post('IsUse')),
                         'AddBy' => $menu_token['UserName'],
@@ -143,59 +145,70 @@ class Menu extends REST_Controller
                         'CancelDate' => null,
                         'MenuType_Index' => $this->input->post('MenuType_Index'),
                         'ParentMenuType_Index' => $this->input->post('Route') ? explode('|', $this->input->post('Route'))[0] : null,
-                        'ParentMenu_Index' =>  $this->input->post('Route') ? explode('|', $this->input->post('Route'))[1] : null,
-                        'ParentRoute' =>  $this->input->post('Route') ? explode('|', $this->input->post('Route'))[2] : null,
+                        'ParentMenu_Index' => $this->input->post('Route') ? explode('|', $this->input->post('Route'))[1] : null,
+                        'ParentRoute' => $this->input->post('Route') ? explode('|', $this->input->post('Route'))[2] : null,
                     ];
 
-                    //$upload_output = $this->do_upload($_FILES['Picture']);
+                    // Check Upload File
+                    $upload_output = isset($_FILES['Picture']) ? $this->do_upload($_FILES['Picture'],$this->input->post('Id')) : array("status" => true, "data" => null);
 
-                    // Create Menu Function & return Menu_Index
-                    $Menu_Index = $this->Menu_Model->insert_menu($menu_data);
+                    if ($upload_output['status']) {
+                        // Create Menu Function & return Menu_Index
+                        $Menu_Index = $this->Menu_Model->insert_menu($menu_data);
 
-                    if (isset($Menu_Index) && $Menu_Index) {
+                        if (isset($Menu_Index) && $Menu_Index) {
 
-                        $menu_update_data['index'] = $Menu_Index;
+                            $menu_update_data['index'] = $Menu_Index;
 
-                        $menu_update_data['data'] = [
-                            'Route' => $this->do_route($Menu_Index, $this->input->post('Route')),
-                            'Seq' => $this->do_seq($Menu_Index, $this->input->post('MenuType_Index'), $this->input->post('Route'), $this->input->post('Seq')),
-                        ];
-
-                        // Update Route, Seq Menu Function
-                        $menu_update_output = $this->Menu_Model->update_menu($menu_update_data);
-
-                        if (isset($menu_update_output) && $menu_update_output) {
-
-                            // Create Menu Success
-                            $message = [
-                                'status' => true,
-                                'message' => 'Create Menu Successful',
-                                //'message' => $upload_output,
+                            $menu_update_data['data'] = [
+                                'Route' => $this->do_route($Menu_Index, $this->input->post('Route')),
+                                'Seq' => $this->do_seq($Menu_Index, $this->input->post('MenuType_Index'), $this->input->post('Route'), $this->input->post('Seq')),
+                                'Picture' => $upload_output['data'],
                             ];
 
-                            $this->response($message, REST_Controller::HTTP_OK);
+                            // Update Route, Seq, Picture Menu Function
+                            $menu_update_output = $this->Menu_Model->update_menu($menu_update_data);
+
+                            if (isset($menu_update_output) && $menu_update_output) {
+
+                                // Create Menu Success
+                                $message = [
+                                    'status' => true,
+                                    'message' => 'Create Menu Successful',
+                                    //'message' => $upload_output,
+                                ];
+
+                                $this->response($message, REST_Controller::HTTP_OK);
+
+                            } else {
+
+                                // Create Menu Update Route,Seq Error
+                                $message = [
+                                    'status' => false,
+                                    'message' => 'Create Menu Fail : [Update Route, Seq, Picture Data Fail]',
+                                ];
+
+                                $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                            }
 
                         } else {
 
-                            // Create Menu Update Route,Seq Error
+                            // Create Menu Error
                             $message = [
                                 'status' => false,
-                                'message' => 'Create Menu Fail : [Update Route,Seq Data Fail]',
+                                'message' => 'Create Menu Fail : [Insert Data Fail]',
                             ];
 
                             $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
                         }
-
                     } else {
-
-                        // Create Menu Error
+                        // Create Menu Upload Picture Error
                         $message = [
                             'status' => false,
-                            'message' => 'Create Menu Fail : [Insert Data Fail]',
+                            'message' => $upload_output['message'],
                         ];
-
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
                     }
 
                 } else {
@@ -240,7 +253,11 @@ class Menu extends REST_Controller
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('Id', 'Id', 'trim|required');
+        $this->form_validation->set_rules('Name', 'Name', 'trim|required');
+        $this->form_validation->set_rules('Seq', 'Seq', 'trim|required');
+        $this->form_validation->set_rules('IsParent', 'IsParent', 'trim|required');
         $this->form_validation->set_rules('IsUse', 'IsUse', 'trim|required');
+        $this->form_validation->set_rules('MenuType_Index', 'MenuType_Index', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             // Form Validation Error
@@ -271,35 +288,79 @@ class Menu extends REST_Controller
                     $menu_data['index'] = $this->input->post('Menu_Index');
 
                     $menu_data['data'] = [
-                        'Id' => $this->input->post('Id'),
                         'Name' => $this->input->post('Name'),
+                        'Icon' => $this->input->post('Icon'),
                         'Des' => $this->input->post('Des'),
+                        'IsParent' => intval($this->input->post('IsParent')),
                         'IsUse' => intval($this->input->post('IsUse')),
                         'UpdateBy' => $menu_token['UserName'],
                         'UpdateDate' => date('Y-m-d H:i:s'),
                     ];
 
-                    // Update Menu Function
-                    $menu_output = $this->Menu_Model->update_menu($menu_data);
+                    // Check Upload File
+                    $upload_output = isset($_FILES['Picture']) && $_POST['Old_Picture'] != '-1' ? $this->do_upload($_FILES['Picture'],$this->input->post('Id')) : array("status" => true, "data" => null);
 
-                    if (isset($menu_output) && $menu_output) {
+                    if ($upload_output['status']) {
 
-                        // Update Menu Success
-                        $message = [
-                            'status' => true,
-                            'message' => 'Update Menu Successful',
-                        ];
+                        // Update Menu Function
+                        $menu_output = $this->Menu_Model->update_menu($menu_data);
 
-                        $this->response($message, REST_Controller::HTTP_OK);
+                        if (isset($menu_output) && $menu_output) {
 
+                            $menu_update_data['index'] = $menu_data['index'];
+
+                            $menu_update_data['data'] = [
+                                'Seq' => $this->do_seq($menu_data['index'], $this->input->post('MenuType_Index'), $this->input->post('Route'), $this->input->post('Seq')),
+                            ];
+
+                            if($_POST['Old_Picture'] != '-1'){
+                                $menu_update_data['data']['Picture'] = $upload_output['data'];
+                            }
+
+                            // Update Seq Menu Function
+                            $menu_update_output = $this->Menu_Model->update_menu($menu_update_data);
+
+                            if (isset($menu_update_output) && $menu_update_output) {
+
+                                if(!$upload_output['data']) $this->do_unlink($this->input->post('Id'));
+
+                                // Update Menu Success
+                                $message = [
+                                    'status' => true,
+                                    'message' => 'Update Menu Successful',
+                                ];
+
+                                $this->response($message, REST_Controller::HTTP_OK);
+
+                            } else {
+
+                                // Update Menu Update Seq Error
+                                $message = [
+                                    'status' => false,
+                                    'message' => 'Update Menu Fail : [Update Seq Data Fail]',
+                                ];
+
+                                $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                            }
+
+                        } else {
+
+                            // Update Menu Error
+                            $message = [
+                                'status' => false,
+                                'message' => 'Update Menu Fail : [Update Data Fail]',
+                            ];
+
+                            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+                        }
                     } else {
 
-                        // Update Menu Error
+                        // Update Menu Upload Picture Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Menu Fail : [Update Data Fail]',
+                            'message' => $upload_output['message'],
                         ];
-
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
 
                     }
@@ -346,6 +407,7 @@ class Menu extends REST_Controller
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('Menu_Index', 'Menu_Index', 'trim|required');
+        $this->form_validation->set_rules('Id', 'Id', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             // Form Validation Error
@@ -379,6 +441,8 @@ class Menu extends REST_Controller
                     $menu_output = $this->Menu_Model->delete_menu($menu_data);
 
                     if (isset($menu_output) && $menu_output) {
+
+                        $this->do_unlink($this->input->post('Id'));
 
                         // Delete Menu Success
                         $message = [
@@ -508,14 +572,14 @@ class Menu extends REST_Controller
 
             foreach ($mask as $key => $value) {
                 if ($value == 0) {
-                    $zero  .= '.0';
-                } 
+                    $zero .= '.0';
+                }
             }
 
             $seq_menu_output = $this->Menu_Model->update_seq_sub_menu(['Menu_Index' => $Menu_Index, 'Seq' => $Seq, 'Zero' => substr($zero, 0, strlen($zero) - 2), 'ParentMenu_Index' => $menu_parent, 'ParentRoute' => $route_parent]);
 
             return $seq_menu_output ? $Seq : null;
-            
+
         } else {
 
             $seq_menu_output = $this->Menu_Model->update_seq_main_menu(['Menu_Index' => $Menu_Index, 'MenuType_Index' => $MenuType_Index, 'Seq' => $Seq]);
@@ -562,11 +626,11 @@ class Menu extends REST_Controller
 
     }
 
-    protected function do_upload($Picture = null)
+    protected function do_upload($Picture = null,$Id = null)
     {
 
         $config['upload_path'] = 'uploads/'; // โฟลเดอร์ ตำแหน่งเดียวกับ root ของโปรเจ็ค
-        $config['allowed_types'] = 'gif|jpg|png'; // ปรเเภทไฟล์
+        $config['allowed_types'] = 'gif|jpg|jpeg|png'; // ปรเเภทไฟล์
         $config['max_size'] = '0'; // ขนาดไฟล์ (kb)  0 คือไม่จำกัด ขึ้นกับกำหนดใน php.ini ปกติไม่เกิน 2MB
         $config['max_width'] = '6000'; // ความกว้างรูปไม่เกิน
         $config['max_height'] = '6000'; // ความสูงรูปไม่เกิน
@@ -576,35 +640,50 @@ class Menu extends REST_Controller
         $file_name = $file[0];
         $extension = $file[1];
 
-        $config['file_name'] = $file_name; // ชื่อไฟล์ ถ้าไม่กำหนดจะเป็นตามชื่อเดิม
-        $image_type = array('gif', 'jpg', 'png');
+        $config['file_name'] = $Id; // ชื่อไฟล์ ถ้าไม่กำหนดจะเป็นตามชื่อเดิม
+        $image_type = array('gif', 'jpg', 'jpeg', 'png');
 
-        $this->load->library('upload', $config);
+        $count = 0;
 
-        $this->upload->do_upload('Picture');
+        foreach ($image_type as $key => $value) {
+            if ($value == strtolower($extension)) {
+                $count++;
+            }
+        }
+
+        if ($count == 0) {
+            return array('status' => false, 'message' => 'File type not allowed');
+        }
+
+        $this->load->library('upload', $config); // โหลด lib เเละใช้การตั้งค่า
+
+        $this->upload->do_upload('Picture'); // ทำการอัพโหลดไฟล์จาก input file ชื่อ service_image
 
         if ($this->upload->display_errors()) { // ถ้าเกิดข้อมผิดพลาดในการอัพโหลดไฟล์
 
-            return $this->upload->display_errors();
+            return array('status' => false, 'message' => $this->upload->display_errors());
 
         } else { // หากไม่มีข้อผิดพลาดใดๆ เกิดข้อ ก็บันทึกข้อมูลส่วนอื่นตามปกติ
 
-            return true;
+            $file_upload = $this->upload->data('file_name'); // ถ้าอัพโหลดได้ เราสามารถเรียกดูข้อมูลไฟล์ที่อัพได้
+
+            return array('status' => true, 'data' => $file_upload, 'message' => 'File upload success');
         }
 
-        /* $this->upload->initialize($config); // เรียกใช้การตั้งค่า
-    $this->upload->do_upload('Picture'); // ทำการอัพโหลดไฟล์จาก input file ชื่อ service_image
+    }
 
-    $file_upload = $this->upload->data('file_name'); // ถ้าอัพโหลดได้ เราสามารถเรียกดูข้อมูลไฟล์ที่อัพได้
+    protected function do_unlink($Id = null)
+    {
 
-    if ($this->upload->display_errors()) { // ถ้าเกิดข้อมผิดพลาดในการอัพโหลดไฟล์
+        $path = $_SERVER['DOCUMENT_ROOT'].'/pk-rest-server/uploads/';
 
-    return $this->upload->display_errors();
+        $files = glob($path.$Id.'*'); // get all file names
 
-    } else { // หากไม่มีข้อผิดพลาดใดๆ เกิดข้อ ก็บันทึกข้อมูลส่วนอื่นตามปกติ
-
-    return $file_upload;
-    } */
+        foreach($files as $file){ // iterate files
+          if(is_file($file))
+            unlink($file); // delete file
+            //echo $file.'file deleted';
+        }  
 
     }
 
