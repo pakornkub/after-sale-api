@@ -4,11 +4,11 @@ class Platform_Model extends MY_Model
 {
 
     /**
-     * Menu Type
+     * Platform
      * ---------------------------------
      * @param : null
      */
-    public function select_menu_type()
+    public function select_platform()
     {
 
         $this->set_db('default');
