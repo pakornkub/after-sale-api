@@ -78,6 +78,11 @@ $route['parent_menu'] = 'api/menu/parent';
 $route['menu_type'] = 'api/MenuType/index';
 $route['menu_type/:(any)'] = 'api/MenuType/show/$1';
 
+// Platform API Routes
+$route['platform'] = 'api/platform/index';
+$route['platform/:(any)'] = 'api/platform/show/$1';
+
+
 // Group API Routes
 $route['group'] = 'api/group/index';
 $route['group/:(any)'] = 'api/group/show/$1';
