@@ -84,3 +84,10 @@ $route['group/:(any)'] = 'api/group/show/$1';
 $route['create_group'] = 'api/group/create';
 $route['update_group'] = 'api/group/update';
 $route['delete_group'] = 'api/group/delete';
+
+// Grade API Routes
+$route['grade'] = 'api/grade/index';
+$route['grade/:(any)'] = 'api/grade/show/$1';
+$route['create_grade'] = 'api/grade/create';
+$route['update_grade'] = 'api/grade/update';
+$route['delete_grade'] = 'api/grade/delete';
