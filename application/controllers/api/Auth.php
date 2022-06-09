@@ -37,6 +37,7 @@ class Auth extends REST_Controller
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('username', 'username', 'trim|required');
         $this->form_validation->set_rules('password', 'password', 'trim|required');
+        $this->form_validation->set_rules('platform', 'platform', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             // Form Validation Error
@@ -51,6 +52,7 @@ class Auth extends REST_Controller
             $login_data = [
                 'username' => $this->input->post('username'),
                 'password' => $this->input->post('password'),
+                'platform' => $this->input->post('platform'), // WA = Web Application, MA = Mobile Application
             ];
 
             // Load Login Function

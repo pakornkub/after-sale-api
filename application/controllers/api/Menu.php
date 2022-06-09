@@ -144,6 +144,7 @@ class Menu extends REST_Controller
                         'CancelBy' => null,
                         'CancelDate' => null,
                         'MenuType_Index' => $this->input->post('MenuType_Index'),
+                        'Platform_Index' => $this->input->post('Platform_Index'),
                         'ParentMenuType_Index' => $this->input->post('Route') ? explode('|', $this->input->post('Route'))[0] : null,
                         'ParentMenu_Index' => $this->input->post('Route') ? explode('|', $this->input->post('Route'))[1] : null,
                         'ParentRoute' => $this->input->post('Route') ? explode('|', $this->input->post('Route'))[2] : null,

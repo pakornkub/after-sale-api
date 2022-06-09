@@ -46,11 +46,11 @@ class Auth_Model extends MY_Model {
 
         $sql = "
 
-            exec SP_Permission ?,?
+            exec SP_Permission ?,?,?
           
         ";
         
-        $query = $this->db->query($sql, [ $param['username'],md5($param['password']) ]);
+        $query = $this->db->query($sql, [ $param['username'],md5($param['password']),$param['platform'] ]);
 
         $result = ($query->num_rows() > 0) ? $query->result_array() : false;
 
