@@ -91,3 +91,10 @@ $route['grade/:(any)'] = 'api/grade/show/$1';
 $route['create_grade'] = 'api/grade/create';
 $route['update_grade'] = 'api/grade/update';
 $route['delete_grade'] = 'api/grade/delete';
+
+// Bom API Routes
+$route['bom'] = 'api/bom/index';
+$route['bom/:(any)'] = 'api/bom/show/$1';
+$route['create_bom'] = 'api/bom/create';
+$route['update_bom'] = 'api/bom/update';
+$route['delete_bom'] = 'api/bom/delete';

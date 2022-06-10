@@ -1,14 +1,14 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Grade_Model extends MY_Model
+class Bom_Model extends MY_Model
 {
 
     /**
-     * Grade
+     * Bom
      * ---------------------------------
      * @param : null
      */
-    public function select_grade()
+    public function select_bom()
     {
 
         $this->set_db('default');
@@ -27,11 +27,11 @@ class Grade_Model extends MY_Model
     }
 
     /**
-     * Insert Grade
+     * Insert Bom
      * ---------------------------------
      * @param : FormData
      */
-    public function insert_grade($param = [])
+    public function insert_bom($param = [])
     {
         $this->set_db('default');
 
@@ -40,11 +40,11 @@ class Grade_Model extends MY_Model
     }
 
      /**
-     * Update Grade
+     * Update Bom
      * ---------------------------------
      * @param : FormData
      */
-    public function update_grade($param = [])
+    public function update_bom($param = [])
     {
         $this->set_db('default');
 
@@ -53,11 +53,11 @@ class Grade_Model extends MY_Model
     }
 
      /**
-     * Delete Grade
+     * Delete Bom
      * ---------------------------------
-     * @param : Grade_Index
+     * @param : Bom_Index
      */
-    public function delete_grade($param = [])
+    public function delete_bom($param = [])
     {
         $this->set_db('default');
 
