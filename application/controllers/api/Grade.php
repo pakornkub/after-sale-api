@@ -251,10 +251,8 @@ class Grade extends REST_Controller
                         'Product_ID' => $this->input->post('Product_Type'),
                         'Unit' => $this->input->post('Grade_Unit'),
                         'Status' => intval($this->input->post('Grade_Status')),
-                        'Create_Date' => date('Y-m-d H:i:s'),
-                        'Create_By' => $grade_token['UserName'],
-                        'Update_Date' => null,
-                        'Update_By' => null,
+                        'Update_Date' => date('Y-m-d H:i:s'),
+                        'Update_By' => $grade_token['UserName'],
                         
                     ];
 

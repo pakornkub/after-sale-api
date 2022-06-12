@@ -98,3 +98,10 @@ $route['bom/:(any)'] = 'api/bom/show/$1';
 $route['create_bom'] = 'api/bom/create';
 $route['update_bom'] = 'api/bom/update';
 $route['delete_bom'] = 'api/bom/delete';
+
+// Grade FG  API Routes
+$route['grade_fg'] = 'api/GradeFG/index';
+
+
+// BOMID API Routes
+$route['bomid'] = 'api/bomid/index';
