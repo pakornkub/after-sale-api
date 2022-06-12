@@ -163,7 +163,7 @@ class Menu extends REST_Controller
 
                             $menu_update_data['data'] = [
                                 'Route' => $this->do_route($Menu_Index, $this->input->post('Route')),
-                                'Seq' => $this->do_seq($Menu_Index, $this->input->post('MenuType_Index'), $this->input->post('Route'), $this->input->post('Seq')),
+                                'Seq' => $this->do_seq($Menu_Index, $this->input->post('MenuType_Index'), $this->input->post('Platform_Index'), $this->input->post('Route'), $this->input->post('Seq')),
                                 'Picture' => $upload_output['data'],
                             ];
 
@@ -311,7 +311,7 @@ class Menu extends REST_Controller
                             $menu_update_data['index'] = $menu_data['index'];
 
                             $menu_update_data['data'] = [
-                                'Seq' => $this->do_seq($menu_data['index'], $this->input->post('MenuType_Index'), $this->input->post('Route'), $this->input->post('Seq')),
+                                'Seq' => $this->do_seq($menu_data['index'], $this->input->post('MenuType_Index'), $this->input->post('Platform_Index'), $this->input->post('Route'), $this->input->post('Seq')),
                             ];
 
                             if($_POST['Old_Picture'] != '-1'){
@@ -557,7 +557,7 @@ class Menu extends REST_Controller
 
     }
 
-    protected function do_seq($Menu_Index = null, $MenuType_Index = null, $Route = null, $Seq = null)
+    protected function do_seq($Menu_Index = null, $MenuType_Index = null, $Platform_Index = null, $Route = null, $Seq = null)
     {
         //check route input is null (null = PRM, PUM)
         if ($Route) {
@@ -583,7 +583,7 @@ class Menu extends REST_Controller
 
         } else {
 
-            $seq_menu_output = $this->Menu_Model->update_seq_main_menu(['Menu_Index' => $Menu_Index, 'MenuType_Index' => $MenuType_Index, 'Seq' => $Seq]);
+            $seq_menu_output = $this->Menu_Model->update_seq_main_menu(['Menu_Index' => $Menu_Index, 'MenuType_Index' => $MenuType_Index, 'Platform_Index' => $Platform_Index, 'Seq' => $Seq]);
 
             return $seq_menu_output ? $Seq : null;
         }
