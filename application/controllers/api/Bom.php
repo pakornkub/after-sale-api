@@ -105,21 +105,21 @@ class Bom extends REST_Controller
                 });
 
 
-                $bom_header = json_decode(json_encode($this->input->post('data')), true); 
+                $bom_header = json_decode(json_encode($this->input->post('header')), true); 
 
                 if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
 
                     $bom_data['data'] = [
-                        'BOM_Name' => $bom_header['Bom_ID'],
-                        'BOM_Date' => $this->input->post('Bom_Date'),
-                        'FG_ITEM_ID' => $this->input->post('Grade_Id_FG'),
-                        'Bom_Rev_No' => $this->input->post('Rev_No'),
-                        'Remark' => $this->input->post('Bom_Remark'),
-                        'Status' => intval($this->input->post('Bom_Status')),
+                        'BOM_Name' => $bom_header['Bom_Id'],
+                        'BOM_Date' => $bom_header['Bom_Date'],
+                        'FG_ITEM_ID' => $bom_header['Grade_Id_FG'],
+                        'Bom_Rev_No' => $bom_header['Rev_No'],
+                        'Remark' => $bom_header['Bom_Remark'],
+                        'Status' => intval($bom_header['Bom_Status']),
                         'Create_Date' => date('Y-m-d H:i:s'),
                         'Create_By' => $bom_token['UserName'],
                         'Update_Date' => null,
-                        'Update_By' => null,
+                        'Update_By' => $bom_token['UserName'],
                         
                     ];
 
@@ -136,7 +136,7 @@ class Bom extends REST_Controller
 
                         $message = [
                             'status' => true,
-                            'message' => 'Create Bom Successful',
+                            'message' => $bom_header,
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
