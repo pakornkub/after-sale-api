@@ -35,7 +35,7 @@ class Bom_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('ms_Item', $param['data'])) ? true : false/*$this->db->error()*/;
+        return ($this->db->insert('ms_BOM', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 

@@ -26,7 +26,7 @@ class BomID_Model extends MY_Model
 
             from ms_BOM
             right join ms_Item on ms_Item.ITEM_ID = ms_BOM.FG_ITEM_ID
-            where ms_Item.ITEM_CODE = '$param'
+            where ms_Item.ITEM_ID = '$param'
             group by ms_Item.ITEM_CODE 
         ";
 
