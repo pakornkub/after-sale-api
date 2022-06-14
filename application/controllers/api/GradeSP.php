@@ -4,26 +4,26 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class GradeFG extends REST_Controller
+class GradeSP extends REST_Controller
 {
 
-    protected $GradeFGId = 'GradeFG';
+    protected $GradeSPId = 'GradeSP';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load GradeFG
-        $this->load->model('GradeFG_Model');
+        // Load GradeSP
+        $this->load->model('GradeSP_Model');
 
     }
 
     /**
-     * Show GradeFG All API
+     * Show GradeSP All API
      * ---------------------------------
      * @method : GET
-     * @link : GradeFG/index
+     * @link : GradeSP/index
      */
     public function index_get()
     {
@@ -33,16 +33,16 @@ class GradeFG extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // GradeFG Token Validation
+        // GradeSP Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load GradeFG Function
-            $output = $this->GradeFG_Model->select_grade_fg();
+            // Load GradeSP Function
+            $output = $this->GradeSP_Model->select_grade_sp();
 
             if (isset($output) && $output) {
 
-                // Show GradeFG All Success
+                // Show GradeSP All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
@@ -53,10 +53,10 @@ class GradeFG extends REST_Controller
 
             } else {
 
-                // Show GradeFG All Error
+                // Show GradeSP All Error
                 $message = [
                     'status' => false,
-                    'message' => 'GradeFG data was not found in the database',
+                    'message' => 'GradeSP data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_NOT_FOUND);

@@ -102,6 +102,9 @@ $route['delete_bom'] = 'api/bom/delete';
 // Grade FG  API Routes
 $route['grade_fg'] = 'api/GradeFG/index';
 
+// Grade SP  API Routes
+$route['grade_sp'] = 'api/GradeSP/index';
+
 
 // BOMID API Routes
 $route['bomid'] = 'api/bomid/index';
