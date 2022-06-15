@@ -105,7 +105,7 @@ class Bom extends REST_Controller
                 });
 
 
-                $bom_header = json_decode(json_encode($this->input->post('header')), true); 
+                $bom_header = json_decode($this->input->post('data'), true); 
 
                 if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
 
