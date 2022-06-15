@@ -54,12 +54,12 @@ class Bom extends REST_Controller
             } else {
 
                 // Show Bom All Error
-                $message = [
-                    'status' => false,
-                    'message' => 'Bom data was not found in the database',
-                ];
+                // $message = [
+                //     'status' => false,
+                //     'message' => 'Bom data was not found in the database',
+                // ];
 
-                $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+                // $this->response($message, REST_Controller::HTTP_NOT_FOUND);
 
             }
 
@@ -105,21 +105,21 @@ class Bom extends REST_Controller
                 });
 
 
-                $bom_header = json_decode($this->input->post('data'), true); 
+                $bom_header = json_decode($this->input->post('data1'), true); 
 
                 if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
 
                     $bom_data['data'] = [
                         'BOM_Name' => $bom_header['Bom_Id'],
                         'BOM_Date' => $bom_header['Bom_Date'],
-                        'FG_ITEM_ID' => $bom_header['Grade_Id_FG'],
+                        'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
                         'Bom_Rev_No' => $bom_header['Rev_No'],
                         'Remark' => $bom_header['Bom_Remark'],
                         'Status' => intval($bom_header['Bom_Status']),
                         'Create_Date' => date('Y-m-d H:i:s'),
                         'Create_By' => $bom_token['UserName'],
                         'Update_Date' => null,
-                        'Update_By' => $bom_token['UserName'],
+                        'Update_By' => null,
                         
                     ];
 
@@ -131,12 +131,30 @@ class Bom extends REST_Controller
                     if (isset($bom_output) && $bom_output) {
 
                         // Create Bom Success
-                        // $bom_item = json_decode(json_encode($this->input->post('data2')), true);
+                        $bom_item = json_decode($this->input->post('data2'), true); 
+                        $i = 1;
+                        foreach ($bom_item as $value) {
+                            
+                            $bom_data_item['data'] = [
+                                'BOM_ID' => $bom_output,
+                                'ITEM_Seq' => $i,
+                                'ITEM_ID' => $value['Grade_ID'],
+                                'ITEM_QTY' => $value['QTY'],
+                                'Create_Date' => date('Y-m-d H:i:s'),
+                                'Create_By' => $bom_token['UserName'],
+                                
+                            ];
 
+                            $i = $i+1;
+
+                            $bom_output_item = $this->Bom_Model->insert_bom_item($bom_data_item);
+
+                        }
+                        
 
                         $message = [
                             'status' => true,
-                            'message' => $bom_header,
+                            'message' => 'Create Bom Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -194,22 +212,6 @@ class Bom extends REST_Controller
 
         $_POST = $this->security->xss_clean($_POST);
 
-        $this->form_validation->set_rules('Grade_Id', 'Grade_Id', 'trim|required');
-        $this->form_validation->set_rules('Grade_Description', 'Grade_Description', 'trim|required');
-        $this->form_validation->set_rules('Product_Type', 'Product_Type', 'trim|required');
-        $this->form_validation->set_rules('Grade_Unit', 'Grade_Unit', 'trim|required');
-        $this->form_validation->set_rules('Grade_Status', 'Grade_Status', 'trim|required');
-
-        if ($this->form_validation->run() == false) {
-            // Form Validation Error
-            $message = [
-                'status' => false,
-                'error' => $this->form_validation->error_array(),
-                'message' => validation_errors(),
-            ];
-
-            $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
 
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
@@ -224,35 +226,56 @@ class Bom extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($bom_permission[array_keys($bom_permission)[0]]['Updated']) {
+                    $bom_header = json_decode($this->input->post('data1'), true); 
 
-                    $bom_data['index'] = $this->input->post('Grade_Index');
+                    if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
 
-                
-                    $bom_data['data'] = [
-                        'ITEM_CODE' => $this->input->post('Grade_Id'),
-                        'ITEM_DESCRIPTION' => $this->input->post('Grade_Description'),
-                        'Product_ID' => $this->input->post('Product_Type'),
-                        'Unit' => $this->input->post('Grade_Unit'),
-                        'Status' => intval($this->input->post('Grade_Status')),
-                        'Create_Date' => date('Y-m-d H:i:s'),
-                        'Create_By' => $bom_token['UserName'],
-                        'Update_Date' => null,
-                        'Update_By' => null,
-                        
-                    ];
+                        $bom_data['index'] = $bom_header['BOM_Index'];
+
+                        $bom_data['data'] = [
+                            'BOM_Name' => $bom_header['Bom_Id'],
+                            'BOM_Date' => $bom_header['Bom_Date'],
+                            'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
+                            'Bom_Rev_No' => $bom_header['Rev_No'],
+                            'Remark' => $bom_header['Bom_Remark'],
+                            'Status' => intval($bom_header['Bom_Status']),
+                            'Update_Date' => date('Y-m-d H:i:s'),
+                            'Update_By' => $bom_token['UserName'],
+                            
+                        ];
 
                     
 
-                    // Update Bom Function
+                    // // Update Bom Function
                     $bom_output = $this->Bom_Model->update_bom($bom_data);
 
                     if (isset($bom_output) && $bom_output) {
 
-                        // Update Bom Success
+
+                        $delete_output = $this->Bom_Model->delete_bom_item($bom_data);
+
+                        $bom_item = json_decode($this->input->post('data2'), true); 
+                        $i = 1;
+                        foreach ($bom_item as $value) {
+                            
+                            $bom_data_item['data'] = [
+                                'BOM_ID' => $bom_header['BOM_Index'],
+                                'ITEM_Seq' => $i,
+                                'ITEM_ID' => $value['Grade_ID'],
+                                'ITEM_QTY' => $value['QTY'],
+                                'Create_Date' => date('Y-m-d H:i:s'),
+                                'Create_By' => $bom_token['UserName'],
+                                
+                            ];
+
+                            $i = $i+1;
+
+                            $bom_output_item = $this->Bom_Model->insert_bom_item($bom_data_item);
+                        }
+                            // Update Bom Success
                         $message = [
                             'status' => true,
-                            'message' => 'Update Bom Successful',
+                            'message' => 'Update Grade Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -289,7 +312,7 @@ class Bom extends REST_Controller
                 $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
             }
 
-        }
+        
 
     }
 
@@ -308,18 +331,6 @@ class Bom extends REST_Controller
 
         $_POST = $this->security->xss_clean($_POST);
 
-        $this->form_validation->set_rules('Grade_Index', 'Grade_Index', 'trim|required');
-
-        if ($this->form_validation->run() == false) {
-            // Form Validation Error
-            $message = [
-                'status' => false,
-                'error' => $this->form_validation->error_array(),
-                'message' => validation_errors(),
-            ];
-
-            $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
-        } else {
 
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
@@ -336,10 +347,11 @@ class Bom extends REST_Controller
 
                 if ($bom_permission[array_keys($bom_permission)[0]]['Deleted']) {
 
-                    $bom_data['index'] = $this->input->post('Grade_Index');
+                    $bom_data['index'] = $this->input->post('BOM_ID');
 
                     // Delete bom Function
                     $bom_output = $this->Bom_Model->delete_bom($bom_data);
+                    $bom_output_item = $this->Bom_Model->delete_bom_item($bom_data);
 
                     if (isset($bom_output) && $bom_output) {
 
@@ -383,6 +395,45 @@ class Bom extends REST_Controller
                 $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
             }
 
+        
+
+    }
+
+        /**
+     * Show Bom item All API
+     * ---------------------------------
+     * @method : GET
+     * @link : bom/bom_item
+     */
+    public function bomitem_get()
+    {
+
+        header("Access-Control-Allow-Origin: *");
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // BomID Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            // Load BomID Function
+            $Bom_ID = $this->input->get('Bom_ID');
+
+            $output = $this->Bom_Model->select_BomItem($Bom_ID);
+
+            if (isset($output) && $output) {
+
+                // Show BomID All Success
+                $message = [
+                    'status' => true,
+                    'data' => $output,
+                    'message' => 'Show BomItem all successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
         }
 
     }
