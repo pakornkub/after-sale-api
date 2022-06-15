@@ -1,20 +1,20 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class MenuType_Model extends MY_Model
+class Platform_Model extends MY_Model
 {
 
     /**
-     * Menu Type
+     * Platform
      * ---------------------------------
      * @param : null
      */
-    public function select_menu_type()
+    public function select_platform()
     {
 
         $this->set_db('auth');
 
         $sql = "
-           select * from se_MenuType
+           select * from se_Platform
         ";
 
         $query = $this->db->query($sql);

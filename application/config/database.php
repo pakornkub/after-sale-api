@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-$db['default'] = array(
+$db['auth'] = array(
 	'dsn'	=> '',
 	'hostname' => '119.59.105.14',
 	'username' => 'sa',
