@@ -11,7 +11,7 @@ class Menu_Model extends MY_Model
     public function select_menu()
     {
 
-        $this->set_db('default');
+        $this->set_db('auth');
 
         $sql = "
            select * from se_Menu
@@ -32,7 +32,7 @@ class Menu_Model extends MY_Model
      */
     public function insert_menu($param = [])
     {
-        $this->set_db('default');
+        $this->set_db('auth');
 
         return ($this->db->insert('se_Menu', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
@@ -45,7 +45,7 @@ class Menu_Model extends MY_Model
      */
     public function update_menu($param = [])
     {
-        $this->set_db('default');
+        $this->set_db('auth');
 
         return ($this->db->update('se_Menu', $param['data'], ['Menu_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
@@ -58,7 +58,7 @@ class Menu_Model extends MY_Model
      */
     public function delete_menu($param = [])
     {
-        $this->set_db('default');
+        $this->set_db('auth');
 
         return ($this->db->delete('se_Menu', ['Menu_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
@@ -72,7 +72,7 @@ class Menu_Model extends MY_Model
     public function select_parent_menu()
     {
 
-        $this->set_db('default');
+        $this->set_db('auth');
 
         $sql = "
            select * from se_Menu where MenuType_Index in (1,2,5,6) and IsUse = 1 order by MenuType_Index asc, Seq asc
@@ -94,7 +94,7 @@ class Menu_Model extends MY_Model
     public function update_seq_main_menu($param = [])
     {
 
-        $this->set_db('default');
+        $this->set_db('auth');
 
         $sql = "
            
@@ -138,7 +138,7 @@ class Menu_Model extends MY_Model
     public function update_seq_sub_menu($param = [])
     {
 
-        $this->set_db('default');
+        $this->set_db('auth');
 
         $sql = "
            

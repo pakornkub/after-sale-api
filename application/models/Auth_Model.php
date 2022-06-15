@@ -9,7 +9,7 @@ class Auth_Model extends MY_Model {
      */
     public function select_login($param = []){
 
-        $this->set_db('default');
+        $this->set_db('auth');
 
         $sql = "
 
@@ -42,7 +42,7 @@ class Auth_Model extends MY_Model {
      */
     public function select_permission($param = [])
     {
-        $this->set_db('default');
+        $this->set_db('auth');
 
         $sql = "
 
