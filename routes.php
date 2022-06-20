@@ -118,6 +118,3 @@ $route['bomid'] = 'api/bomid/index';
 //Receive Type  API Routes
 $route['receive_type'] = 'api/ReceiveType/index';
 
-//Receive No  API Routes
-$route['receive_no'] = 'api/ReceiveNo/index';
-
