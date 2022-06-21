@@ -110,12 +110,13 @@ class ReceivePart extends REST_Controller
                 if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
 
                     $bom_data['data'] = [
-                        'BOM_Name' => $bom_header['Bom_Id'],
-                        'BOM_Date' => $bom_header['Bom_Date'],
-                        'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
-                        'Bom_Rev_No' => $bom_header['Rev_No'],
-                        'Remark' => $bom_header['Bom_Remark'],
-                        'Status' => intval($bom_header['Bom_Status']),
+                        'Receive_Type' => $bom_header['Receive_Type'],
+                        'Receive_No' => $bom_header['Receive_No'],
+                        'Receive_Date' => $bom_header['Receive_Date'],
+                        'status' => '1',
+                        'Ref_DocNo_1' => $bom_header['Ref_No1'],
+                        'Ref_DocNo_2' => $bom_header['Ref_No2'],
+                        'Remark' => $bom_header['Receive_Remark'],
                         'Create_Date' => date('Y-m-d H:i:s'),
                         'Create_By' => $bom_token['UserName'],
                         'Update_Date' => null,
@@ -124,37 +125,37 @@ class ReceivePart extends REST_Controller
                     ];
 
                     // Create bom Function
-                    $bom_output = $this->Bom_Model->insert_receivepart($bom_data);
+                    // $bom_output = $this->Bom_Model->insert_receivepart($bom_data);
 
 
 
-                    if (isset($bom_output) && $bom_output) {
+                    if (1==1) {
 
                         // Create Bom Success
-                        $bom_item = json_decode($this->input->post('data2'), true); 
-                        $i = 1;
-                        foreach ($bom_item as $value) {
+                        // $bom_item = json_decode($this->input->post('data2'), true); 
+                        // $i = 1;
+                        // foreach ($bom_item as $value) {
                             
-                            $bom_data_item['data'] = [
-                                'BOM_ID' => $bom_output,
-                                'ITEM_Seq' => $i,
-                                'ITEM_ID' => $value['Grade_ID'],
-                                'ITEM_QTY' => $value['QTY'],
-                                'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $bom_token['UserName'],
+                        //     $bom_data_item['data'] = [
+                        //         'BOM_ID' => $bom_output,
+                        //         'ITEM_Seq' => $i,
+                        //         'ITEM_ID' => $value['Grade_ID'],
+                        //         'ITEM_QTY' => $value['QTY'],
+                        //         'Create_Date' => date('Y-m-d H:i:s'),
+                        //         'Create_By' => $bom_token['UserName'],
                                 
-                            ];
+                        //     ];
 
-                            $i = $i+1;
+                        //     $i = $i+1;
 
-                            $bom_output_item = $this->ReceivePart_Model->insert_receivepart_item($bom_data_item);
+                        //     $bom_output_item = $this->ReceivePart_Model->insert_receivepart_item($bom_data_item);
 
-                        }
+                        // }
                         
 
                         $message = [
                             'status' => true,
-                            'message' => 'Create Receive Part Successful',
+                            'message' => $bom_header,
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);

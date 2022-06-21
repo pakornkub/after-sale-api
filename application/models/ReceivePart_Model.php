@@ -14,15 +14,9 @@ class ReceivePart_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select BOM_ID,BOM_Name,CONVERT(varchar,BOM_Date,103) as BOM_Date1,BOM_Date,ms_Item.ITEM_ID,ms_Item.ITEM_CODE,Bom_Rev_No,
-        CASE WHEN Bom_Rev_No <   10 THEN '00'+ CONVERT(varchar(2),Bom_Rev_No)
-            WHEN Bom_Rev_No >=  10 THEN '0'+ CONVERT(varchar(2),Bom_Rev_No)
-            WHEN Bom_Rev_No >= 100 THEN CONVERT(varchar(2),Bom_Rev_No)	
-        ELSE 'No' END as Rev_No,Remark,ms_BOM.Status,
-        ms_BOM.Create_By,CONVERT(varchar,ms_BOM.Create_Date,103) as Add_Date
-        from ms_BOM
-        inner join ms_Item on ms_BOM.FG_ITEM_ID = ms_Item.ITEM_ID
-        order by ms_BOM.Create_Date DESC
+        select Tb_Receive.*,CONVERT(varchar,Rec_Datetime,103) as Date1,ms_ReceiveType.DESCRIPTION
+        from Tb_Receive
+        inner join ms_ReceiveType on Tb_Receive.Rec_type = ms_ReceiveType.ReceiptType_ID
 
         ";
 
@@ -43,7 +37,7 @@ class ReceivePart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('ms_BOM', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_Receive', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
