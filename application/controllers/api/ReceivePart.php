@@ -110,13 +110,13 @@ class ReceivePart extends REST_Controller
                 if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
 
                     $bom_data['data'] = [
-                        'Receive_Type' => $bom_header['Receive_Type'],
-                        'Receive_No' => $bom_header['Receive_No'],
-                        'Receive_Date' => $bom_header['Receive_Date'],
+                        'Rec_type' => $bom_header['Receive_Type'],
+                        'Rec_NO' => $bom_header['Receive_No'],
+                        'Rec_Datetime' => $bom_header['Receive_Date'],
                         'status' => '1',
-                        'Ref_DocNo_1' => $bom_header['Ref_No1'],
-                        'Ref_DocNo_2' => $bom_header['Ref_No2'],
-                        'Remark' => $bom_header['Receive_Remark'],
+                        'Ref_DocNo_1' => (isset($bom_header['Ref_No1']) && $bom_header['Ref_No1']) ? $bom_header['Ref_No1'] : null,
+                        'Ref_DocNo_2' => (isset($bom_header['Ref_No2']) && $bom_header['Ref_No2']) ? $bom_header['Ref_No2'] : null,
+                        'Remark' => (isset($bom_header['Receive_Remark']) && $bom_header['Receive_Remark']) ? $bom_header['Receive_Remark'] : null,
                         'Create_Date' => date('Y-m-d H:i:s'),
                         'Create_By' => $bom_token['UserName'],
                         'Update_Date' => null,
@@ -125,11 +125,11 @@ class ReceivePart extends REST_Controller
                     ];
 
                     // Create bom Function
-                    // $bom_output = $this->Bom_Model->insert_receivepart($bom_data);
+                    $bom_output = $this->ReceivePart_Model->insert_receivepart($bom_data);
 
 
 
-                    if (1==1) {
+                    if (isset($bom_output) && $bom_output) {
 
                         // Create Bom Success
                         // $bom_item = json_decode($this->input->post('data2'), true); 
@@ -248,12 +248,12 @@ class ReceivePart extends REST_Controller
                     
 
                    // Update ReceivePart Function
-                    $bom_output = $this->Bom_Model->update_receivepart($bom_data);
+                    $bom_output = $this->ReceivePart_Model->update_receivepart($bom_data);
 
                     if (isset($bom_output) && $bom_output) {
 
 
-                        $delete_output = $this->Bom_Model->delete_receivepart_item($bom_data);
+                        $delete_output = $this->ReceivePart_Model->delete_receivepart_item($bom_data);
 
                         $bom_item = json_decode($this->input->post('data2'), true); 
                         $i = 1;
@@ -271,7 +271,7 @@ class ReceivePart extends REST_Controller
 
                             $i = $i+1;
 
-                            $bom_output_item = $this->Bom_Model->insert_receivepart_item($bom_data_item);
+                            $bom_output_item = $this->ReceivePart_Model->insert_receivepart_item($bom_data_item);
                         }
                             // Update ReceivePart Success
                         $message = [
@@ -351,8 +351,8 @@ class ReceivePart extends REST_Controller
                     $bom_data['index'] = $this->input->post('BOM_ID');
 
                     // Delete ReceivePart Function
-                    $bom_output = $this->Bom_Model->delete_receivepart($bom_data);
-                    $bom_output_item = $this->Bom_Model->delete_receivepart_item($bom_data);
+                    $bom_output = $this->ReceivePart_Model->delete_receivepart($bom_data);
+                    $bom_output_item = $this->ReceivePart_Model->delete_receivepart_item($bom_data);
 
                     if (isset($bom_output) && $bom_output) {
 
