@@ -121,3 +121,10 @@ $route['receive_type'] = 'api/ReceiveType/index';
 //Receive No  API Routes
 $route['receive_no'] = 'api/ReceiveNo/index';
 
+// Receive Part API Routes
+$route['receivepart'] = 'api/receivepart/index';
+$route['receivepart/:(any)'] = 'api/receivepart/show/$1';
+$route['create_receivepart'] = 'api/receivepart/create';
+$route['update_receivepart'] = 'api/receivepart/update';
+$route['delete_receivepart'] = 'api/receivepart/delete';
+$route['receivepart_item'] = 'api/receivepart/receivepartitem';

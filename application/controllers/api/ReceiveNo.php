@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class ReceiveNo extends REST_Controller
 {
 
-    protected $ReceiveNoId = 'ReceiveNo';
+    protected $MenuId = 'ReceiveNo';
 
     public function __construct()
     {
@@ -38,7 +38,9 @@ class ReceiveNo extends REST_Controller
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
             // Load ReceiveNo Function
-            $output = $this->ReceiveNo_Model->select_receive_no();
+            $type_data = $this->input->get('type');
+
+            $output = $this->ReceiveNo_Model->select_receive_no($type_data);
 
             if (isset($output) && $output) {
 
@@ -46,7 +48,7 @@ class ReceiveNo extends REST_Controller
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show Receive No all successful',
+                    'message' => 'Show ReceiveNo all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
@@ -56,7 +58,7 @@ class ReceiveNo extends REST_Controller
                 // Show ReceiveNo All Error
                 $message = [
                     'status' => false,
-                    'message' => 'Receive No data was not found in the database',
+                    'message' => 'ReceiveNo data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_NOT_FOUND);
@@ -75,4 +77,21 @@ class ReceiveNo extends REST_Controller
 
     }
 
+    public function show($a)
+    {
+
+        header("Access-Control-Allow-Origin: *");
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        $message = [
+            'status' => true,
+            'data' => $a,
+            'message' => 'Show ReceiveNo all successful',
+        ];
+
+        $this->response($message, REST_Controller::HTTP_OK);
+
+    }
 }
