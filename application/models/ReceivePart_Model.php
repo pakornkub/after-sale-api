@@ -50,7 +50,7 @@ class ReceivePart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('ms_BOM_Item', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_ReceiveItem', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
@@ -63,7 +63,7 @@ class ReceivePart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->update('ms_BOM', $param['data'], ['BOM_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('Tb_Receive', $param['data'], ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -76,7 +76,7 @@ class ReceivePart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('ms_BOM', ['BOM_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_Receive', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
          /**
@@ -88,7 +88,7 @@ class ReceivePart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('ms_BOM_Item', ['BOM_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_ReceiveItem', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -105,11 +105,12 @@ class ReceivePart_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-            select ms_BOM_Item.ITEM_Seq as key_index,ms_BOM_Item.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,ITEM_QTY as QTY
-            from ms_BOM_Item 
-            inner join ms_Item on ms_BOM_Item.ITEM_ID = ms_Item.ITEM_ID
-            where BOM_ID = '$param'
-            order by ITEM_Seq
+            select Tb_ReceiveItem.RecItem_ID as key_index,Tb_ReceiveItem.Item_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY
+            from Tb_ReceiveItem
+            inner join ms_Item on Tb_ReceiveItem.Item_ID = ms_Item.ITEM_ID
+            where Rec_ID = '$param'
+            order by RecItem_ID
+
             
         ";
 

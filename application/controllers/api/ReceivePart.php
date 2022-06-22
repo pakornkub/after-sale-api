@@ -99,63 +99,63 @@ class ReceivePart extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $bom_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $bom_permission = array_filter($bom_token['permission'], function ($permission) {
+                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
 
-                $bom_header = json_decode($this->input->post('data1'), true); 
+                $receive_header = json_decode($this->input->post('data1'), true); 
 
-                if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
+                if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
 
-                    $bom_data['data'] = [
-                        'Rec_type' => $bom_header['Receive_Type'],
-                        'Rec_NO' => $bom_header['Receive_No'],
-                        'Rec_Datetime' => $bom_header['Receive_Date'],
+                    $receive_data['data'] = [
+                        'Rec_type' => $receive_header['Receive_Type'],
+                        'Rec_NO' => $receive_header['Receive_No'],
+                        'Rec_Datetime' => $receive_header['Receive_Date'],
                         'status' => '1',
-                        'Ref_DocNo_1' => (isset($bom_header['Ref_No1']) && $bom_header['Ref_No1']) ? $bom_header['Ref_No1'] : null,
-                        'Ref_DocNo_2' => (isset($bom_header['Ref_No2']) && $bom_header['Ref_No2']) ? $bom_header['Ref_No2'] : null,
-                        'Remark' => (isset($bom_header['Receive_Remark']) && $bom_header['Receive_Remark']) ? $bom_header['Receive_Remark'] : null,
+                        'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
+                        'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
+                        'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
                         'Create_Date' => date('Y-m-d H:i:s'),
-                        'Create_By' => $bom_token['UserName'],
+                        'Create_By' => $receive_token['UserName'],
                         'Update_Date' => null,
                         'Update_By' => null,
                         
                     ];
 
-                    // Create bom Function
-                    $bom_output = $this->ReceivePart_Model->insert_receivepart($bom_data);
+                    // Create receive Function
+                    $receive_output = $this->ReceivePart_Model->insert_receivepart($receive_data);
 
 
 
-                    if (isset($bom_output) && $bom_output) {
+                    if (isset($receive_output) && $receive_output) {
 
-                        // Create Bom Success
-                        // $bom_item = json_decode($this->input->post('data2'), true); 
-                        // $i = 1;
-                        // foreach ($bom_item as $value) {
+                        //Create Item Success
+                        $receive_item = json_decode($this->input->post('data2'), true); 
+                        
+                        foreach ($receive_item as $value) {
                             
-                        //     $bom_data_item['data'] = [
-                        //         'BOM_ID' => $bom_output,
-                        //         'ITEM_Seq' => $i,
-                        //         'ITEM_ID' => $value['Grade_ID'],
-                        //         'ITEM_QTY' => $value['QTY'],
-                        //         'Create_Date' => date('Y-m-d H:i:s'),
-                        //         'Create_By' => $bom_token['UserName'],
+                            $receive_data_item['data'] = [
+                                'Rec_ID' => $receive_output,
+                                'Qty' => $value['QTY'],
+                                'Item_ID' => $value['Grade_ID'],
+                                'Lot_No' => $value['Lot_No'],
+                                'ItemStatus_ID' => $value['QTY'],
+                                'Create_Date' => date('Y-m-d H:i:s'),
+                                'Create_By' => $receive_token['UserName'],
                                 
-                        //     ];
+                            ];
 
-                        //     $i = $i+1;
 
-                        //     $bom_output_item = $this->ReceivePart_Model->insert_receivepart_item($bom_data_item);
+                            $receive_output_item = $this->ReceivePart_Model->insert_receivepart_item($receive_data_item);
 
-                        // }
+                        }
                         
 
                         $message = [
                             'status' => true,
-                            'message' => $bom_header,
+                            'message' => 'Create Receive Part Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -164,7 +164,7 @@ class ReceivePart extends REST_Controller
 
                     } else {
 
-                        // Create Bom Error
+                        // Create receive Error
                         $message = [
                             'status' => false,
                             'message' => 'Create Receive Part Fail : [Insert Data Fail]',
@@ -222,56 +222,55 @@ class ReceivePart extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $bom_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $bom_permission = array_filter($bom_token['permission'], function ($permission) {
+                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                    $bom_header = json_decode($this->input->post('data1'), true); 
+                    $receive_header = json_decode($this->input->post('data1'), true); 
 
-                    if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
+                    if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
 
-                        $bom_data['index'] = $bom_header['BOM_Index'];
+                        $receive_data['index'] = $receive_header['Receive_Index'];
 
-                        $bom_data['data'] = [
-                            'BOM_Name' => $bom_header['Bom_Id'],
-                            'BOM_Date' => $bom_header['Bom_Date'],
-                            'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
-                            'Bom_Rev_No' => $bom_header['Rev_No'],
-                            'Remark' => $bom_header['Bom_Remark'],
-                            'Status' => intval($bom_header['Bom_Status']),
+                        $receive_data['data'] = [
+                            'Rec_type' => $receive_header['Receive_Type'],
+                            'Rec_NO' => $receive_header['Receive_No'],
+                            'Rec_Datetime' => $receive_header['Receive_Date'],
+                            'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
+                            'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
+                            'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
                             'Update_Date' => date('Y-m-d H:i:s'),
-                            'Update_By' => $bom_token['UserName'],
+                            'Update_By' => $receive_token['UserName'],
                             
                         ];
 
                     
 
                    // Update ReceivePart Function
-                    $bom_output = $this->ReceivePart_Model->update_receivepart($bom_data);
+                    $receive_output = $this->ReceivePart_Model->update_receivepart($receive_data);
 
-                    if (isset($bom_output) && $bom_output) {
+                    if (isset($receive_output) && $receive_output) {
 
 
-                        $delete_output = $this->ReceivePart_Model->delete_receivepart_item($bom_data);
+                        $delete_output = $this->ReceivePart_Model->delete_receivepart_item($receive_data);
 
-                        $bom_item = json_decode($this->input->post('data2'), true); 
-                        $i = 1;
-                        foreach ($bom_item as $value) {
+                        $receive_item = json_decode($this->input->post('data2'), true); 
+                        
+                        foreach ($receive_item as $value) {
                             
-                            $bom_data_item['data'] = [
-                                'BOM_ID' => $bom_header['BOM_Index'],
-                                'ITEM_Seq' => $i,
-                                'ITEM_ID' => $value['Grade_ID'],
-                                'ITEM_QTY' => $value['QTY'],
+                            $receive_data_item['data'] = [
+                                'Rec_ID' => $receive_header['Receive_Index'],
+                                'Qty' => $value['QTY'],
+                                'Item_ID' => $value['Grade_ID'],
+                                'Lot_No' => $value['Lot_No'],
+                                'ItemStatus_ID' => $value['QTY'],
                                 'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $bom_token['UserName'],
+                                'Create_By' => $receive_token['UserName'],
                                 
                             ];
 
-                            $i = $i+1;
-
-                            $bom_output_item = $this->ReceivePart_Model->insert_receivepart_item($bom_data_item);
+                            $receive_output_item = $this->ReceivePart_Model->insert_receivepart_item($receive_data_item);
                         }
                             // Update ReceivePart Success
                         $message = [
@@ -341,25 +340,25 @@ class ReceivePart extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $bom_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $bom_permission = array_filter($bom_token['permission'], function ($permission) {
+                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($bom_permission[array_keys($bom_permission)[0]]['Deleted']) {
+                if ($receive_permission[array_keys($receive_permission)[0]]['Deleted']) {
 
-                    $bom_data['index'] = $this->input->post('BOM_ID');
+                    $receive_data['index'] = $this->input->post('Rec_ID');
 
                     // Delete ReceivePart Function
-                    $bom_output = $this->ReceivePart_Model->delete_receivepart($bom_data);
-                    $bom_output_item = $this->ReceivePart_Model->delete_receivepart_item($bom_data);
+                    $receive_output = $this->ReceivePart_Model->delete_receivepart($receive_data);
+                    $receive_output_item = $this->ReceivePart_Model->delete_receivepart_item($receive_data);
 
-                    if (isset($bom_output) && $bom_output) {
+                    if (isset($receive_output) && $receive_output) {
 
                         // Delete ReceivePart Success
                         $message = [
                             'status' => true,
-                            'message' => 'Delete Receive Part Successful',
+                            'message' => $receive_output,
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -419,9 +418,9 @@ class ReceivePart extends REST_Controller
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
             // Load ReceivePartID Function
-            $Bom_ID = $this->input->get('ReceivePart_ID');
+            $Rc_ID = $this->input->get('ReceivePart_ID');
 
-            $output = $this->ReceivePart_Model->select_receivepartitem($Bom_ID);
+            $output = $this->ReceivePart_Model->select_receivepartitem($Rc_ID);
 
             if (isset($output) && $output) {
 
