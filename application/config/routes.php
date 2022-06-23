@@ -96,3 +96,8 @@ $route['grade/:(any)'] = 'api/grade/show/$1';
 $route['create_grade'] = 'api/grade/create';
 $route['update_grade'] = 'api/grade/update';
 $route['delete_grade'] = 'api/grade/delete';
+
+// ReceiveSP API Routes
+$route['receive_sp'] = 'api/mobile/ReceiveSP/index';
+$route['receive_sp_item'] = 'api/mobile/ReceiveSP/item';
+$route['update_receive_sp'] = 'api/mobile/ReceiveSP/update';
