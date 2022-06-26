@@ -101,3 +101,9 @@ $route['delete_grade'] = 'api/grade/delete';
 $route['receive_sp'] = 'api/mobile/ReceiveSP/index';
 $route['receive_sp_item'] = 'api/mobile/ReceiveSP/item';
 $route['update_receive_sp'] = 'api/mobile/ReceiveSP/update';
+$route['exec_receive_sp_transaction'] = 'api/mobile/ReceiveSP/exec_transaction';
+
+// UnlockSP API Routes
+$route['unlock_sp'] = 'api/mobile/UnlockSP/index';
+$route['update_unlock_sp'] = 'api/mobile/UnlockSP/update';
+$route['update_unlock_sp_tag'] = 'api/mobile/UnlockSP/update_tag';
