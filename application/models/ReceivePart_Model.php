@@ -14,9 +14,14 @@ class ReceivePart_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select Tb_Receive.*,CONVERT(varchar,Rec_Datetime,103) as Date1,ms_ReceiveType.DESCRIPTION
-        from Tb_Receive
-        inner join ms_ReceiveType on Tb_Receive.Rec_type = ms_ReceiveType.ReceiptType_ID
+        select RC.Rec_ID,RC.Rec_type,RC.Rec_NO,RC.Rec_Datetime,RC.status,RC.Ref_DocNo_1,RC.Ref_DocNo_2,RC.Ref_DocNo_3,RC.Ref_DocNo_4,RC.Remark,
+        RC.Create_By,RC.Create_Date,RC.Update_By,RC.Update_Date,CONVERT(varchar,Rec_Datetime,103) as Date1,ms_ReceiveType.DESCRIPTION,SUM(RCI.Qty) as Total_Qty
+        from Tb_Receive RC
+        inner join ms_ReceiveType on RC.Rec_type = ms_ReceiveType.ReceiptType_ID
+        inner join Tb_ReceiveItem RCI on RC.Rec_ID = RCI.Rec_ID
+        group by RC.Rec_ID,RC.Rec_type,RC.Rec_NO,RC.Rec_Datetime,RC.status,RC.Ref_DocNo_1,RC.Ref_DocNo_2,RC.Ref_DocNo_3,RC.Ref_DocNo_4,RC.Remark,
+        RC.Create_By,RC.Create_Date,RC.Update_By,RC.Update_Date,CONVERT(varchar,Rec_Datetime,103),ms_ReceiveType.DESCRIPTION
+        order by RC.Rec_ID DESC
 
         ";
 

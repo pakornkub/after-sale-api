@@ -14,12 +14,7 @@ class Tag_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-            select TAG.Tag_ID as key_index,TAG.QR_NO as QR_Code,ms_Item.ITEM_CODE as Grade_ID,ms_Item.ITEM_DESCRIPTION as Grade_Name,RCI.Lot_No,TAG.Qty as QTY,Tag_Status,TAG.ItemStatus_ID as Item_Status
-            from Tb_TagQR TAG
-            inner join Tb_ReceiveItem RCI on TAG.RecItem_ID = RCI.RecItem_ID
-            inner join ms_Item on RCI.Item_ID = ms_Item.ITEM_ID
-            where TAG.Rec_ID = ? and Tag_Status <> -1
-
+            select * from View_TagQR where Rec_ID = ?
         ";
 
         $query = $this->db->query($sql,$param['Rec_ID']);
