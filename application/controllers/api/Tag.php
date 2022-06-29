@@ -115,7 +115,7 @@ class Tag extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                // if ($tag_permission[array_keys($tag_permission)[0]]['Created']) {
+                if ($tag_permission[array_keys($tag_permission)[0]]['Created']) {
 
                     
                     $tag_data = [
@@ -149,15 +149,15 @@ class Tag extends REST_Controller
 
                     }
 
-                // } else {
-                //     // Permission Error
-                //     $message = [
-                //         'status' => false,
-                //         'message' => 'You don’t currently have permission to Create',
-                //     ];
+                } else {
+                    // Permission Error
+                    $message = [
+                        'status' => false,
+                        'message' => 'You don’t currently have permission to Create',
+                    ];
 
-                //     $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
-                // }
+                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                }
 
             } else {
                 // Validate Error
@@ -195,16 +195,24 @@ class Tag extends REST_Controller
             // Tag Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
-            //if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                // $tag_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                // $tag_permission = array_filter($tag_token['permission'], function ($permission) {
-                //     return $permission['MenuId'] == $this->MenuId;
-                // });
+                $tag_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $tag_permission = array_filter($tag_token['permission'], function ($permission) {
+                    return $permission['MenuId'] == $this->MenuId;
+                });
 
-                //if ($tag_permission[array_keys($tag_permission)[0]]['Deleted']) {
+                if ($tag_permission[array_keys($tag_permission)[0]]['Deleted']) {
+                    
 
                     $tag_data['index'] = $this->input->post('Rec_ID');
+
+                    $tag_data['data'] = [
+                        'Tag_Status' => -1,
+                        'Update_Date' => date('Y-m-d H:i:s'),
+                        'Update_By' => $tag_token['UserName'],
+                        
+                    ];
 
                     // Delete Tag Function
                     $tag_output = $this->Tag_Model->delete_tag($tag_data);
@@ -231,25 +239,25 @@ class Tag extends REST_Controller
 
                     }
 
-                // } else {
-                //     // Permission Error
-                //     $message = [
-                //         'status' => false,
-                //         'message' => 'You don’t currently have permission to Delete',
-                //     ];
+                } else {
+                    // Permission Error
+                    $message = [
+                        'status' => false,
+                        'message' => 'You don’t currently have permission to Delete',
+                    ];
 
-                //     $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
-                // }
+                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                }
 
-            // } else {
-            //     // Validate Error
-            //     $message = [
-            //         'status' => false,
-            //         'message' => $is_valid_token['message'],
-            //     ];
+            } else {
+                // Validate Error
+                $message = [
+                    'status' => false,
+                    'message' => $is_valid_token['message'],
+                ];
 
-            //     $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
-            // }
+                $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+            }
 
         
 

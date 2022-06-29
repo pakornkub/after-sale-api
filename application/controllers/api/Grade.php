@@ -132,7 +132,8 @@ class Grade extends REST_Controller
                         'Create_By' => $grade_token['UserName'],
                         'Update_Date' => null,
                         'Update_By' => null,
-                        
+                        'MinQTY' => $this->input->post('Min_Qty') ? : null,
+                        'MaxQTY' => $this->input->post('Max_Qty') ? : null,
                     ];
 
                     // Create grade Function
@@ -253,6 +254,8 @@ class Grade extends REST_Controller
                         'Status' => intval($this->input->post('Grade_Status')),
                         'Update_Date' => date('Y-m-d H:i:s'),
                         'Update_By' => $grade_token['UserName'],
+                        'MinQTY' => $this->input->post('Min_Qty') ? : null,
+                        'MaxQTY' => $this->input->post('Max_Qty') ? : null,
                         
                     ];
 

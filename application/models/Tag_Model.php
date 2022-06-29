@@ -53,7 +53,7 @@ class Tag_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_TagQR', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('Tb_TagQR', $param['data'], ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
