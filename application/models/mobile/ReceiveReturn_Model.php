@@ -1,20 +1,20 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class ReceiveSP_Model extends MY_Model
+class ReceiveReturn_Model extends MY_Model
 {
 
     /**
-     * ReceiveSP
+     * ReceiveReturn
      * ---------------------------------
      * @param : null
      */
-    public function select_receive_sp()
+    public function select_receive_return()
     {
 
         $this->set_db('default');
 
         $sql = "
-           select * from Tb_Receive where Rec_type = 1 and Status in (2,4)
+           select * from Tb_Receive where Rec_type = 2 and Status in (2,3)
         ";
 
         $query = $this->db->query($sql);
@@ -26,11 +26,11 @@ class ReceiveSP_Model extends MY_Model
     }
 
     /**
-     * Update ReceiveSP
+     * Update ReceiveReturn
      * ---------------------------------
      * @param : FormData
      */
-    public function update_receive_sp($param = [])
+    public function update_receive_return($param = [])
     {
         $this->set_db('default');
 
@@ -39,11 +39,11 @@ class ReceiveSP_Model extends MY_Model
     }
 
     /**
-     * ReceiveSPItem
+     * ReceiveReturnItem
      * ---------------------------------
      * @param : null
      */
-    public function select_receive_sp_Item($Rec_ID)
+    public function select_receive_return_Item($Rec_ID)
     {
 
         $this->set_db('default');
@@ -52,13 +52,10 @@ class ReceiveSP_Model extends MY_Model
 
             select
                         ROW_NUMBER() Over (Order by r.Rec_ID) as 'No'
-                        ,i.ITEM_DESCRIPTION as 'SP'
+                        ,i.ITEM_DESCRIPTION as 'FG'
                         ,(
-                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and ItemStatus_ID = 2 and Tag_Status = 9
-                        ) as 'Unlock'
-                        ,(
-                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and ItemStatus_ID = 1 and Tag_Status = 3
-                        ) as 'Lock'
+                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and ItemStatus_ID = 5 and Tag_Status = 9
+                        ) as 'Good'
                         ,ri.Qty as 'Total'
 
             from		Tb_Receive r
@@ -78,18 +75,18 @@ class ReceiveSP_Model extends MY_Model
     }
 
     /**
-     * Exec ReceiveSP Transaction
+     * Exec ReceiveReturn Transaction
      * ---------------------------------
      * @param : Rec_ID, QR_NO, Tag_ID, Username
      */
-    public function exec_receive_sp_transaction($param = [])
+    public function exec_receive_return_transaction($param = [])
     {
 
         $this->set_db('default');
 
         $sql = "
 
-            exec [dbo].[SP_CreateReceiveTransaction] ?,?,?,?
+            exec [dbo].[SP_CreateReturnTransaction] ?,?,?,?
 
         ";
 

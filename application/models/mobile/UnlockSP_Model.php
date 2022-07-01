@@ -25,6 +25,19 @@ class UnlockSP_Model extends MY_Model
 
     }
 
+       /**
+     * Update UnlockSP
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function update_unlock_sp($param = [])
+    {
+        $this->set_db('default');
+
+        return ($this->db->update('Tb_Receive', $param['data'], $param['where'])) ? true : false/*$this->db->error()*/;
+
+    }
+
     /**
      * Update UnlockSP Item
      * ---------------------------------

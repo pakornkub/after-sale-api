@@ -120,7 +120,9 @@ class ReceiveSP extends REST_Controller
 
                 if ($receive_sp_permission[array_keys($receive_sp_permission)[0]]['Updated']) {
 
-                    $receive_sp_data['index'] = $this->input->post('Rec_ID');
+                    $receive_sp_data['where'] = [
+                        'Rec_ID' =>  $this->input->post('Rec_ID')
+                    ];
 
                     $receive_sp_data['data'] = [
                         'status' => 5,

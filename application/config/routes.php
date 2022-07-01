@@ -107,3 +107,9 @@ $route['exec_receive_sp_transaction'] = 'api/mobile/ReceiveSP/exec_transaction';
 $route['unlock_sp'] = 'api/mobile/UnlockSP/index';
 $route['update_unlock_sp'] = 'api/mobile/UnlockSP/update';
 $route['update_unlock_sp_tag'] = 'api/mobile/UnlockSP/update_tag';
+
+// ReceiveReturn API Routes
+$route['receive_return'] = 'api/mobile/ReceiveReturn/index';
+$route['receive_return_item'] = 'api/mobile/ReceiveReturn/item';
+$route['update_receive_return'] = 'api/mobile/ReceiveReturn/update';
+$route['exec_receive_return_transaction'] = 'api/mobile/ReceiveReturn/exec_transaction';
