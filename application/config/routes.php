@@ -135,3 +135,21 @@ $route['tag/:(any)'] = 'api/tag/show/$1';
 $route['select_tag'] = 'api/tag/select';
 $route['create_tag'] = 'api/tag/create';
 $route['delete_tag'] = 'api/tag/delete';
+
+
+// Receive Return API Routes
+$route['receivereturn'] = 'api/receivereturn/index';
+$route['receivereturn/:(any)'] = 'api/receivereturn/show/$1';
+$route['create_receivereturn'] = 'api/receivereturn/create';
+$route['update_receivereturn'] = 'api/receivereturn/update';
+$route['delete_receivereturn'] = 'api/receivereturn/delete';
+$route['receivereturn_item'] = 'api/receivereturn/receivereturnitem';
+
+// Job Repack API Routes
+$route['jobrepack'] = 'api/jobrepack/index';
+$route['jobrepack/:(any)'] = 'api/jobrepack/show/$1';
+$route['create_jobrepack'] = 'api/jobrepack/create';
+$route['update_jobrepack'] = 'api/jobrepack/update';
+$route['delete_jobrepack'] = 'api/jobrepack/delete';
+$route['jobrepack_item'] = 'api/jobrepack/jobrepackitem';
+
