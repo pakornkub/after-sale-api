@@ -145,6 +145,13 @@ $route['update_receivereturn'] = 'api/receivereturn/update';
 $route['delete_receivereturn'] = 'api/receivereturn/delete';
 $route['receivereturn_item'] = 'api/receivereturn/receivereturnitem';
 
+// Tag Return API Routes
+$route['tagreturn'] = 'api/tagreturn/index';
+$route['tagreturn/:(any)'] = 'api/tagreturn/show/$1';
+$route['select_tagreturn'] = 'api/tagreturn/select';
+$route['create_tagreturn'] = 'api/tagreturn/create';
+$route['delete_tagreturn'] = 'api/tagreturn/delete';
+
 // Job Repack API Routes
 $route['jobrepack'] = 'api/jobrepack/index';
 $route['jobrepack/:(any)'] = 'api/jobrepack/show/$1';
