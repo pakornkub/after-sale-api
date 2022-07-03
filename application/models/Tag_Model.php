@@ -53,9 +53,30 @@ class Tag_Model extends MY_Model
     {
         $this->set_db('default');
 
+        $this->db->update('Tb_Receive', $param['data1'], ['Rec_ID'=> $param['index']]) ? true : false;
+        
         return ($this->db->update('Tb_TagQR', $param['data'], ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
+
+     /**
+     * Insert Tag Return
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function insert_tagreturn($param = [])
+    {
+        $this->set_db('default');
+
+        $sql = "
+
+        exec [dbo].[SP_CreateReturnTag]  ?,?
+          
+        ";
+
+        return $this->db->query($sql,[$param['Rec_NO'],$param['username']]) ? true : false;
+    }
+
 
 
 }

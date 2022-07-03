@@ -110,7 +110,7 @@ class ReceiveReturn extends REST_Controller
                 if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
 
                     $receive_data['data'] = [
-                        'Rec_type' => $receive_header['Receive_Type'],
+                        'Rec_type' => '2',
                         'Rec_NO' => $receive_header['Receive_No'],
                         'Rec_Datetime' => $receive_header['Receive_Date'],
                         'status' => '1',
@@ -234,7 +234,7 @@ class ReceiveReturn extends REST_Controller
                         $receive_data['index'] = $receive_header['Receive_Index'];
 
                         $receive_data['data'] = [
-                            'Rec_type' => $receive_header['Receive_Type'],
+                            'Rec_type' => '2',
                             'Rec_NO' => $receive_header['Receive_No'],
                             'Rec_Datetime' => $receive_header['Receive_Date'],
                             'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,

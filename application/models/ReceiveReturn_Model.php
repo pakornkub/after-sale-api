@@ -14,7 +14,7 @@ class ReceiveReturn_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select * from view_ReceivePart order by Rec_ID DESC
+        select * from view_Receive where Rec_type = '2' order by Rec_ID DESC
 
         ";
 
