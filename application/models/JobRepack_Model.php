@@ -14,7 +14,7 @@ class JobRepack_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select * from view_ReceivePart order by Rec_ID DESC
+        select * from View_JobRepack order by JOB_ID DESC
 
         ";
 
@@ -35,7 +35,7 @@ class JobRepack_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('Tb_Receive', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_Job', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
@@ -48,7 +48,7 @@ class JobRepack_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('Tb_ReceiveItem', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_JobItem', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 

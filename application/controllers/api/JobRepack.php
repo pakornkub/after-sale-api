@@ -46,17 +46,17 @@ class JobRepack extends REST_Controller
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show Receive Part all successful',
+                    'message' => 'Show Job Part all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show Receive Part All Error
+                // Show Job Part All Error
                 // $message = [
                 //     'status' => false,
-                //     'message' => 'Receive Part data was not found in the database',
+                //     'message' => 'Job Part data was not found in the database',
                 // ];
 
                 // $this->response($message, REST_Controller::HTTP_NOT_FOUND);
@@ -76,7 +76,7 @@ class JobRepack extends REST_Controller
     }
 
     /**
-     * Create Receive Part API
+     * Create Job Repack API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
@@ -94,68 +94,67 @@ class JobRepack extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // Receive Part Token Validation
+            // Job Repack Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $job_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $job_permission = array_filter($job_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
 
-                $receive_header = json_decode($this->input->post('data1'), true); 
+                $job_header = json_decode($this->input->post('data1'), true); 
 
-                if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
+                if ($job_permission[array_keys($job_permission)[0]]['Created']) {
 
-                    $receive_data['data'] = [
-                        'Rec_type' => $receive_header['Receive_Type'],
-                        'Rec_NO' => $receive_header['Receive_No'],
-                        'Rec_Datetime' => $receive_header['Receive_Date'],
-                        'status' => '1',
-                        'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
-                        'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
-                        'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
+                    $job_data['data'] = [
+                        'JOB_No' => $job_header['Job_No'],
+                        'JOB_Date' => $job_header['Job_Date'],
+                        'BOM_ID' => $job_header['Bom_ID'],
+                        'JobType_ID' => $job_header['Job_Type'],
+                        'FG_ITEM_ID' => $job_header['Grade_ID_FG'],
+                        'JOB_STATUS' => 1,
+                        'JOB_QTY' => $job_header['QTY_Use'],
                         'Create_Date' => date('Y-m-d H:i:s'),
-                        'Create_By' => $receive_token['UserName'],
+                        'Create_By' => $job_token['UserName'],
                         'Update_Date' => null,
                         'Update_By' => null,
                         
                     ];
 
-                    // Create receive Function
-                    $receive_output = $this->JobRepack_Model->insert_jobrepack($receive_data);
+                    // Create job Function
+                    $job_output = $this->JobRepack_Model->insert_jobrepack($job_data);
 
 
 
-                    if (isset($receive_output) && $receive_output) {
+                    if (isset($job_output) && $job_output) {
 
                         //Create Item Success
-                        $receive_item = json_decode($this->input->post('data2'), true); 
+                        $job_item = json_decode($this->input->post('data2'), true); 
                         
-                        foreach ($receive_item as $value) {
+                        foreach ($job_item as $value) {
                             
-                            $receive_data_item['data'] = [
-                                'Rec_ID' => $receive_output,
-                                'Qty' => $value['QTY'],
+                            $job_data_item['data'] = [
+                                'Job_ID' => $job_output,
                                 'Item_ID' => $value['Grade_ID'],
-                                'Lot_No' => $value['Lot_No'],
-                                'ItemStatus_ID' => $value['QTY'],
+                                'Qty' => $value['QTY'],
+                                'TotalQty' => $value['ToTal_Use'],
                                 'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $receive_token['UserName'],
+                                'Create_By' => $job_token['UserName'],
                                 
                             ];
 
 
-                            $receive_output_item = $this->JobRepack_Model->insert_jobrepack_item($receive_data_item);
+                            $job_output_item = $this->JobRepack_Model->insert_jobrepack_item($job_data_item);
 
                         }
                         
 
                         $message = [
                             'status' => true,
-                            'message' => 'Create Receive Part Successful',
+                            'message' => 'Create job Repack Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -164,10 +163,10 @@ class JobRepack extends REST_Controller
 
                     } else {
 
-                        // Create receive Error
+                        // Create job Error
                         $message = [
                             'status' => false,
-                            'message' => 'Create Receive Part Fail : [Insert Data Fail]',
+                            'message' => 'Create job Repack Fail : [Insert Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);

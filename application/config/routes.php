@@ -163,4 +163,5 @@ $route['job_no'] = 'api/JobNo/index';
 
 //Receive Type  API Routes
 $route['bomforjob'] = 'api/BomForJob/index';
+$route['select_bomrev'] = 'api/BomForJob/selectrev';
 $route['select_bomitem'] = 'api/BomForJob/selectitem';
