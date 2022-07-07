@@ -61,7 +61,7 @@ class JobRepack_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->update('Tb_Receive', $param['data'], ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('Tb_Job', $param['data'], ['JOB_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -74,7 +74,7 @@ class JobRepack_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_Receive', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_Job', ['JOB_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
          /**
@@ -86,7 +86,7 @@ class JobRepack_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_ReceiveItem', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_JobItem', ['JOB_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -103,12 +103,11 @@ class JobRepack_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-            select Tb_ReceiveItem.RecItem_ID as key_index,Tb_ReceiveItem.Item_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY
-            from Tb_ReceiveItem
-            inner join ms_Item on Tb_ReceiveItem.Item_ID = ms_Item.ITEM_ID
-            where Rec_ID = '$param'
-            order by RecItem_ID
-
+                select JobItem_ID as key_index,ms_Item.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Qty as QTY,TotalQty as ToTal_Use 
+                from tb_JobItem
+                inner join ms_Item on tb_JobItem.Item_ID = ms_Item.ITEM_ID
+                where Job_ID = '$param'
+                order by JobItem_ID
             
         ";
 

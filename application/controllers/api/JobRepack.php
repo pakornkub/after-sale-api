@@ -221,55 +221,55 @@ class JobRepack extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $job_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $job_permission = array_filter($job_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                    $receive_header = json_decode($this->input->post('data1'), true); 
+                    $job_header = json_decode($this->input->post('data1'), true); 
 
-                    if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
+                    if ($job_permission[array_keys($job_permission)[0]]['Created']) {
 
-                        $receive_data['index'] = $receive_header['Receive_Index'];
+                        $job_data['index'] = $job_header['Job_Index'];
 
-                        $receive_data['data'] = [
-                            'Rec_type' => $receive_header['Receive_Type'],
-                            'Rec_NO' => $receive_header['Receive_No'],
-                            'Rec_Datetime' => $receive_header['Receive_Date'],
-                            'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
-                            'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
-                            'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
+                        $job_data['data'] = [
+                            'JOB_No' => $job_header['Job_No'],
+                            'JOB_Date' => $job_header['Job_Date'],
+                            'BOM_ID' => $job_header['Bom_ID'],
+                            'JobType_ID' => $job_header['Job_Type'],
+                            'FG_ITEM_ID' => $job_header['Grade_ID_FG'],
+                            'JOB_STATUS' => 1,
+                            'JOB_QTY' => $job_header['QTY_Use'],
                             'Update_Date' => date('Y-m-d H:i:s'),
-                            'Update_By' => $receive_token['UserName'],
+                            'Update_By' => $job_token['UserName'],
                             
                         ];
 
                     
 
                    // Update JobRepack Function
-                    $receive_output = $this->JobRepack_Model->update_jobrepack($receive_data);
+                    $job_output = $this->JobRepack_Model->update_jobrepack($job_data);
 
-                    if (isset($receive_output) && $receive_output) {
+                    if (isset($job_output) && $job_output) {
 
 
-                        $delete_output = $this->JobRepack_Model->delete_jobrepack_item($receive_data);
+                        $delete_output = $this->JobRepack_Model->delete_jobrepack_item($job_data);
 
-                        $receive_item = json_decode($this->input->post('data2'), true); 
+                        $job_item = json_decode($this->input->post('data2'), true); 
                         
-                        foreach ($receive_item as $value) {
+                        foreach ($job_item as $value) {
                             
-                            $receive_data_item['data'] = [
-                                'Rec_ID' => $receive_header['Receive_Index'],
-                                'Qty' => $value['QTY'],
+                            $job_data_item['data'] = [
+                                'Job_ID' => $job_header['Job_Index'],
                                 'Item_ID' => $value['Grade_ID'],
-                                'Lot_No' => $value['Lot_No'],
-                                'ItemStatus_ID' => $value['QTY'],
+                                'Qty' => $value['QTY'],
+                                'TotalQty' => $value['ToTal_Use'],
                                 'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $receive_token['UserName'],
+                                'Create_By' => $job_token['UserName'],
                                 
                             ];
 
-                            $receive_output_item = $this->JobRepack_Model->insert_jobrepack_item($receive_data_item);
+                            $job_output_item = $this->JobRepack_Model->insert_jobrepack_item($job_data_item);
                         }
                             // Update JobRepack Success
                         $message = [
@@ -284,7 +284,7 @@ class JobRepack extends REST_Controller
                         // Update JobRepack Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Receive Part Fail : [Update Data Fail]',
+                            'message' => 'Update Job Repack Fail : [Update Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -339,25 +339,25 @@ class JobRepack extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $job_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $job_permission = array_filter($job_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($receive_permission[array_keys($receive_permission)[0]]['Deleted']) {
+                if ($job_permission[array_keys($job_permission)[0]]['Deleted']) {
 
-                    $receive_data['index'] = $this->input->post('Rec_ID');
+                    $job_data['index'] = $this->input->post('Rec_ID');
 
                     // Delete JobRepack Function
-                    $receive_output = $this->JobRepack_Model->delete_jobrepack($receive_data);
-                    $receive_output_item = $this->JobRepack_Model->delete_jobrepack_item($receive_data);
+                    $job_output = $this->JobRepack_Model->delete_jobrepack($job_data);
+                    $job_output_item = $this->JobRepack_Model->delete_jobrepack_item($job_data);
 
-                    if (isset($receive_output) && $receive_output) {
+                    if (isset($job_output) && $job_output) {
 
                         // Delete JobRepack Success
                         $message = [
                             'status' => true,
-                            'message' => $receive_output,
+                            'message' => $job_output,
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -367,7 +367,7 @@ class JobRepack extends REST_Controller
                         // Delete JobRepack Error
                         $message = [
                             'status' => false,
-                            'message' => 'Delete Receive Part Fail : [Delete Data Fail]',
+                            'message' => 'Delete Job Repack Fail : [Delete Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
