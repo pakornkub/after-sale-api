@@ -14,10 +14,37 @@ class BomForJob_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select * from ms_Item where Product_ID = '1' and Status = '1'
+        select ITEM_ID,ITEM_CODE,0 as QTY
+        from ms_Item where Product_ID = '1' and Status = '1'
         ";
 
         $query = $this->db->query($sql);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    }
+    /**
+     * Grade plan
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_gradeplan($param = [])
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+        declare @DatePlan date
+		set @DatePlan = ?
+
+		select ITEM_ID,ITEM_CODE,ITEM_QTY as QTY from ms_Plan
+		inner join ms_Item on ms_Plan.FG_ITEM_ID = ms_Item.ITEM_ID
+		where DATE = @DatePlan and 
+        ITEM_ID not in (select FG_ITEM_ID from tb_Job where CONVERT(date, JOB_Date) = @DatePlan and JOB_STATUS <> -1)";
+
+        $query = $this->db->query($sql,$param['DATE']);
 
         $result = ($query->num_rows() > 0) ? $query->result_array() : false;
 

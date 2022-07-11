@@ -75,6 +75,61 @@ class BomForJob extends REST_Controller
 
     }
 
+     /**
+     * Show Bom All API
+     * ---------------------------------
+     * @method : POST
+     * @link : BomForJob/selectgrade
+     */
+    public function selectgrade_post()
+    {
+        header("Access-Control-Allow-Origin: *");
+
+        $_POST = $this->security->xss_clean($_POST);
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // Bom Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        //if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            // Load Bom Function
+            
+
+            $grade_data = [
+                'DATE' => $this->input->post('DATE'),
+               
+            ];
+
+            $bom_output = $this->BomForJob_Model->select_gradeplan($grade_data);
+
+            if (isset($bom_output) && $bom_output) {
+
+                // Show Bom All Success
+                $message = [
+                    'status' => true,
+                    'data' => $bom_output,
+                    'message' => 'Show Grade all successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+
+        // } else {
+        //     // Validate Error
+        //     $message = [
+        //         'status' => false,
+        //         'message' => $is_valid_token['message'],
+        //     ];
+
+        //     $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+        // }
+    }
+
+
+
     /**
      * Show Bom All API
      * ---------------------------------
