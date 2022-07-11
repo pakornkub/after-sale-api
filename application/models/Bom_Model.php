@@ -111,7 +111,7 @@ class Bom_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-            select ms_BOM_Item.ITEM_Seq as key_index,ms_BOM_Item.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,ITEM_QTY as QTY
+            select ms_BOM_Item.ITEM_Seq as [key],ms_BOM_Item.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,ITEM_QTY as QTY
             from ms_BOM_Item 
             inner join ms_Item on ms_BOM_Item.ITEM_ID = ms_Item.ITEM_ID
             where BOM_ID = '$param'
