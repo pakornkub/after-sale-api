@@ -161,8 +161,16 @@ $route['job_type'] = 'api/jobType/index';
 //Job No  API Routes
 $route['job_no'] = 'api/JobNo/index';
 
-//Receive Type  API Routes
+//Bom of job repack  API Routes
 $route['bomforjob'] = 'api/BomForJob/index';
 $route['select_gradeplan'] = 'api/BomForJob/selectgrade';
 $route['select_bomrev'] = 'api/BomForJob/selectrev';
 $route['select_bomitem'] = 'api/BomForJob/selectitem';
+
+
+// Receive Part API Routes
+$route['jobplan'] = 'api/jobplan/index';
+$route['jobplan/:(any)'] = 'api/jobplan/show/$1';
+$route['create_jobplan'] = 'api/jobplan/create';
+$route['update_jobplan'] = 'api/jobplan/update';
+$route['delete_jobplan'] = 'api/jobplan/delete';
