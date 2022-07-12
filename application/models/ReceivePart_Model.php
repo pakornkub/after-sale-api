@@ -103,7 +103,7 @@ class ReceivePart_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-            select Tb_ReceiveItem.RecItem_ID as key_index,Tb_ReceiveItem.Item_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY
+            select Tb_ReceiveItem.RecItem_ID as [key],Tb_ReceiveItem.Item_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY
             from Tb_ReceiveItem
             inner join ms_Item on Tb_ReceiveItem.Item_ID = ms_Item.ITEM_ID
             where Rec_ID = '$param'
