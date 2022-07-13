@@ -109,72 +109,87 @@ class ReceiveReturn extends REST_Controller
 
                 if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
 
-                    $receive_data['data'] = [
-                        'Rec_type' => '2',
-                        'Rec_NO' => $receive_header['Receive_No'],
-                        'Rec_Datetime' => $receive_header['Receive_Date'],
-                        'status' => '1',
-                        'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
-                        'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
-                        'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
-                        'Create_Date' => date('Y-m-d H:i:s'),
-                        'Create_By' => $receive_token['UserName'],
-                        'Update_Date' => null,
-                        'Update_By' => null,
-                        
-                    ];
+                    $receive_no_output = json_decode(json_encode($this->ReceiveReturn_Model->select_receive_no()), true);
+                    $receive_no = $receive_no_output[array_keys($receive_no_output)[0]]['ReceiveNo'];
 
-                    // Create receive Function
-                    $receive_output = $this->ReceiveReturn_Model->insert_receivereturn($receive_data);
+                    if (isset($receive_no) && $receive_no) {
 
-
-
-                    if (isset($receive_output) && $receive_output) {
-
-                        //Create Item Success
-                        $receive_item = json_decode($this->input->post('data2'), true); 
-                        
-                        foreach ($receive_item as $value) {
+                        $receive_data['data'] = [
+                            'Rec_type' => '2',
+                            'Rec_NO' => $receive_no,
+                            'Rec_Datetime' => $receive_header['Receive_Date'],
+                            'status' => '1',
+                            'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
+                            'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
+                            'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
+                            'Create_Date' => date('Y-m-d H:i:s'),
+                            'Create_By' => $receive_token['UserName'],
+                            'Update_Date' => null,
+                            'Update_By' => null,
                             
-                            $receive_data_item['data'] = [
-                                'Rec_ID' => $receive_output,
-                                'Qty' => $value['QTY'],
-                                'Item_ID' => $value['Grade_ID'],
-                                'Lot_No' => $value['Lot_No'],
-                                'ItemStatus_ID' => $value['QTY'],
-                                'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $receive_token['UserName'],
+                        ];
+
+                        // Create receive Function
+                        $receive_output = $this->ReceiveReturn_Model->insert_receivereturn($receive_data);
+
+
+
+                        if (isset($receive_output) && $receive_output) {
+
+                            //Create Item Success
+                            $receive_item = json_decode($this->input->post('data2'), true); 
+                            
+                            foreach ($receive_item as $value) {
                                 
+                                $receive_data_item['data'] = [
+                                    'Rec_ID' => $receive_output,
+                                    'Qty' => $value['QTY'],
+                                    'Item_ID' => $value['Grade_ID'],
+                                    'Lot_No' => $value['Lot_No'],
+                                    'ItemStatus_ID' => $value['QTY'],
+                                    'Create_Date' => date('Y-m-d H:i:s'),
+                                    'Create_By' => $receive_token['UserName'],
+                                    
+                                ];
+
+
+                                $receive_output_item = $this->ReceiveReturn_Model->insert_receivereturn_item($receive_data_item);
+
+                            }
+                            
+
+                            $message = [
+                                'status' => true,
+                                'message' => 'Create Receive Return Successful',
                             ];
 
+                            $this->response($message, REST_Controller::HTTP_OK);
 
-                            $receive_output_item = $this->ReceiveReturn_Model->insert_receivereturn_item($receive_data_item);
+
+
+                        } else {
+
+                            // Create receive Error
+                            $message = [
+                                'status' => false,
+                                'message' => 'Create Receive Return Fail : [Insert Data Fail]',
+                            ];
+
+                            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
 
                         }
-                        
+                    }else{
+                            // Create Receive NO Error
+                            $message = [
+                                'status' => false,
+                                'message' => 'Receive No Fail',
+                            ];
 
-                        $message = [
-                            'status' => true,
-                            'message' => 'Create Receive Return Successful',
-                        ];
-
-                        $this->response($message, REST_Controller::HTTP_OK);
-
-
-
-                    } else {
-
-                        // Create receive Error
-                        $message = [
-                            'status' => false,
-                            'message' => 'Create Receive Return Fail : [Insert Data Fail]',
-                        ];
-
-                        $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
+                            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                     }
 
-                } else {
+
+                }else {
                     // Permission Error
                     $message = [
                         'status' => false,
@@ -350,7 +365,7 @@ class ReceiveReturn extends REST_Controller
                     $receive_data['index'] = $this->input->post('Rec_ID');
 
                     // Delete ReceiveReturn Function
-                    $receive_output = $this->Receivereturn_Model->delete_receivereturn($receive_data);
+                    $receive_output = $this->ReceiveReturn_Model->delete_receivereturn($receive_data);
                     $receive_output_item = $this->ReceiveReturn_Model->delete_receivereturn_item($receive_data);
 
                     if (isset($receive_output) && $receive_output) {

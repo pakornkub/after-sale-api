@@ -26,6 +26,30 @@ class ReceivePart_Model extends MY_Model
 
     }
 
+
+    /**
+     * receive no
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_receive_no()
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+        select dbo.[fnGetRcDocNo] ('1') as ReceiveNo
+        ";
+
+        $query = $this->db->query($sql);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    }
+
+
     /**
      * Insert ReceivePart
      * ---------------------------------
