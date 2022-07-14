@@ -155,6 +155,8 @@ $route['create_jobrepack'] = 'api/jobrepack/create';
 $route['update_jobrepack'] = 'api/jobrepack/update';
 $route['delete_jobrepack'] = 'api/jobrepack/delete';
 $route['jobrepack_item'] = 'api/jobrepack/jobrepackitem';
+$route['select_qrbox'] = 'api/jobrepack/selectqrbox';
+$route['select_withdrawitem'] = 'api/jobrepack/selectwithdrawitem';
 
 //Job Type  API Routes
 $route['job_type'] = 'api/jobType/index';

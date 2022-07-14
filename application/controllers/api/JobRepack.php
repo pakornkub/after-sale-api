@@ -444,4 +444,86 @@ class JobRepack extends REST_Controller
 
     }
 
+    /**
+     * Show QR BOX API
+     * ---------------------------------
+     * @method : POST
+     * @link : jobrepack/selectqrbox
+     */
+    public function selectqrbox_post()
+    {
+        header("Access-Control-Allow-Origin: *");
+
+        $_POST = $this->security->xss_clean($_POST);
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // qrbox Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        
+            $qrbox_data = [
+                'JOB_ID' => $this->input->post('JOB_ID'),
+               
+            ];
+
+            $qrbox_output = $this->JobRepack_Model->select_qrbox($qrbox_data);
+
+            if (isset($qrbox_output) && $qrbox_output) {
+
+                // Show qrbox All Success
+                $message = [
+                    'status' => true,
+                    'data' => $qrbox_output,
+                    'message' => 'Show QR Box all successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+
+    }
+
+    /**
+     * Show Withdraw Item API
+     * ---------------------------------
+     * @method : POST
+     * @link : jobrepack/selectwithdrawitem
+     */
+    public function selectwithdrawitem_post()
+    {
+        header("Access-Control-Allow-Origin: *");
+
+        $_POST = $this->security->xss_clean($_POST);
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // WI Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        
+            $wi_data = [
+                'JOB_ID' => $this->input->post('JOB_ID'),
+               
+            ];
+
+            $wi_output = $this->JobRepack_Model->select_withdrawitem($wi_data);
+
+            if (isset($wi_output) && $wi_output) {
+
+                // Show qrbox All Success
+                $message = [
+                    'status' => true,
+                    'data' => $wi_output,
+                    'message' => 'Show Withdraw Item all successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+
+    }
+
 }

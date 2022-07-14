@@ -142,4 +142,30 @@ class JobRepack_Model extends MY_Model
 
     }
 
+
+     /**
+     * QR BOX
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_qrbox($param = [])
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+                select Tb_Job.JOB_ID,Tb_Job.BOM_ID,Tb_Job.FG_ITEM_ID,QR_ID,QR_NO,BOM_ID,BOX_NO
+                from Tb_Job
+                inner join Tb_QRBOX_Generate QR on Tb_Job.JOB_ID = QR.job_ID
+                where Tb_Job.JOB_ID = ?
+        ";
+
+        $query = $this->db->query($sql,$param['JOB_ID']);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    }
+
 }
