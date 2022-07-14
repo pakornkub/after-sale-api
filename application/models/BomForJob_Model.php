@@ -14,7 +14,7 @@ class BomForJob_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select ITEM_ID,ITEM_CODE,0 as QTY
+        select ITEM_ID,ITEM_CODE,'' as QTY
         from ms_Item where Product_ID = '1' and Status = '1'
         ";
 

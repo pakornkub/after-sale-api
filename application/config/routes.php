@@ -132,6 +132,7 @@ $route['receivepart_item'] = 'api/receivepart/receivepartitem';
 // Tag API Routes
 $route['tag'] = 'api/tag/index';
 $route['tag/:(any)'] = 'api/tag/show/$1';
+$route['select_receivestatus'] = 'api/tag/selectreceivestatus';
 $route['select_tag'] = 'api/tag/select';
 $route['create_tag'] = 'api/tag/create';
 $route['delete_tag'] = 'api/tag/delete';

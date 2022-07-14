@@ -4,6 +4,27 @@ class Tag_Model extends MY_Model
 {
 
     /**
+     * Receive Status
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_receivestatus($param = [])
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+            select * from Tb_Receive where Rec_ID = ?
+        ";
+
+        $query = $this->db->query($sql,$param['Rec_ID']);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    } 
+    /**
      * Tag
      * ---------------------------------
      * @param : null

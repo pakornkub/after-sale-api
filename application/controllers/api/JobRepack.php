@@ -150,7 +150,14 @@ class JobRepack extends REST_Controller
                             $job_output_item = $this->JobRepack_Model->insert_jobrepack_item($job_data_item);
 
                         }
-                        
+
+                        $qr_data = [
+                            'JOB_ID' => $job_output,
+                            'username' => $tag_token['UserName'],
+                           
+                        ];
+
+                        $job_output_qr = $this->JobRepack_Model->insert_jobrepack_qr($qr_data);
 
                         $message = [
                             'status' => true,

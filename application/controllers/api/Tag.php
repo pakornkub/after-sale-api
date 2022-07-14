@@ -33,6 +33,59 @@ class Tag extends REST_Controller
     }
 
     /**
+     * Show Receive status API
+     * ---------------------------------
+     * @method : POST
+     * @link : tag/selectreceivestatus
+     */
+    public function selectreceivestatus_post()
+    {
+        header("Access-Control-Allow-Origin: *");
+
+        $_POST = $this->security->xss_clean($_POST);
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // Tag Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        //if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            // Load Tag Function
+            
+
+            $tag_data = [
+                'Rec_ID' => $this->input->post('Rec_ID'),
+               
+            ];
+
+            $tag_output = $this->Tag_Model->select_receivestatus($tag_data);
+
+            if (isset($tag_output) && $tag_output) {
+
+                // Show Tag All Success
+                $message = [
+                    'status' => true,
+                    'data' => $tag_output,
+                    'message' => 'Show Receive Status successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+
+        // } else {
+        //     // Validate Error
+        //     $message = [
+        //         'status' => false,
+        //         'message' => $is_valid_token['message'],
+        //     ];
+
+        //     $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+        // }
+    }
+
+    /**
      * Show Tag All API
      * ---------------------------------
      * @method : POST

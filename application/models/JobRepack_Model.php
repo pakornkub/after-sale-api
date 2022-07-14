@@ -53,6 +53,27 @@ class JobRepack_Model extends MY_Model
     }
 
      /**
+     * Insert JobRepack QR
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function insert_jobrepack_qr($param = [])
+    {
+        $this->set_db('default');
+
+        $sql = "
+
+        exec [dbo].[SP_CreateBoxQR]  ?,?
+          
+        ";
+
+        return $this->db->query($sql,[$param['JOB_ID'],$param['username']]) ? true : false;
+    }
+
+    
+
+
+     /**
      * Update JobRepack
      * ---------------------------------
      * @param : FormData
