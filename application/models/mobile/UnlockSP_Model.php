@@ -25,7 +25,7 @@ class UnlockSP_Model extends MY_Model
 
     }
 
-       /**
+    /**
      * Update UnlockSP
      * ---------------------------------
      * @param : FormData
@@ -48,6 +48,28 @@ class UnlockSP_Model extends MY_Model
         $this->set_db('default');
 
         return ($this->db->update('Tb_TagQR', $param['data'], $param['where'])) ? true : false/*$this->db->error()*/;
+
+    }
+
+
+      /**
+     * Select UnlockSP Tag Complete
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function select_unlock_sp_tag_complete($param = [])
+    {
+        $this->set_db('default');
+
+        $sql = "
+           select * from Tb_TagQR where QR_NO = ? and Tag_ID = ? and Tag_Status = 9 and ItemStatus_ID = 2
+        ";
+
+        $query = $this->db->query($sql,[$param['QR_NO'],$param['Tag_ID']]);
+
+        $result = ($query->num_rows() > 0) ? true : false;
+
+        return $result;
 
     }
 

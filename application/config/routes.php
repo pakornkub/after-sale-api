@@ -82,7 +82,6 @@ $route['menu_type/:(any)'] = 'api/MenuType/show/$1';
 $route['platform'] = 'api/platform/index';
 $route['platform/:(any)'] = 'api/platform/show/$1';
 
-
 // Group API Routes
 $route['group'] = 'api/group/index';
 $route['group/:(any)'] = 'api/group/show/$1';
@@ -113,3 +112,14 @@ $route['receive_return'] = 'api/mobile/ReceiveReturn/index';
 $route['receive_return_item'] = 'api/mobile/ReceiveReturn/item';
 $route['update_receive_return'] = 'api/mobile/ReceiveReturn/update';
 $route['exec_receive_return_transaction'] = 'api/mobile/ReceiveReturn/exec_transaction';
+
+// JobRepack API Routes
+$route['job_repack'] = 'api/mobile/JobRepack/index';
+$route['job_repack_bom'] = 'api/mobile/JobRepack/bom';
+$route['update_job_repack'] = 'api/mobile/JobRepack/update';
+$route['exec_job_repack_item'] = 'api/mobile/JobRepack/exec_item';
+$route['exec_job_repack_transaction'] = 'api/mobile/JobRepack/exec_transaction';
+
+// CheckStock API Routes
+$route['check_stock'] = 'api/mobile/CheckStock/index';
+

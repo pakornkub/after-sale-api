@@ -41,7 +41,7 @@ class ReceiveSP_Model extends MY_Model
     /**
      * ReceiveSPItem
      * ---------------------------------
-     * @param : null
+     * @param : Rec_ID
      */
     public function select_receive_sp_Item($Rec_ID)
     {
@@ -54,10 +54,10 @@ class ReceiveSP_Model extends MY_Model
                         ROW_NUMBER() Over (Order by r.Rec_ID) as 'No'
                         ,i.ITEM_DESCRIPTION as 'SP'
                         ,(
-                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and ItemStatus_ID = 2 and Tag_Status = 9
+                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and RecItem_ID = ri.RecItem_ID and ItemStatus_ID = 2 and Tag_Status = 9
                         ) as 'Unlock'
                         ,(
-                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and ItemStatus_ID = 1 and Tag_Status = 3
+                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and RecItem_ID = ri.RecItem_ID and ItemStatus_ID = 1 and Tag_Status = 3
                         ) as 'Lock'
                         ,ri.Qty as 'Total'
 

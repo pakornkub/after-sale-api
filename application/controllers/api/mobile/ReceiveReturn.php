@@ -59,7 +59,7 @@ class ReceiveReturn extends REST_Controller
                     'message' => 'Receive Return data was not found in the database',
                 ];
 
-                $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+                $this->response($message, REST_Controller::HTTP_OK);
 
             }
 
@@ -255,7 +255,7 @@ class ReceiveReturn extends REST_Controller
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('Rec_ID', 'Rec_ID', 'trim|required');
         $this->form_validation->set_rules('QR_NO', 'QR_NO', 'trim|required');
-        $this->form_validation->set_rules('Tag_ID', 'Tag_ID', 'trim|required');
+        $this->form_validation->set_rules('Item_ID', 'Item_ID', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             // Form Validation Error
@@ -286,7 +286,7 @@ class ReceiveReturn extends REST_Controller
                     $tag_data = [
                         'Rec_ID' => intval($this->input->post('Rec_ID')),
                         'QR_NO' => $this->input->post('QR_NO'),
-                        'Tag_ID' => intval($this->input->post('Tag_ID')),
+                        'Item_ID' => intval($this->input->post('Item_ID')),
                         'Username' => $receive_return_token['UserName'],
                     ];
 

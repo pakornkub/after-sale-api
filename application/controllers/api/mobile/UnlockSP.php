@@ -237,30 +237,46 @@ class UnlockSP extends REST_Controller
                         'Update_Date' => date('Y-m-d H:i:s'),
                     ];
 
-                    // Update UnlockSP Function
-                    $unlock_sp_output = $this->UnlockSP_Model->update_unlock_sp_tag($unlock_sp_data);
+                    // Check UnlockSP Tag Status Complete 
+                    if(!$this->UnlockSP_Model->select_unlock_sp_tag_complete($unlock_sp_data['where']))
+                    {
+                        // Update UnlockSP Function
+                        $unlock_sp_output = $this->UnlockSP_Model->update_unlock_sp_tag($unlock_sp_data);
 
-                    if (isset($unlock_sp_output) && $unlock_sp_output) {
+                        if (isset($unlock_sp_output) && $unlock_sp_output) {
 
-                        // Update UnlockSP Success
-                        $message = [
-                            'status' => true,
-                            'message' => 'Update Unlock SP Successful',
-                        ];
+                            // Update UnlockSP Success
+                            $message = [
+                                'status' => true,
+                                'message' => 'Update Unlock SP Successful',
+                            ];
 
-                        $this->response($message, REST_Controller::HTTP_OK);
+                            $this->response($message, REST_Controller::HTTP_OK);
 
-                    } else {
+                        } else {
 
-                        // Update UnlockSP Error
-                        $message = [
+                            // Update UnlockSP Error
+                            $message = [
+                                'status' => false,
+                                'message' => 'Update Unlock SP Fail : [Update Data Fail]',
+                            ];
+
+                            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+                        }
+
+                    }
+                    else
+                    {
+                         // Check UnlockSP Tag Status Complete Error
+                         $message = [
                             'status' => false,
-                            'message' => 'Update Unlock SP Fail : [Update Data Fail]',
+                            'message' => 'QR has been scanned in This Order',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
                     }
+
 
                 } else {
                     // Permission Error
