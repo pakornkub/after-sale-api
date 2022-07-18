@@ -46,17 +46,17 @@ class JobPlan extends REST_Controller
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show Receive Part all successful',
+                    'message' => 'Show JobPlan all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show Receive Part All Error
+                // Show JobPlan Part All Error
                 // $message = [
                 //     'status' => false,
-                //     'message' => 'Receive Part data was not found in the database',
+                //     'message' => 'JobPlan data was not found in the database',
                 // ];
 
                 // $this->response($message, REST_Controller::HTTP_NOT_FOUND);
@@ -76,7 +76,7 @@ class JobPlan extends REST_Controller
     }
 
     /**
-     * Create Receive Part API
+     * Create JobPlan API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
@@ -94,68 +94,50 @@ class JobPlan extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // Receive Part Token Validation
+            // JobPlan Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $jobplan_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $jobplan_permission = array_filter($jobplan_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
 
-                $receive_header = json_decode($this->input->post('data1'), true); 
+                $jobplan_item = json_decode($this->input->post('data'), true); 
 
-                if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
+                if ($jobplan_permission[array_keys($jobplan_permission)[0]]['Created']) {
 
-                    $receive_data['data'] = [
-                        'Rec_type' => '1',
-                        'Rec_NO' => $receive_header['Receive_No'],
-                        'Rec_Datetime' => $receive_header['Receive_Date'],
-                        'status' => '1',
-                        'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
-                        'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
-                        'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
-                        'Create_Date' => date('Y-m-d H:i:s'),
-                        'Create_By' => $receive_token['UserName'],
-                        'Update_Date' => null,
-                        'Update_By' => null,
+                     //Create Item Success
+                     
                         
-                    ];
-
-                    // Create receive Function
-                    $receive_output = $this->JobPlan_Model->insert_jobplan($receive_data);
-
-
-
-                    if (isset($receive_output) && $receive_output) {
-
-                        //Create Item Success
-                        $receive_item = json_decode($this->input->post('data2'), true); 
+                     foreach ($jobplan_item as $value) {
                         
-                        foreach ($receive_item as $value) {
-                            
-                            $receive_data_item['data'] = [
-                                'Rec_ID' => $receive_output,
-                                'Qty' => $value['QTY'],
-                                'Item_ID' => $value['Grade_ID'],
-                                'Lot_No' => $value['Lot_No'],
-                                'ItemStatus_ID' => $value['QTY'],
-                                'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $receive_token['UserName'],
-                                
-                            ];
+                         $plan_data_item['data'] = [
+                             'DATE' => $value['DATE'],
+                             'FG_ITEM_CODE' => $value['GRADE'],
+                             'ITEM_QTY' => $value['QTY'],
+                             'Create_Date' => date('Y-m-d H:i:s'),
+                             'Create_By' => $jobplan_token['UserName'],
+                             
+                         ];
 
 
-                            $receive_output_item = $this->JobPlan_Model->insert_jobplan_item($receive_data_item);
+                         $jobplan_output_item = $this->JobPlan_Model->insert_jobplan($plan_data_item);
 
-                        }
+                     }
+
+
+
+                    if (isset($jobplan_output_item) && $jobplan_output_item) {
+
+                       
                         
 
                         $message = [
                             'status' => true,
-                            'message' => 'Create Receive Part Successful',
+                            'message' => 'Create JobPlan Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -164,10 +146,10 @@ class JobPlan extends REST_Controller
 
                     } else {
 
-                        // Create receive Error
+                        // Create jobplan Error
                         $message = [
                             'status' => false,
-                            'message' => 'Create Receive Part Fail : [Insert Data Fail]',
+                            'message' => 'Create jobplan Part Fail : [Insert Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -222,60 +204,37 @@ class JobPlan extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $jobplan_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $jobplan_permission = array_filter($jobplan_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                    $receive_header = json_decode($this->input->post('data1'), true); 
+                    $jobplan_header = json_decode($this->input->post('data1'), true); 
 
-                    if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
+                    if ($jobplan_permission[array_keys($jobplan_permission)[0]]['Created']) {
 
-                        $receive_data['index'] = $receive_header['Receive_Index'];
+                        $jobplan_data['index'] = $jobplan_header['JobPlan_Index'];
 
-                        $receive_data['data'] = [
+                        $jobplan_data['data'] = [
                             'Rec_type' => '1',
-                            'Rec_NO' => $receive_header['Receive_No'],
-                            'Rec_Datetime' => $receive_header['Receive_Date'],
-                            'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
-                            'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
-                            'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
+                            'Rec_NO' => $jobplan_header['jobplan_No'],
                             'Update_Date' => date('Y-m-d H:i:s'),
-                            'Update_By' => $receive_token['UserName'],
+                            'Update_By' => $jobplan_token['UserName'],
                             
                         ];
 
                     
 
                    // Update JobPlan Function
-                    $receive_output = $this->JobPlan_Model->update_jobplan($receive_data);
+                    $jobplane_output = $this->JobPlan_Model->update_jobplan($jobplan_data);
 
-                    if (isset($receive_output) && $receive_output) {
+                    if (isset($jobplan_output) && $jobplan_output) {
 
 
-                        $delete_output = $this->JobPlan_Model->delete_jobplan_item($receive_data);
-
-                        $receive_item = json_decode($this->input->post('data2'), true); 
-                        
-                        foreach ($receive_item as $value) {
-                            
-                            $receive_data_item['data'] = [
-                                'Rec_ID' => $receive_header['Receive_Index'],
-                                'Qty' => $value['QTY'],
-                                'Item_ID' => $value['Grade_ID'],
-                                'Lot_No' => $value['Lot_No'],
-                                'ItemStatus_ID' => $value['QTY'],
-                                'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $receive_token['UserName'],
-                                
-                            ];
-
-                            $receive_output_item = $this->JobPlan_Model->insert_jobplan_item($receive_data_item);
-                        }
                             // Update JobPlan Success
                         $message = [
                             'status' => true,
-                            'message' => 'Update Grade Successful',
+                            'message' => 'Update jobplan Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -285,7 +244,7 @@ class JobPlan extends REST_Controller
                         // Update JobPlan Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Receive Part Fail : [Update Data Fail]',
+                            'message' => 'Update jobplan Fail : [Update Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -340,25 +299,25 @@ class JobPlan extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $jobplan_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $jobplan_permission = array_filter($jobplan_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($receive_permission[array_keys($receive_permission)[0]]['Deleted']) {
+                if ($jobplan_permission[array_keys($jobplan_permission)[0]]['Deleted']) {
 
-                    $receive_data['index'] = $this->input->post('Rec_ID');
+                    $jobplan_data['index'] = $this->input->post('Rec_ID');
 
                     // Delete JobPlan Function
-                    $receive_output = $this->JobPlan_Model->delete_jobplan($receive_data);
-                    $receive_output_item = $this->JobPlan_Model->delete_jobplan_item($receive_data);
+                    $jobplan_output = $this->JobPlan_Model->delete_jobplan($jobplane_data);
+                    $jobplan_output_item = $this->JobPlan_Model->delete_jobplan_item($jobplan_data);
 
-                    if (isset($receive_output) && $receive_output) {
+                    if (isset($jobplan_output) && $jobplan_output) {
 
                         // Delete JobPlan Success
                         $message = [
                             'status' => true,
-                            'message' => $receive_output,
+                            'message' => $jobplan_output,
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -368,7 +327,7 @@ class JobPlan extends REST_Controller
                         // Delete JobPlan Error
                         $message = [
                             'status' => false,
-                            'message' => 'Delete Receive Part Fail : [Delete Data Fail]',
+                            'message' => 'Delete jobplan Fail : [Delete Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -399,43 +358,6 @@ class JobPlan extends REST_Controller
 
     }
 
-        /**
-     * Show JobPlan item All API
-     * ---------------------------------
-     * @method : GET
-     * @link : jobplan/jobplan_item
-     */
-    public function jobplanitem_get()
-    {
-
-        header("Access-Control-Allow-Origin: *");
-
-        // Load Authorization Token Library
-        $this->load->library('Authorization_Token');
-
-        // JobPlanID Token Validation
-        $is_valid_token = $this->authorization_token->validateToken();
-
-        if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load JobPlanID Function
-            $Rc_ID = $this->input->get('JobPlan_ID');
-
-            $output = $this->JobPlan_Model->select_jobplanitem($Rc_ID);
-
-            if (isset($output) && $output) {
-
-                // Show JobPlanID All Success
-                $message = [
-                    'status' => true,
-                    'data' => $output,
-                    'message' => 'Show JobPlanItem all successful',
-                ];
-
-                $this->response($message, REST_Controller::HTTP_OK);
-
-            }
-        }
-
-    }
+ 
 
 }

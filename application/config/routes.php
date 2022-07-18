@@ -171,9 +171,17 @@ $route['select_bomrev'] = 'api/BomForJob/selectrev';
 $route['select_bomitem'] = 'api/BomForJob/selectitem';
 
 
-// Receive Part API Routes
+// Job Plan API Routes
 $route['jobplan'] = 'api/jobplan/index';
 $route['jobplan/:(any)'] = 'api/jobplan/show/$1';
 $route['create_jobplan'] = 'api/jobplan/create';
 $route['update_jobplan'] = 'api/jobplan/update';
 $route['delete_jobplan'] = 'api/jobplan/delete';
+
+// Count Stock API Routes
+$route['countstock'] = 'api/countstock/index';
+$route['countstock/:(any)'] = 'api/countstock/show/$1';
+$route['create_countstock'] = 'api/countstock/create';
+$route['update_countstock'] = 'api/countstock/update';
+$route['delete_countstock'] = 'api/countstock/delete';
+$route['countstock_item'] = 'api/countstock/countstocktitem';

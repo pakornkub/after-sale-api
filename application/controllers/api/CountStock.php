@@ -4,26 +4,26 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class ReceivePart extends REST_Controller
+class CountStock extends REST_Controller
 {
 
-    protected $MenuId = 'ReceivePart';
+    protected $MenuId = 'CountStock';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load ReceivePart
-        $this->load->model('ReceivePart_Model');
+        // Load CountStock
+        $this->load->model('CountStock_Model');
 
     }
 
     /**
-     * Show ReceivePart All API
+     * Show CountStock All API
      * ---------------------------------
      * @method : GET
-     * @link : receivepart/index
+     * @link : countstock/index
      */
     public function index_get()
     {
@@ -33,20 +33,20 @@ class ReceivePart extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // ReceivePart Token Validation
+        // CountStock Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load ReceivePart Function
-            $output = $this->ReceivePart_Model->select_receivepart();
+            // Load CountStock Function
+            $output = $this->CountStock_Model->select_countstock();
 
             if (isset($output) && $output) {
 
-                // Show ReceivePart All Success
+                // Show CountStock All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show Receive Part all successful',
+                    'message' => 'Show Count Stock all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
@@ -81,7 +81,7 @@ class ReceivePart extends REST_Controller
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : receivepart/create
+     * @link : countstock/create
      */
     public function create_post()
     {
@@ -111,7 +111,7 @@ class ReceivePart extends REST_Controller
 
 
 
-                    $receive_no_output = json_decode(json_encode($this->ReceivePart_Model->select_receive_no()), true);
+                    $receive_no_output = json_decode(json_encode($this->CountStock_Model->select_receive_no()), true);
                     $receive_no = $receive_no_output[array_keys($receive_no_output)[0]]['ReceiveNo'];
 
                     if (isset($receive_no) && $receive_no) {
@@ -133,7 +133,7 @@ class ReceivePart extends REST_Controller
                         ];
     
                         // Create receive Function
-                        $receive_output = $this->ReceivePart_Model->insert_receivepart($receive_data);
+                        $receive_output = $this->CountStock_Model->insert_countstock($receive_data);
     
     
     
@@ -156,14 +156,14 @@ class ReceivePart extends REST_Controller
                                 ];
     
     
-                                $receive_output_item = $this->ReceivePart_Model->insert_receivepart_item($receive_data_item);
+                                $receive_output_item = $this->CountStock_Model->insert_countstock_item($receive_data_item);
     
                             }
                             
     
                             $message = [
                                 'status' => true,
-                                'message' => 'Create Receive Part Successful',
+                                'message' => 'Create Count Stock Successful',
                             ];
     
                             $this->response($message, REST_Controller::HTTP_OK);
@@ -175,7 +175,7 @@ class ReceivePart extends REST_Controller
                             // Create receive Error
                             $message = [
                                 'status' => false,
-                                'message' => 'Create Receive Part Fail : [Insert Data Fail]',
+                                'message' => 'Create Count Stock Fail : [Insert Data Fail]',
                             ];
     
                             $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -218,12 +218,12 @@ class ReceivePart extends REST_Controller
     }
 
     /**
-     * Update ReceivePart API
+     * Update CountStock API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : receivepart/update
+     * @link : countstock/update
      */
     public function update_post()
     { 
@@ -236,7 +236,7 @@ class ReceivePart extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // ReceivePart Token Validation
+            // CountStock Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
@@ -266,13 +266,13 @@ class ReceivePart extends REST_Controller
 
                     
 
-                   // Update ReceivePart Function
-                    $receive_output = $this->ReceivePart_Model->update_receivepart($receive_data);
+                   // Update CountStock Function
+                    $receive_output = $this->CountStock_Model->update_countstock($receive_data);
 
                     if (isset($receive_output) && $receive_output) {
 
 
-                        $delete_output = $this->ReceivePart_Model->delete_receivepart_item($receive_data);
+                        $delete_output = $this->CountStock_Model->delete_countstock_item($receive_data);
 
                         $receive_item = json_decode($this->input->post('data2'), true); 
                         
@@ -289,22 +289,22 @@ class ReceivePart extends REST_Controller
                                 
                             ];
 
-                            $receive_output_item = $this->ReceivePart_Model->insert_receivepart_item($receive_data_item);
+                            $receive_output_item = $this->CountStock_Model->insert_countstock_item($receive_data_item);
                         }
-                            // Update ReceivePart Success
+                            // Update CountStock Success
                         $message = [
                             'status' => true,
-                            'message' => 'Update Receive Part Successful',
+                            'message' => 'Update Count Stock Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Update ReceivePart Error
+                        // Update CountStock Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Receive Part Fail : [Update Data Fail]',
+                            'message' => 'Update Count Stock Fail : [Update Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -336,12 +336,12 @@ class ReceivePart extends REST_Controller
     }
 
     /**
-     * Delete ReceivePart API
+     * Delete CountStock API
      * ---------------------------------
-     * @param: ReceivePart_Index
+     * @param: CountStock_Index
      * ---------------------------------
      * @method : POST
-     * @link : receivepart/delete
+     * @link : countstock/delete
      */
     public function delete_post()
     {
@@ -354,7 +354,7 @@ class ReceivePart extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // ReceivePart Token Validation
+            // CountStock Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
@@ -368,13 +368,13 @@ class ReceivePart extends REST_Controller
 
                     $receive_data['index'] = $this->input->post('Rec_ID');
 
-                    // Delete ReceivePart Function
-                    $receive_output = $this->ReceivePart_Model->delete_receivepart($receive_data);
-                    $receive_output_item = $this->ReceivePart_Model->delete_receivepart_item($receive_data);
+                    // Delete CountStock Function
+                    $receive_output = $this->CountStock_Model->delete_countstockt($receive_data);
+                    $receive_output_item = $this->CountStock_Model->delete_countstock_item($receive_data);
 
                     if (isset($receive_output) && $receive_output) {
 
-                        // Delete ReceivePart Success
+                        // Delete CountStock Success
                         $message = [
                             'status' => true,
                             'message' => $receive_output,
@@ -384,10 +384,10 @@ class ReceivePart extends REST_Controller
 
                     } else {
 
-                        // Delete ReceivePart Error
+                        // Delete CountStock Error
                         $message = [
                             'status' => false,
-                            'message' => 'Delete Receive Part Fail : [Delete Data Fail]',
+                            'message' => 'Delete Count Stock Fail : [Delete Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -419,12 +419,12 @@ class ReceivePart extends REST_Controller
     }
 
         /**
-     * Show ReceivePart item All API
+     * Show CountStock item All API
      * ---------------------------------
      * @method : GET
-     * @link : receivepart/receivepart_item
+     * @link : countstock/countstock_item
      */
-    public function receivepartitem_get()
+    public function countstockitem_get()
     {
 
         header("Access-Control-Allow-Origin: *");
@@ -432,22 +432,22 @@ class ReceivePart extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // ReceivePartID Token Validation
+        // CountStockID Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load ReceivePartID Function
-            $Rc_ID = $this->input->get('ReceivePart_ID');
+            // Load CountStockID Function
+            $Rc_ID = $this->input->get('CountStock_ID');
 
-            $output = $this->ReceivePart_Model->select_receivepartitem($Rc_ID);
+            $output = $this->CountStock_Model->select_countstockitem($Rc_ID);
 
             if (isset($output) && $output) {
 
-                // Show ReceivePartID All Success
+                // Show CountStockID All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show ReceivePartItem all successful',
+                    'message' => 'Show Count Stock Item all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);

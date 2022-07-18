@@ -1,20 +1,21 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class JobPlan_Model extends MY_Model
+class CountStock_Model extends MY_Model
 {
 
     /**
-     * JobPlan
+     * CountStock
      * ---------------------------------
      * @param : null
      */
-    public function select_jobplan()
+    public function select_countstock()
     {
 
         $this->set_db('default');
 
         $sql = "
-        select * from ms_Plan order by Plan_id DESC
+        select * from Tb_StockCount
+
         ";
 
         $query = $this->db->query($sql);
@@ -25,25 +26,49 @@ class JobPlan_Model extends MY_Model
 
     }
 
+
     /**
-     * Insert JobPlan
+     * countstock no
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_countstock_no()
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+        select dbo.[fnGetRcDocNo] ('1') as ReceiveNo
+        ";
+
+        $query = $this->db->query($sql);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    }
+
+
+    /**
+     * Insert CountStock
      * ---------------------------------
      * @param : FormData
      */
-    public function insert_jobplan($param = [])
+    public function insert_countstock($param = [])
     {
         $this->set_db('default');
 
-        return ($this->db->insert('ms_plan', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_Receive', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
     /**
-     * Insert JobPlan Item
+     * Insert CountStock Item
      * ---------------------------------
      * @param : FormData
      */
-    public function insert_jobplan_item($param = [])
+    public function insert_countstock_item($param = [])
     {
         $this->set_db('default');
 
@@ -52,11 +77,11 @@ class JobPlan_Model extends MY_Model
     }
 
      /**
-     * Update JobPlan
+     * Update CountStock
      * ---------------------------------
      * @param : FormData
      */
-    public function update_jobplan($param = [])
+    public function update_countstock($param = [])
     {
         $this->set_db('default');
 
@@ -65,11 +90,11 @@ class JobPlan_Model extends MY_Model
     }
 
      /**
-     * Delete JobPlan
+     * Delete CountStock
      * ---------------------------------
-     * @param : JobPlan_Index
+     * @param : CountStock_Index
      */
-    public function delete_jobplan($param = [])
+    public function delete_countstock($param = [])
     {
         $this->set_db('default');
 
@@ -77,11 +102,11 @@ class JobPlan_Model extends MY_Model
 
     }
          /**
-     * Delete JobPlan Item
+     * Delete CountStock Item
      * ---------------------------------
-     * @param : JobPlan_ID
+     * @param : CountStock_ID
      */
-    public function delete_jobplan_item($param = [])
+    public function delete_countstock_item($param = [])
     {
         $this->set_db('default');
 
@@ -92,17 +117,17 @@ class JobPlan_Model extends MY_Model
 
 
     /**
-     * JobPlanItem
+     * CountStockItem
      * ---------------------------------
      * @param : null
      */
-    public function select_jobplanitem($param)
+    public function select_countstocktitem($param)
     {
 
         $this->set_db('default');
 
         $sql = "
-            select Tb_ReceiveItem.RecItem_ID as key_index,Tb_ReceiveItem.Item_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY
+            select Tb_ReceiveItem.RecItem_ID as [key],Tb_ReceiveItem.Item_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY
             from Tb_ReceiveItem
             inner join ms_Item on Tb_ReceiveItem.Item_ID = ms_Item.ITEM_ID
             where Rec_ID = '$param'
