@@ -73,12 +73,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+
 $db['auth'] = array(
 	'dsn'	=> '',
-	'hostname' => '119.59.105.14',
-	'username' => 'sa',
-	'password' => 'Dev@2022',
-	'database' => 'PK_MiniWH',
+	'hostname' => '172.30.22.161',
+	'username' => 'pk_dev',
+	'password' => 'pk@2022',
+	'database' => 'Repack_DB',
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => TRUE,
@@ -97,10 +98,10 @@ $db['auth'] = array(
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '119.59.105.14',
-	'username' => 'sa',
-	'password' => 'Dev@2022',
-	'database' => 'PK_RepackDB',
+	'hostname' => '172.30.22.161',
+	'username' => 'pk_dev',
+	'password' => 'pk@2022',
+	'database' => 'Repack_DB',
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => TRUE,
