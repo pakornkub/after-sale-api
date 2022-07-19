@@ -14,7 +14,7 @@ class CountStock_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select * from Tb_StockCount
+        select * from view_StockCount order by CountStock_ID DESC
 
         ";
 
@@ -59,7 +59,7 @@ class CountStock_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('Tb_Receive', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_StockCount', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
@@ -72,7 +72,7 @@ class CountStock_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('Tb_ReceiveItem', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_StockCount_Balance', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
@@ -132,6 +132,33 @@ class CountStock_Model extends MY_Model
             inner join ms_Item on Tb_ReceiveItem.Item_ID = ms_Item.ITEM_ID
             where Rec_ID = '$param'
             order by RecItem_ID
+
+            
+        ";
+
+        $query = $this->db->query($sql,$param);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+
+
+    }
+
+    /**
+     * CountStockSnap
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_countstocksnap($param)
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+        select Item_ID as [key],Location_ID,Location,Product_ID,Product_DESCRIPTION,ITEM_ID,ITEM_CODE,ITEM_DESCRIPTION,QTY
+        from View_SnapStockbalance $param
 
             
         ";

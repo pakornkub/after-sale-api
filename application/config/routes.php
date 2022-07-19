@@ -186,6 +186,7 @@ $route['update_countstock'] = 'api/CountStock/update';
 $route['delete_countstock'] = 'api/CountStock/delete';
 $route['countstock_item'] = 'api/CountStock/countstocktitem';
 $route['countstock_no'] = 'api/CountStock/countstockno';
+$route['snap_countstock'] = 'api/CountStock/countstocksnap';
 
 // Product Type  API Routes
 $route['producttype'] = 'api/ProductType/index';
