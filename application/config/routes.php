@@ -120,6 +120,22 @@ $route['update_job_repack'] = 'api/mobile/JobRepack/update';
 $route['exec_job_repack_item'] = 'api/mobile/JobRepack/exec_item';
 $route['exec_job_repack_transaction'] = 'api/mobile/JobRepack/exec_transaction';
 
+// JobRecheck API Routes
+$route['job_recheck'] = 'api/mobile/JobRecheck/index';
+$route['job_recheck_bom'] = 'api/mobile/JobRecheck/bom';
+$route['update_job_recheck'] = 'api/mobile/JobRecheck/update';
+$route['exec_job_recheck_item'] = 'api/mobile/JobRecheck/exec_item';
+$route['exec_job_recheck_transaction'] = 'api/mobile/JobRecheck/exec_transaction';
+
+// ShipToWH API Routes
+$route['update_ship_to_wh'] = 'api/mobile/ShipToWH/update';
+
+// WHReceive API Routes
+$route['update_wh_receive'] = 'api/mobile/WHReceive/update';
+
+// Withdraw API Routes
+$route['update_withdraw'] = 'api/mobile/Withdraw/update';
+
 // CheckStock API Routes
 $route['check_stock'] = 'api/mobile/CheckStock/index';
 

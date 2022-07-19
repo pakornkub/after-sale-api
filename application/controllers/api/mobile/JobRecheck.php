@@ -4,26 +4,26 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class JobRepack extends REST_Controller
+class JobRecheck extends REST_Controller
 {
 
-    protected $MenuId = 'JobRepack';
+    protected $MenuId = 'JobRecheck';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load JobRepack_Model
-        $this->load->model('mobile/JobRepack_Model');
+        // Load JobRecheck_Model
+        $this->load->model('mobile/JobRecheck_Model');
 
     }
 
     /**
-     * Show JobRepack All API
+     * Show JobRecheck All API
      * ---------------------------------
      * @method : GET
-     * @link : job_repack/index
+     * @link : job_recheck/index
      */
     public function index_get()
     {
@@ -33,30 +33,30 @@ class JobRepack extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // JobRepack Token Validation
+        // JobRecheck Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load JobRepack Function
-            $output = $this->JobRepack_Model->select_job_repack();
+            // Load JobRecheck Function
+            $output = $this->JobRecheck_Model->select_job_recheck();
 
             if (isset($output) && $output) {
 
-                // Show JobRepack All Success
+                // Show JobRecheck All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show job repack all successful',
+                    'message' => 'Show job recheck all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show JobRepack All Error
+                // Show JobRecheck All Error
                 $message = [
                     'status' => false,
-                    'message' => 'Job Repack data was not found in the database',
+                    'message' => 'Job Recheck data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
@@ -76,12 +76,12 @@ class JobRepack extends REST_Controller
     }
 
     /**
-     * Update JobRepack API
+     * Update JobRecheck API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : job_repack/update
+     * @link : job_recheck/update
      */
     public function update_post()
     {
@@ -108,47 +108,47 @@ class JobRepack extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // JobRepack Token Validation
+            // JobRecheck Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $job_repack_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $job_repack_permission = array_filter($job_repack_token['permission'], function ($permission) {
+                $job_recheck_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $job_recheck_permission = array_filter($job_recheck_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Updated']) {
+                if ($job_recheck_permission[array_keys($job_recheck_permission)[0]]['Updated']) {
 
-                    $job_repack_data['where'] = [
+                    $job_recheck_data['where'] = [
                         'JOB_ID' =>  $this->input->post('JOB_ID')
                     ];
 
-                    $job_repack_data['data'] = [
+                    $job_recheck_data['data'] = [
                         'status' => 9,
-                        'Update_By' => $job_repack_token['UserName'],
+                        'Update_By' => $job_recheck_token['UserName'],
                         'Update_Date' => date('Y-m-d H:i:s'),
                     ];
 
-                    // Update JobRepack Function
-                    $job_repack_output = $this->JobRepack_Model->update_job_repack($job_repack_data);
+                    // Update JobRecheck Function
+                    $job_recheck_output = $this->JobRecheck_Model->update_job_recheck($job_recheck_data);
 
-                    if (isset($job_repack_output) && $job_repack_output) {
+                    if (isset($job_recheck_output) && $job_recheck_output) {
 
-                        // Update JobRepack Success
+                        // Update JobRecheck Success
                         $message = [
                             'status' => true,
-                            'message' => 'Update Job Repack Successful',
+                            'message' => 'Update Job Recheck Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Update JobRepack Error
+                        // Update JobRecheck Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Job Repack Fail : [Update Data Fail]',
+                            'message' => 'Update Job Recheck Fail : [Update Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -181,10 +181,10 @@ class JobRepack extends REST_Controller
 
 
      /**
-     * Show JobRepack BOM API
+     * Show JobRecheck BOM API
      * ---------------------------------
      * @method : GET
-     * @link : job_repack/bom
+     * @link : job_recheck/bom
      */
     public function bom_get()
     {
@@ -194,30 +194,30 @@ class JobRepack extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // JobRepack Token Validation
+        // JobRecheck Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load JobRepack Function
-            $output = $this->JobRepack_Model->select_job_repack_bom($this->input->get('JOB_ID'));
+            // Load JobRecheck Function
+            $output = $this->JobRecheck_Model->select_job_recheck_bom($this->input->get('JOB_ID'));
 
             if (isset($output) && $output) {
 
-                // Show JobRepack BOM Success
+                // Show JobRecheck BOM Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show job repack bom successful',
+                    'message' => 'Show job recheck bom successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show JobRepack BOM Error
+                // Show JobRecheck BOM Error
                 $message = [
                     'status' => false,
-                    'message' => 'Job Repack BOM data was not found in the database',
+                    'message' => 'Job Recheck BOM data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
@@ -237,12 +237,12 @@ class JobRepack extends REST_Controller
     }
 
        /**
-     * Exec JobRepack Item API
+     * Exec JobRecheck Item API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : job_repack/exec_item
+     * @link : job_recheck/exec_item
      */
     public function exec_item_post()
     {
@@ -271,47 +271,47 @@ class JobRepack extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // JobRepack Token Validation
+            // JobRecheck Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $job_repack_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $job_repack_permission = array_filter($job_repack_token['permission'], function ($permission) {
+                $job_recheck_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $job_recheck_permission = array_filter($job_recheck_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Created']) {
+                if ($job_recheck_permission[array_keys($job_recheck_permission)[0]]['Created']) {
 
                     $tag_data = [
                         'JOB_ID' => $this->input->post('JOB_ID'),
                         'QR_NO' => $this->input->post('QR_NO'),
                         'Tag_ID' => $this->input->post('Tag_ID'),
-                        'Username' => $job_repack_token['UserName'],
+                        'Username' => $job_recheck_token['UserName'],
                     ];
 
-                    // Exec JobRepack Item Function
-                    $job_repack_output = $this->JobRepack_Model->exec_job_repack_item($tag_data);
+                    // Exec JobRecheck Item Function
+                    $job_recheck_output = $this->JobRecheck_Model->exec_job_recheck_item($tag_data);
 
-                    if (isset($job_repack_output) && $job_repack_output) {
+                    if (isset($job_recheck_output) && $job_recheck_output) {
 
-                        if(boolval($job_repack_output[0]['Result_status']) === true)
+                        if(boolval($job_recheck_output[0]['Result_status']) === true)
                         {
                         
-                            // Exec JobRepack Item Success
+                            // Exec JobRecheck Item Success
                             $message = [
                                 'status' => true,
-                                'message' => $job_repack_output[0]['Result_Desc'],
+                                'message' => $job_recheck_output[0]['Result_Desc'],
                             ];
 
                             $this->response($message, REST_Controller::HTTP_OK);
                         }
                         else
                         {
-                             // Exec JobRepack Item Error Condition
+                             // Exec JobRecheck Item Error Condition
                              $message = [
                                 'status' => false,
-                                'message' => $job_repack_output[0]['Result_Desc'],
+                                'message' => $job_recheck_output[0]['Result_Desc'],
                             ];
 
                             $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -319,7 +319,7 @@ class JobRepack extends REST_Controller
 
                     } else {
 
-                        // Exec JobRepack Item Error
+                        // Exec JobRecheck Item Error
                         $message = [
                             'status' => false,
                             'message' => 'Exec Item Fail : [Exec Data Fail]',
@@ -354,12 +354,12 @@ class JobRepack extends REST_Controller
     }
 
      /**
-     * Exec JobRepack Transaction API
+     * Exec JobRecheck Transaction API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : job_repack/exec_transaction
+     * @link : job_recheck/exec_transaction
      */
     public function exec_transaction_post()
     {
@@ -387,46 +387,46 @@ class JobRepack extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // JobRepack Token Validation
+            // JobRecheck Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $job_repack_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $job_repack_permission = array_filter($job_repack_token['permission'], function ($permission) {
+                $job_recheck_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $job_recheck_permission = array_filter($job_recheck_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Updated']) {
+                if ($job_recheck_permission[array_keys($job_recheck_permission)[0]]['Updated']) {
 
                     $tag_data = [
                         'JOB_ID' => intval($this->input->post('JOB_ID')),
                         'QR_NO_BOX' => $this->input->post('QR_NO_BOX'),
-                        'Username' => $job_repack_token['UserName'],
+                        'Username' => $job_recheck_token['UserName'],
                     ];
 
-                    // Exec JobRepack Transaction Function
-                    $job_repack_output = $this->JobRepack_Model->exec_job_repack_transaction($tag_data);
+                    // Exec JobRecheck Transaction Function
+                    $job_recheck_output = $this->JobRecheck_Model->exec_job_recheck_transaction($tag_data);
 
-                    if (isset($job_repack_output) && $job_repack_output) {
+                    if (isset($job_recheck_output) && $job_recheck_output) {
 
-                        if(boolval($job_repack_output[0]['Result_status']) === true)
+                        if(boolval($job_recheck_output[0]['Result_status']) === true)
                         {
                         
-                            // Exec JobRepack Transaction Success
+                            // Exec JobRecheck Transaction Success
                             $message = [
                                 'status' => true,
-                                'message' => $job_repack_output[0]['Result_Desc'],
+                                'message' => $job_recheck_output[0]['Result_Desc'],
                             ];
 
                             $this->response($message, REST_Controller::HTTP_OK);
                         }
                         else
                         {
-                             // Exec JobRepack Transaction Error Condition
+                             // Exec JobRecheck Transaction Error Condition
                              $message = [
                                 'status' => false,
-                                'message' => $job_repack_output[0]['Result_Desc'],
+                                'message' => $job_recheck_output[0]['Result_Desc'],
                             ];
 
                             $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -434,7 +434,7 @@ class JobRepack extends REST_Controller
 
                     } else {
 
-                        // Exec JobRepack Transaction Error
+                        // Exec JobRecheck Transaction Error
                         $message = [
                             'status' => false,
                             'message' => 'Exec Transaction Fail : [Exec Data Fail]',

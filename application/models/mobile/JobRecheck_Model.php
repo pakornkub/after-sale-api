@@ -1,14 +1,14 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class JobRepack_Model extends MY_Model
+class JobRecheck_Model extends MY_Model
 {
 
     /**
-     * JobRepack
+     * JobRecheck
      * ---------------------------------
      * @param : null
      */
-    public function select_job_repack()
+    public function select_job_recheck()
     {
 
         $this->set_db('default');
@@ -18,7 +18,7 @@ class JobRepack_Model extends MY_Model
                     , (
                         select count(*) from Tb_Transaction where ref_num = j.JOB_No and Transaction_Type = 'Receive'
                     ) as BOX_QTY
-            from Tb_Job j where j.JobType_ID in (1,3)
+            from Tb_Job j where j.JobType_ID in (2)
 
         ";
 
@@ -31,11 +31,11 @@ class JobRepack_Model extends MY_Model
     }
 
     /**
-     * Update JobRepack
+     * Update JobRecheck
      * ---------------------------------
      * @param : FormData
      */
-    public function update_job_repack($param = [])
+    public function update_job_recheck($param = [])
     {
         $this->set_db('default');
 
@@ -44,11 +44,11 @@ class JobRepack_Model extends MY_Model
     }
 
     /**
-     * JobRepack BOM
+     * JobRecheck BOM
      * ---------------------------------
      * @param : JOB_ID
      */
-    public function select_job_repack_bom($JOB_ID)
+    public function select_job_recheck_bom($JOB_ID)
     {
 
         $this->set_db('default');
@@ -57,8 +57,7 @@ class JobRepack_Model extends MY_Model
 
             select
                     ROW_NUMBER() Over (Order by j.JOB_ID) as 'No'
-                    ,i.ITEM_DESCRIPTION as 'SP'
-                    ,i.ITEM_ID as 'Item_ID'
+                    ,i.ITEM_DESCRIPTION as 'FG'
                     , ji.Qty as 'BOM'
                     ,(
 
@@ -83,11 +82,11 @@ class JobRepack_Model extends MY_Model
     }
 
     /**
-     * Exec JobRepack Item
+     * Exec JobRecheck Item
      * ---------------------------------
      * @param : QR_NO, JOB_ID, Tag_ID, Username
      */
-    public function exec_job_repack_item($param = [])
+    public function exec_job_recheck_item($param = [])
     {
 
         $this->set_db('default');
@@ -107,11 +106,11 @@ class JobRepack_Model extends MY_Model
     }
 
     /**
-     * Exec JobRepack Transaction
+     * Exec JobRecheck Transaction
      * ---------------------------------
      * @param : JOB_ID, QR_NO_BOX, Username
      */
-    public function exec_job_repack_transaction($param = [])
+    public function exec_job_recheck_transaction($param = [])
     {
 
         $this->set_db('default');
