@@ -457,4 +457,44 @@ class CountStock extends REST_Controller
 
     }
 
+        /**
+     * Show CountStock item All API
+     * ---------------------------------
+     * @method : GET
+     * @link : countstock/countstockno
+     */
+    public function countstockno_get()
+    {
+
+        header("Access-Control-Allow-Origin: *");
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // CountStockID Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            // Load CountStockID Function
+
+            $output = $this->CountStock_Model->select_countstock_no();
+
+            if (isset($output) && $output) {
+
+                // Show CountStockID All Success
+                $message = [
+                    'status' => true,
+                    'data' => $output,
+                    'message' => 'Show Count Stock No successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+        }
+
+    }
 }
+
+    
+

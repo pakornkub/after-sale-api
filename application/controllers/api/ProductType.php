@@ -4,26 +4,26 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class GradeSP extends REST_Controller
+class ProductType extends REST_Controller
 {
 
-    protected $GradeSPId = 'GradeSP';
+    protected $ProductTypeId = 'ProductType';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load GradeSP
-        $this->load->model('GradeSP_Model');
+        // Load ProductType
+        $this->load->model('ProductType_Model');
 
     }
 
-    /**
-     * Show GradeSP All API
+    /**f
+     * Show ProductType All API
      * ---------------------------------
      * @method : GET
-     * @link : GradeSP/index
+     * @link : producttype/index
      */
     public function index_get()
     {
@@ -33,30 +33,30 @@ class GradeSP extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // GradeSP Token Validation
+        // ProductType Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load GradeSP Function
-            $output = $this->GradeSP_Model->select_grade_sp();
+            // Load ProductType Function
+            $output = $this->ProductType_Model->select_producttype();
 
             if (isset($output) && $output) {
 
-                // Show GradeSP All Success
+                // Show ProductType All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show GradeSP all successful',
+                    'message' => 'Show Product Type all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show GradeSP All Error
+                // Show ProductType All Error
                 $message = [
                     'status' => false,
-                    'message' => 'GradeSP data was not found in the database',
+                    'message' => 'Product Type data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_NOT_FOUND);

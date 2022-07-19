@@ -179,9 +179,16 @@ $route['update_jobplan'] = 'api/jobplan/update';
 $route['delete_jobplan'] = 'api/jobplan/delete';
 
 // Count Stock API Routes
-$route['countstock'] = 'api/countstock/index';
-$route['countstock/:(any)'] = 'api/countstock/show/$1';
-$route['create_countstock'] = 'api/countstock/create';
-$route['update_countstock'] = 'api/countstock/update';
-$route['delete_countstock'] = 'api/countstock/delete';
-$route['countstock_item'] = 'api/countstock/countstocktitem';
+$route['countstock'] = 'api/CountStock/index';
+$route['countstock/:(any)'] = 'api/CountStock/show/$1';
+$route['create_countstock'] = 'api/CountStock/create';
+$route['update_countstock'] = 'api/CountStock/update';
+$route['delete_countstock'] = 'api/CountStock/delete';
+$route['countstock_item'] = 'api/CountStock/countstocktitem';
+$route['countstock_no'] = 'api/CountStock/countstockno';
+
+// Product Type  API Routes
+$route['producttype'] = 'api/ProductType/index';
+
+// Location  API Routes
+$route['location'] = 'api/Location/index';

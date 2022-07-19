@@ -38,7 +38,7 @@ class CountStock_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select dbo.[fnGetRcDocNo] ('1') as ReceiveNo
+        select [dbo].[fnGetCountStockDocNo] () as CountStockNo
         ";
 
         $query = $this->db->query($sql);

@@ -46,7 +46,7 @@ class GradeFG extends REST_Controller
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show menu type all successful',
+                    'message' => 'Show GradeFG all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);

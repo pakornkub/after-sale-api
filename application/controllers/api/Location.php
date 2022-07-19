@@ -4,26 +4,26 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class GradeSP extends REST_Controller
+class Location extends REST_Controller
 {
 
-    protected $GradeSPId = 'GradeSP';
+    protected $LocationId = 'Location';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load GradeSP
-        $this->load->model('GradeSP_Model');
+        // Load Location
+        $this->load->model('Location_Model');
 
     }
 
-    /**
-     * Show GradeSP All API
+    /**f
+     * Show Location All API
      * ---------------------------------
      * @method : GET
-     * @link : GradeSP/index
+     * @link : location/index
      */
     public function index_get()
     {
@@ -33,30 +33,30 @@ class GradeSP extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // GradeSP Token Validation
+        // Location Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load GradeSP Function
-            $output = $this->GradeSP_Model->select_grade_sp();
+            // Load Location Function
+            $output = $this->Location_Model->select_location();
 
             if (isset($output) && $output) {
 
-                // Show GradeSP All Success
+                // Show Location All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show GradeSP all successful',
+                    'message' => 'Show Location all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show GradeSP All Error
+                // Show Location All Error
                 $message = [
                     'status' => false,
-                    'message' => 'GradeSP data was not found in the database',
+                    'message' => 'Location data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_NOT_FOUND);
