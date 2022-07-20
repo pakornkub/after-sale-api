@@ -105,7 +105,8 @@ class JobRepack extends REST_Controller
                 });
 
 
-                $job_header = json_decode($this->input->post('data1'), true); 
+                $job_header = json_decode($this->input->post('data1'), true);
+                $job_header1 = json_decode($this->input->post('data3'), true); 
 
                 if ($job_permission[array_keys($job_permission)[0]]['Created']) {
 
@@ -118,6 +119,7 @@ class JobRepack extends REST_Controller
                         'FG_LOT_NO' => $job_header['Lot_No'],
                         'JOB_STATUS' => 1,
                         'JOB_QTY' => $job_header['QTY_Use'],
+                        'JOB_Total_QTY' => $job_header1['totalUseQty'],
                         'Create_Date' => date('Y-m-d H:i:s'),
                         'Create_By' => $job_token['UserName'],
                         'Update_Date' => null,
@@ -234,7 +236,8 @@ class JobRepack extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                    $job_header = json_decode($this->input->post('data1'), true); 
+                    $job_header = json_decode($this->input->post('data1'), true);
+                    $job_header1 = json_decode($this->input->post('data3'), true);  
 
                     if ($job_permission[array_keys($job_permission)[0]]['Created']) {
 
@@ -247,8 +250,8 @@ class JobRepack extends REST_Controller
                             'JobType_ID' => $job_header['Job_Type'],
                             'FG_ITEM_ID' => $job_header['Grade_ID_FG'],
                             'FG_LOT_NO' => $job_header['Lot_No'],
-                            'JOB_STATUS' => 1,
                             'JOB_QTY' => $job_header['QTY_Use'],
+                            'JOB_Total_QTY' => $job_header1['totalUseQty'],
                             'Update_Date' => date('Y-m-d H:i:s'),
                             'Update_By' => $job_token['UserName'],
                             

@@ -168,4 +168,30 @@ class JobRepack_Model extends MY_Model
 
     }
 
+         /**
+     * withdrawitem
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_withdrawitem($param = [])
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+            select WI.*,ms_Item.ITEM_CODE,ms_Item.ITEM_DESCRIPTION,ms_Status.Status_desc
+            from Tb_WithdrawItem WI
+            INNER JOIN Tb_Withdraw W on WI.Withdraw_ID = W.Withdraw_ID
+            INNER JOIN ms_Item on WI.ITEM_ID = ms_Item.ITEM_ID
+            INNER JOIN ms_Status on WI.Status = ms_Status.Status_ID
+            where W.Withdraw_No = ?
+        ";
+
+        $query = $this->db->query($sql,$param['JOB_ID']);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    }
 }

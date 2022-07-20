@@ -184,12 +184,19 @@ $route['countstock/:(any)'] = 'api/CountStock/show/$1';
 $route['create_countstock'] = 'api/CountStock/create';
 $route['update_countstock'] = 'api/CountStock/update';
 $route['delete_countstock'] = 'api/CountStock/delete';
-$route['countstock_item'] = 'api/CountStock/countstocktitem';
+$route['countstock_item'] = 'api/CountStock/countstockitem';
 $route['countstock_no'] = 'api/CountStock/countstockno';
 $route['snap_countstock'] = 'api/CountStock/countstocksnap';
+$route['countstock_status'] = 'api/CountStock/countstockstatus';
 
 // Product Type  API Routes
 $route['producttype'] = 'api/ProductType/index';
 
 // Location  API Routes
 $route['location'] = 'api/Location/index';
+
+
+// Stock Monitor API Routes
+$route['stockmonitor'] = 'api/StockMonitor/index';
+$route['stockmonitorgroup'] = 'api/StockMonitor/stockgroup';
+$route['stockmonitordetail'] = 'api/StockMonitor/stockdetail';

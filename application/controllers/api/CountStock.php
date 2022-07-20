@@ -122,7 +122,7 @@ class CountStock extends REST_Controller
                             'Description' => (isset($countstock_header['CountStock_Description']) && $countstock_header['CountStock_Description']) ? $countstock_header['CountStock_Description'] : null,
                             'CountStock_DocNo' => $countstock_no,
                             'Status' => '1',
-                            'Product_ID' => (isset($Product_Type['Product_Type']) && $Product_Type['Product_Type']) ? $Product_Type['Product_Type'] : null,
+                            'Product_ID' => (isset($countstock_header['Product_Type']) && $countstock_header['Product_Type']) ? $countstock_header['Product_Type'] : null,
                             'Location_ID' => (isset($countstock_header['Location']) && $countstock_header['Location']) ? $countstock_header['Location'] : null,
                             'ITEM_ID' => (isset($countstock_header['Grade_ID']) && $countstock_header['Grade_ID']) ? $countstock_header['Grade_ID'] : null,
                             'Create_Date' => date('Y-m-d H:i:s'),
@@ -148,7 +148,7 @@ class CountStock extends REST_Controller
                                     'CountStock_ID' => $countstock_output,
                                     'ITEM_ID' => $value['ITEM_ID'],
                                     'Location_ID' => $value['Location_ID'],
-                                    'Total_QTY' => $value['QTY'],
+                                    'Total_QTY' => $value['Count_Balance'],
                                     'Create_Date' => date('Y-m-d H:i:s'),
                                     'Create_By' => $countstock_token['UserName'],
                                     
@@ -240,55 +240,54 @@ class CountStock extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $countstock_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $countstock_permission = array_filter($countstock_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                    $receive_header = json_decode($this->input->post('data1'), true); 
+                $countstock_header = json_decode($this->input->post('data1'), true); 
+                $countstock_header1 = json_decode($this->input->post('data3'), true); 
 
-                    if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
+                    if ($countstock_permission[array_keys($countstock_permission)[0]]['Created']) {
 
-                        $receive_data['index'] = $receive_header['CountStock_Index'];
+                        $countstock_data['index'] = $countstock_header['CountStock_Index'];
 
-                        $receive_data['data'] = [
-                            'Rec_type' => '1',
-                            'Rec_NO' => $receive_header['Receive_No'],
-                            'Rec_Datetime' => $receive_header['Receive_Date'],
-                            'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
-                            'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
-                            'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
-                            'Update_Date' => date('Y-m-d H:i:s'),
-                            'Update_By' => $receive_token['UserName'],
+                        $countstock_data['data'] = [
+                            'CountStock_Date' => $countstock_header['CountStock_Date'],
+                            'Description' => (isset($countstock_header['CountStock_Description']) && $countstock_header['CountStock_Description']) ? $countstock_header['CountStock_Description'] : null,
+                            'Product_ID' => (isset($countstock_header1['Product_Type']) && $countstock_header1['Product_Type']) ? $countstock_header1['Product_Type'] : null,
+                            'Location_ID' => (isset($countstock_header1['Location']) && $countstock_header1['Location']) ? $countstock_header1['Location'] : null,
+                            'ITEM_ID' => (isset($countstock_header1['Grade_ID']) && $countstock_header1['Grade_ID']) ? $countstock_header1['Grade_ID'] : null,
                             
+                            'Update_Date' => date('Y-m-d H:i:s'),
+                            'Update_By' => $countstock_token['UserName'],
                         ];
 
-                    
-
                    // Update CountStock Function
-                    $receive_output = $this->CountStock_Model->update_countstock($receive_data);
+                    $countstock_output = $this->CountStock_Model->update_countstock($countstock_data);
 
-                    if (isset($receive_output) && $receive_output) {
+                    if (isset($countstock_output) && $countstock_output) {
 
 
-                        $delete_output = $this->CountStock_Model->delete_countstock_item($receive_data);
+                        $delete_output = $this->CountStock_Model->delete_countstock_item($countstock_data);
 
-                        $receive_item = json_decode($this->input->post('data2'), true); 
+                        $countstock_item = json_decode($this->input->post('data2'), true); 
                         
-                        foreach ($receive_item as $value) {
+                        foreach ($countstock_item as $value) {
                             
-                            $receive_data_item['data'] = [
-                                'Rec_ID' => $receive_header['CountStock_Index'],
-                                'Qty' => $value['QTY'],
-                                'Item_ID' => $value['Grade_ID'],
-                                'Lot_No' => $value['Lot_No'],
-                                'ItemStatus_ID' => $value['QTY'],
+                            
+
+                            $countstock_data_item['data'] = [
+                                'CountStock_ID' => $countstock_header['CountStock_Index'],
+                                'ITEM_ID' => $value['ITEM_ID'],
+                                'Location_ID' => $value['Location_ID'],
+                                'Total_QTY' => $value['Count_Balance'],
                                 'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $receive_token['UserName'],
+                                'Create_By' => $countstock_token['UserName'],
                                 
                             ];
 
-                            $receive_output_item = $this->CountStock_Model->insert_countstock_item($receive_data_item);
+                            $countstock_output_item = $this->CountStock_Model->insert_countstock_item($countstock_data_item);
                         }
                             // Update CountStock Success
                         $message = [
@@ -358,25 +357,25 @@ class CountStock extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $countstock_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $countstock_permission = array_filter($countstock_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($receive_permission[array_keys($receive_permission)[0]]['Deleted']) {
+                if ($countstock_permission[array_keys($countstock_permission)[0]]['Deleted']) {
 
-                    $receive_data['index'] = $this->input->post('Rec_ID');
+                    $countstock_data['index'] = $this->input->post('CountStock_ID');
 
                     // Delete CountStock Function
-                    $receive_output = $this->CountStock_Model->delete_countstockt($receive_data);
-                    $receive_output_item = $this->CountStock_Model->delete_countstock_item($receive_data);
+                    $countstock_output = $this->CountStock_Model->delete_countstock($countstock_data);
+                    $countstock_output_item = $this->CountStock_Model->delete_countstock_item($countstock_data);
 
-                    if (isset($receive_output) && $receive_output) {
+                    if (isset($countstock_output) && $countstock_output) {
 
                         // Delete CountStock Success
                         $message = [
                             'status' => true,
-                            'message' => $receive_output,
+                            'message' => $countstock_output,
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -417,44 +416,61 @@ class CountStock extends REST_Controller
 
     }
 
-        /**
-     * Show CountStock item All API
-     * ---------------------------------
-     * @method : GET
-     * @link : countstock/countstock_item
-     */
-    public function countstockitem_get()
-    {
+  
 
+    /**
+     * Show CountStock All API
+     * ---------------------------------
+     * @method : POST
+     * @link : countstock/countstockitem
+     */
+    public function countstockitem_post()
+    {
         header("Access-Control-Allow-Origin: *");
+
+        $_POST = $this->security->xss_clean($_POST);
 
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // CountStockID Token Validation
+        // Tag Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
-        if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load CountStockID Function
-            $Rc_ID = $this->input->get('CountStock_ID');
+        //if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            // Load Tag Function
+            
 
-            $output = $this->CountStock_Model->select_countstockitem($Rc_ID);
+            $CSI_data = [
+                'CountStock_ID' => $this->input->post('CountStock_ID'),
+               
+            ];
 
-            if (isset($output) && $output) {
+            $CSI_output = $this->CountStock_Model->select_countstockitem($CSI_data);
 
-                // Show CountStockID All Success
+            if (isset($CSI_output) && $CSI_output) {
+
+                // Show Tag All Success
                 $message = [
                     'status' => true,
-                    'data' => $output,
-                    'message' => 'Show Count Stock Item all successful',
+                    'data' => $CSI_output,
+                    'message' => 'Show Count Stock Item successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             }
-        }
 
+        // } else {
+        //     // Validate Error
+        //     $message = [
+        //         'status' => false,
+        //         'message' => $is_valid_token['message'],
+        //     ];
+
+        //     $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+        // }
     }
+
 
         /**
      * Show CountStock item All API
@@ -529,6 +545,46 @@ class CountStock extends REST_Controller
                     'status' => true,
                     'data' => $output,
                     'message' => 'Show Snap successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+    }
+
+    /**
+     * Show Snap API
+     * ---------------------------------
+     * @method : POST
+     * @link : countstock/countstockstatus
+     */
+    public function countstockstatus_post()
+    {
+        header("Access-Control-Allow-Origin: *");
+
+        $_POST = $this->security->xss_clean($_POST);
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        $is_valid_token = $this->authorization_token->validateToken();
+        
+            $CountStock_ID = $this->input->post('CountStock_ID');
+
+            // $tag_data = [
+            //     'Rec_ID' => $this->input->post('Rec_ID'),
+               
+            // ];
+
+            $output = $this->CountStock_Model->select_countstockstatus($CountStock_ID);
+
+            if (isset($output) && $output) {
+
+                // Show Tag All Success
+                $message = [
+                    'status' => true,
+                    'data' => $output,
+                    'message' => 'Show Status successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);

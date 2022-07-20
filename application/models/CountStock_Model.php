@@ -85,7 +85,7 @@ class CountStock_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->update('Tb_Receive', $param['data'], ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('Tb_StockCount', $param['data'], ['CountStock_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -98,7 +98,7 @@ class CountStock_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_Receive', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_StockCount', ['CountStock_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
          /**
@@ -110,7 +110,7 @@ class CountStock_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_ReceiveItem', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_StockCount_Balance', ['CountStock_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -120,23 +120,21 @@ class CountStock_Model extends MY_Model
      * CountStockItem
      * ---------------------------------
      * @param : null
-     */
-    public function select_countstocktitem($param)
+     */             
+    public function select_countstockitem($param = [])
     {
 
         $this->set_db('default');
 
         $sql = "
-            select Tb_ReceiveItem.RecItem_ID as [key],Tb_ReceiveItem.Item_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY
-            from Tb_ReceiveItem
-            inner join ms_Item on Tb_ReceiveItem.Item_ID = ms_Item.ITEM_ID
-            where Rec_ID = '$param'
-            order by RecItem_ID
+        select CBL_ID as [key],Location_ID,Location,ITEM_ID,ITEM_CODE,ITEM_DESCRIPTION,Product_ID,Product_DESCRIPTION,Count_Balance,ISNULL(Count_Actual,0) as Count_Actual  
+		from View_CheckStockBalance
+		where CountStock_ID = ?
 
             
         ";
 
-        $query = $this->db->query($sql,$param);
+        $query = $this->db->query($sql,$param['CountStock_ID']);
 
         $result = ($query->num_rows() > 0) ? $query->result_array() : false;
 
@@ -157,10 +155,35 @@ class CountStock_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select Item_ID as [key],Location_ID,Location,Product_ID,Product_DESCRIPTION,ITEM_ID,ITEM_CODE,ITEM_DESCRIPTION,QTY
+        select Item_ID as [key],Location_ID,Location,Product_ID,Product_DESCRIPTION,ITEM_ID,ITEM_CODE,ITEM_DESCRIPTION,Count_Balance,0 as Count_Actual
         from View_SnapStockbalance $param
 
             
+        ";
+
+        $query = $this->db->query($sql,$param);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+
+
+    }
+
+        /**
+     * CountStockStatus
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_countstockstatus($param)
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+            select * from Tb_StockCount where CountStock_ID = $param
+        
         ";
 
         $query = $this->db->query($sql,$param);
