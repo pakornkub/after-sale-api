@@ -73,7 +73,7 @@ class JobPlan_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_Receive', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('ms_plan', ['Plan_id'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
          /**

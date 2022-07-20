@@ -306,11 +306,10 @@ class JobPlan extends REST_Controller
 
                 if ($jobplan_permission[array_keys($jobplan_permission)[0]]['Deleted']) {
 
-                    $jobplan_data['index'] = $this->input->post('Rec_ID');
+                    $jobplan_data['index'] = $this->input->post('JobPlan_ID');
 
                     // Delete JobPlan Function
-                    $jobplan_output = $this->JobPlan_Model->delete_jobplan($jobplane_data);
-                    $jobplan_output_item = $this->JobPlan_Model->delete_jobplan_item($jobplan_data);
+                    $jobplan_output = $this->JobPlan_Model->delete_jobplan($jobplan_data);
 
                     if (isset($jobplan_output) && $jobplan_output) {
 
