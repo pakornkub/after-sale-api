@@ -247,10 +247,15 @@ class CountStock extends REST_Controller
 
                 $countstock_header = json_decode($this->input->post('data1'), true); 
                 $countstock_header1 = json_decode($this->input->post('data3'), true); 
+                
 
                     if ($countstock_permission[array_keys($countstock_permission)[0]]['Created']) {
 
-                        $countstock_data['index'] = $countstock_header['CountStock_Index'];
+                        $Status_output = json_decode(json_encode($this->CountStock_Model->select_countstockstatus($countstock_header['CountStock_Index'])), true);
+                        $countstock_Status = $Status_output[array_keys($Status_output)[0]]['Status'];
+
+                        if($countstock_Status < 3){
+                            $countstock_data['index'] = $countstock_header['CountStock_Index'];
 
                         $countstock_data['data'] = [
                             'CountStock_Date' => $countstock_header['CountStock_Date'],
@@ -263,42 +268,52 @@ class CountStock extends REST_Controller
                             'Update_By' => $countstock_token['UserName'],
                         ];
 
-                   // Update CountStock Function
-                    $countstock_output = $this->CountStock_Model->update_countstock($countstock_data);
+                    // Update CountStock Function
+                        $countstock_output = $this->CountStock_Model->update_countstock($countstock_data);
 
-                    if (isset($countstock_output) && $countstock_output) {
+                        if (isset($countstock_output) && $countstock_output) {
 
 
-                        $delete_output = $this->CountStock_Model->delete_countstock_item($countstock_data);
+                            $delete_output = $this->CountStock_Model->delete_countstock_item($countstock_data);
 
-                        $countstock_item = json_decode($this->input->post('data2'), true); 
-                        
-                        foreach ($countstock_item as $value) {
+                            $countstock_item = json_decode($this->input->post('data2'), true); 
                             
-                            
-
-                            $countstock_data_item['data'] = [
-                                'CountStock_ID' => $countstock_header['CountStock_Index'],
-                                'ITEM_ID' => $value['ITEM_ID'],
-                                'Location_ID' => $value['Location_ID'],
-                                'Total_QTY' => $value['Count_Balance'],
-                                'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $countstock_token['UserName'],
+                            foreach ($countstock_item as $value) {
                                 
+                                
+
+                                $countstock_data_item['data'] = [
+                                    'CountStock_ID' => $countstock_header['CountStock_Index'],
+                                    'ITEM_ID' => $value['ITEM_ID'],
+                                    'Location_ID' => $value['Location_ID'],
+                                    'Total_QTY' => $value['Count_Balance'],
+                                    'Create_Date' => date('Y-m-d H:i:s'),
+                                    'Create_By' => $countstock_token['UserName'],
+                                    
+                                ];
+
+                                $countstock_output_item = $this->CountStock_Model->insert_countstock_item($countstock_data_item);
+                            }
+                                // Update CountStock Success
+                            $message = [
+                                'status' => true,
+                                'message' => 'Update Count Stock Successful',
                             ];
 
-                            $countstock_output_item = $this->CountStock_Model->insert_countstock_item($countstock_data_item);
+                            $this->response($message, REST_Controller::HTTP_OK);
+
+                        } else {
+
+                            // Update CountStock Error
+                            $message = [
+                                'status' => false,
+                                'message' => 'Can’t save data due to stock counting',
+                            ];
+
+                            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
                         }
-                            // Update CountStock Success
-                        $message = [
-                            'status' => true,
-                            'message' => 'Update Count Stock Successful',
-                        ];
-
-                        $this->response($message, REST_Controller::HTTP_OK);
-
-                    } else {
-
+                    }else{
                         // Update CountStock Error
                         $message = [
                             'status' => false,
@@ -306,8 +321,9 @@ class CountStock extends REST_Controller
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
                     }
+
+                        
 
                 } else {
                     // Permission Error
