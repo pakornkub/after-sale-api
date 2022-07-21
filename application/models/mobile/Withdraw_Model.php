@@ -20,7 +20,7 @@ class Withdraw_Model extends MY_Model
             $data = [
                 'UniqueKey' => $UniqueKey,
                 'QR_NO' => $value['QR_NO'],
-                'ITEM_ID' => $value['ITEM_ID'],
+                'ITEM_ID' => $value['Item_ID'],
                 'Qty' => $value['Qty'],
                 'Create_Date' => $param['user']['Create_Date'],
                 'Create_By' => $param['user']['Create_By'],
@@ -33,11 +33,11 @@ class Withdraw_Model extends MY_Model
 
         $sql = "
 
-            exec [dbo].[SP_WithdrawTrans] ?,?
+            exec [dbo].[SP_WithdrawTrans] ?,?,?
 
         ";
 
-        $this->db->query($sql, [$UniqueKey,$param['user']['Create_By']]);
+        $this->db->query($sql, [$UniqueKey,$param['user']['Create_By'],'Withdraw']);
 
         return $this->check_begintrans();/*$this->db->error()*/;
 

@@ -121,11 +121,11 @@ class JobRepack extends REST_Controller
                 if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Updated']) {
 
                     $job_repack_data['where'] = [
-                        'JOB_ID' =>  $this->input->post('JOB_ID')
+                        'JOB_ID' => $this->input->post('JOB_ID'),
                     ];
 
                     $job_repack_data['data'] = [
-                        'status' => 9,
+                        'JOB_STATUS' => 9,
                         'Update_By' => $job_repack_token['UserName'],
                         'Update_Date' => date('Y-m-d H:i:s'),
                     ];
@@ -179,8 +179,7 @@ class JobRepack extends REST_Controller
 
     }
 
-
-     /**
+    /**
      * Show JobRepack BOM API
      * ---------------------------------
      * @method : GET
@@ -236,7 +235,7 @@ class JobRepack extends REST_Controller
 
     }
 
-       /**
+    /**
      * Exec JobRepack Item API
      * ---------------------------------
      * @param: FormData
@@ -295,9 +294,8 @@ class JobRepack extends REST_Controller
 
                     if (isset($job_repack_output) && $job_repack_output) {
 
-                        if(boolval($job_repack_output[0]['Result_status']) === true)
-                        {
-                        
+                        if (boolval($job_repack_output[0]['Result_status']) === true) {
+
                             // Exec JobRepack Item Success
                             $message = [
                                 'status' => true,
@@ -305,11 +303,9 @@ class JobRepack extends REST_Controller
                             ];
 
                             $this->response($message, REST_Controller::HTTP_OK);
-                        }
-                        else
-                        {
-                             // Exec JobRepack Item Error Condition
-                             $message = [
+                        } else {
+                            // Exec JobRepack Item Error Condition
+                            $message = [
                                 'status' => false,
                                 'message' => $job_repack_output[0]['Result_Desc'],
                             ];
@@ -353,7 +349,7 @@ class JobRepack extends REST_Controller
 
     }
 
-     /**
+    /**
      * Exec JobRepack Transaction API
      * ---------------------------------
      * @param: FormData
@@ -410,9 +406,8 @@ class JobRepack extends REST_Controller
 
                     if (isset($job_repack_output) && $job_repack_output) {
 
-                        if(boolval($job_repack_output[0]['Result_status']) === true)
-                        {
-                        
+                        if (boolval($job_repack_output[0]['Result_status']) === true) {
+
                             // Exec JobRepack Transaction Success
                             $message = [
                                 'status' => true,
@@ -420,11 +415,9 @@ class JobRepack extends REST_Controller
                             ];
 
                             $this->response($message, REST_Controller::HTTP_OK);
-                        }
-                        else
-                        {
-                             // Exec JobRepack Transaction Error Condition
-                             $message = [
+                        } else {
+                            // Exec JobRepack Transaction Error Condition
+                            $message = [
                                 'status' => false,
                                 'message' => $job_repack_output[0]['Result_Desc'],
                             ];
@@ -467,7 +460,5 @@ class JobRepack extends REST_Controller
         }
 
     }
-
- 
 
 }

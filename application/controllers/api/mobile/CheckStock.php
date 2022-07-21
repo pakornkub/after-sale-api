@@ -38,7 +38,7 @@ class CheckStock extends REST_Controller
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
             // Load CheckStock Function
-            $output = $this->CheckStock_Model->select_check_stock($this->input->get('Tag_ID'));
+            $output = $this->CheckStock_Model->select_check_stock($this->input->get('QR_NO'));
 
             if (isset($output) && $output) {
 

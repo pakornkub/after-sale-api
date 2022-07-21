@@ -125,7 +125,7 @@ class JobRecheck extends REST_Controller
                     ];
 
                     $job_recheck_data['data'] = [
-                        'status' => 9,
+                        'JOB_STATUS' => 9,
                         'Update_By' => $job_recheck_token['UserName'],
                         'Update_Date' => date('Y-m-d H:i:s'),
                     ];
@@ -255,7 +255,7 @@ class JobRecheck extends REST_Controller
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('JOB_ID', 'JOB_ID', 'trim|required');
         $this->form_validation->set_rules('QR_NO', 'QR_NO', 'trim|required');
-        $this->form_validation->set_rules('Tag_ID', 'Tag_ID', 'trim|required');
+        //$this->form_validation->set_rules('Tag_ID', 'Tag_ID', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             // Form Validation Error
@@ -286,7 +286,7 @@ class JobRecheck extends REST_Controller
                     $tag_data = [
                         'JOB_ID' => $this->input->post('JOB_ID'),
                         'QR_NO' => $this->input->post('QR_NO'),
-                        'Tag_ID' => $this->input->post('Tag_ID'),
+                        'Tag_ID' => '',
                         'Username' => $job_recheck_token['UserName'],
                     ];
 
