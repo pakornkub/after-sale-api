@@ -155,7 +155,7 @@ class CountStock_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select Item_ID as [key],Location_ID,Location,Product_ID,Product_DESCRIPTION,ITEM_ID,ITEM_CODE,ITEM_DESCRIPTION,Count_Balance,0 as Count_Actual
+        select ROW_NUMBER() OVER(Order by Item_ID) as [key],Location_ID,Location,Product_ID,Product_DESCRIPTION,ITEM_ID,ITEM_CODE,ITEM_DESCRIPTION,Count_Balance,0 as Count_Actual
         from View_SnapStockbalance $param
 
             

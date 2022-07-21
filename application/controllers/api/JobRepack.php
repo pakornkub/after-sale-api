@@ -251,7 +251,6 @@ class JobRepack extends REST_Controller
                             'FG_ITEM_ID' => $job_header['Grade_ID_FG'],
                             'FG_LOT_NO' => $job_header['Lot_No'],
                             'JOB_QTY' => $job_header['QTY_Use'],
-                            'JOB_Total_QTY' => $job_header1['totalUseQty'],
                             'Update_Date' => date('Y-m-d H:i:s'),
                             'Update_By' => $job_token['UserName'],
                             
