@@ -20,8 +20,8 @@ class Withdraw_Model extends MY_Model
             $data = [
                 'UniqueKey' => $UniqueKey,
                 'QR_NO' => $value['QR_NO'],
-                'ITEM_ID' => $value['Item_ID'],
-                'Qty' => $value['Qty'],
+                'ITEM_ID' => $value['ITEM_ID'],
+                'Qty' => $value['QTY'],
                 'Create_Date' => $param['user']['Create_Date'],
                 'Create_By' => $param['user']['Create_By'],
      

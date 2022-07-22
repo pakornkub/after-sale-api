@@ -139,3 +139,9 @@ $route['update_withdraw'] = 'api/mobile/Withdraw/update';
 // CheckStock API Routes
 $route['check_stock'] = 'api/mobile/CheckStock/index';
 
+// CountStock API Routes
+$route['count_stock'] = 'api/mobile/CountStock/index';
+$route['count_stock_item'] = 'api/mobile/CountStock/item';
+$route['update_count_stock'] = 'api/mobile/CountStock/update';
+$route['exec_count_stock_item'] = 'api/mobile/CountStock/exec_item';
+
