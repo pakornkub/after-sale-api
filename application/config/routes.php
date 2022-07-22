@@ -82,7 +82,6 @@ $route['menu_type/:(any)'] = 'api/MenuType/show/$1';
 $route['platform'] = 'api/platform/index';
 $route['platform/:(any)'] = 'api/platform/show/$1';
 
-
 // Group API Routes
 $route['group'] = 'api/group/index';
 $route['group/:(any)'] = 'api/group/show/$1';
@@ -200,3 +199,53 @@ $route['location'] = 'api/Location/index';
 $route['stockmonitor'] = 'api/StockMonitor/index';
 $route['stockmonitorgroup'] = 'api/StockMonitor/stockgroup';
 $route['stockmonitordetail'] = 'api/StockMonitor/stockdetail';
+
+// ReceiveSP API Routes
+$route['receive_sp'] = 'api/mobile/ReceiveSP/index';
+$route['receive_sp_item'] = 'api/mobile/ReceiveSP/item';
+$route['update_receive_sp'] = 'api/mobile/ReceiveSP/update';
+$route['exec_receive_sp_transaction'] = 'api/mobile/ReceiveSP/exec_transaction';
+
+// UnlockSP API Routes
+$route['unlock_sp'] = 'api/mobile/UnlockSP/index';
+$route['update_unlock_sp'] = 'api/mobile/UnlockSP/update';
+$route['update_unlock_sp_tag'] = 'api/mobile/UnlockSP/update_tag';
+
+// ReceiveReturn API Routes
+$route['receive_return'] = 'api/mobile/ReceiveReturn/index';
+$route['receive_return_item'] = 'api/mobile/ReceiveReturn/item';
+$route['update_receive_return'] = 'api/mobile/ReceiveReturn/update';
+$route['exec_receive_return_transaction'] = 'api/mobile/ReceiveReturn/exec_transaction';
+
+// JobRepack API Routes
+$route['job_repack'] = 'api/mobile/JobRepack/index';
+$route['job_repack_bom'] = 'api/mobile/JobRepack/bom';
+$route['update_job_repack'] = 'api/mobile/JobRepack/update';
+$route['exec_job_repack_item'] = 'api/mobile/JobRepack/exec_item';
+$route['exec_job_repack_transaction'] = 'api/mobile/JobRepack/exec_transaction';
+
+// JobRecheck API Routes
+$route['job_recheck'] = 'api/mobile/JobRecheck/index';
+$route['job_recheck_bom'] = 'api/mobile/JobRecheck/bom';
+$route['update_job_recheck'] = 'api/mobile/JobRecheck/update';
+$route['exec_job_recheck_item'] = 'api/mobile/JobRecheck/exec_item';
+$route['exec_job_recheck_transaction'] = 'api/mobile/JobRecheck/exec_transaction';
+
+// ShipToWH API Routes
+$route['update_ship_to_wh'] = 'api/mobile/ShipToWH/update';
+
+// WHReceive API Routes
+$route['update_wh_receive'] = 'api/mobile/WHReceive/update';
+
+// Withdraw API Routes
+$route['update_withdraw'] = 'api/mobile/Withdraw/update';
+
+// CheckStock API Routes
+$route['check_stock'] = 'api/mobile/CheckStock/index';
+
+// CountStock API Routes
+$route['count_stock'] = 'api/mobile/CountStock/index';
+$route['count_stock_item'] = 'api/mobile/CountStock/item';
+$route['update_count_stock'] = 'api/mobile/CountStock/update';
+$route['exec_count_stock_item'] = 'api/mobile/CountStock/exec_item';
+
