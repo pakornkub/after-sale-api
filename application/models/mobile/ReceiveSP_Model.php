@@ -39,7 +39,7 @@ class ReceiveSP_Model extends MY_Model
     }
 
     /**
-     * ReceiveSPItem
+     * ReceiveSP Item
      * ---------------------------------
      * @param : Rec_ID
      */

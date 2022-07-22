@@ -180,14 +180,14 @@ class UnlockSP extends REST_Controller
     }
 
     /**
-     * Update UnlockSP Tag API
+     * Exec UnlockSP Tag API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : unlock_sp/update_tag
+     * @link : unlock_sp/exec_tag
      */
-    public function update_tag_post()
+    public function exec_tag_post()
     {
 
         header("Access-Control-Allow-Origin: *");
@@ -196,6 +196,7 @@ class UnlockSP extends REST_Controller
         $_POST = $this->security->xss_clean($_POST);
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
+        $this->form_validation->set_rules('Rec_ID', 'Rec_ID', 'trim|required');
         $this->form_validation->set_rules('QR_NO', 'QR_NO', 'trim|required');
         $this->form_validation->set_rules('Tag_ID', 'Tag_ID', 'trim|required');
 
@@ -225,56 +226,50 @@ class UnlockSP extends REST_Controller
 
                 if ($unlock_sp_permission[array_keys($unlock_sp_permission)[0]]['Updated']) {
 
-                    $unlock_sp_data['where'] = [
+                    $unlock_sp_data = [
+                        'Rec_ID' => intval($this->input->post('Rec_ID')),
                         'QR_NO' => $this->input->post('QR_NO'),
-                        'Tag_ID' => $this->input->post('Tag_ID'),
-                    ]; 
-
-                    $unlock_sp_data['data'] = [
-                        'Tag_Status' => 9,
-                        'ItemStatus_ID' => 2,
-                        'Update_By' => $unlock_sp_token['UserName'],
-                        'Update_Date' => date('Y-m-d H:i:s'),
+                        'Tag_ID' => intval($this->input->post('Tag_ID')),
+                        'Username' => $unlock_sp_token['UserName'],
                     ];
 
-                    // Check UnlockSP Tag Status Complete 
-                    if(!$this->UnlockSP_Model->select_unlock_sp_tag_complete($unlock_sp_data['where']))
-                    {
-                        // Update UnlockSP Function
-                        $unlock_sp_output = $this->UnlockSP_Model->update_unlock_sp_tag($unlock_sp_data);
+                    // Exec UnlockSP Tag Function
+                    $unlock_sp_output = $this->UnlockSP_Model->exec_unlock_sp_tag($unlock_sp_data);
 
-                        if (isset($unlock_sp_output) && $unlock_sp_output) {
+                    if (isset($unlock_sp_output) && $unlock_sp_output) {
 
-                            // Update UnlockSP Success
+                        if(boolval($unlock_sp_output[0]['Result_status']) === true)
+                        {
+                        
+                            // Exec UnlockSP Tag Success
                             $message = [
                                 'status' => true,
-                                'message' => 'Update Unlock SP Successful',
+                                'message' => $unlock_sp_output[0]['Result_Desc'],
                             ];
 
                             $this->response($message, REST_Controller::HTTP_OK);
-
-                        } else {
-
-                            // Update UnlockSP Error
-                            $message = [
+                        }
+                        else
+                        {
+                             // Exec UnlockSP Tag Error Condition
+                             $message = [
                                 'status' => false,
-                                'message' => 'Update Unlock SP Fail : [Update Data Fail]',
+                                'message' => $unlock_sp_output[0]['Result_Desc'],
                             ];
 
                             $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
                         }
 
-                    }
-                    else
-                    {
-                         // Check UnlockSP Tag Status Complete Error
-                         $message = [
+                    } else {
+
+                        // Exec UnlockSP Tag Error
+                        $message = [
                             'status' => false,
-                            'message' => 'QR has been scanned in This Order',
+                            'message' => 'Exec Tag Fail : [Exec Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
                     }
 
 
