@@ -19,6 +19,7 @@ class JobRepack_Model extends MY_Model
                         select count(*) from Tb_Transaction where ref_num = j.JOB_No and Transaction_Type = 'Receive'
                     ) as BOX_QTY
             from Tb_Job j where j.JobType_ID in (1,3) and JOB_STATUS not in (9,-1)
+            order by JOB_ID DESC
 
         ";
 

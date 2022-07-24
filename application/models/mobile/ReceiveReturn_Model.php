@@ -14,7 +14,7 @@ class ReceiveReturn_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-           select * from Tb_Receive where Rec_type = 2 and Status in (2,3)
+           select * from Tb_Receive where Rec_type = 2 and Status in (2,3) order by Rec_ID DESC
         ";
 
         $query = $this->db->query($sql);

@@ -14,7 +14,7 @@ class CountStock_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-           select * from Tb_StockCount where Status in (1,3)
+           select * from Tb_StockCount where Status in (1,3) order by CountStock_ID DESC
         ";
 
         $query = $this->db->query($sql);

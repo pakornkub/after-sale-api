@@ -14,7 +14,7 @@ class ReceiveSP_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-           select * from Tb_Receive where Rec_type = 1 and Status in (2,4)
+           select * from Tb_Receive where Rec_type = 1 and Status in (2,4) order by Rec_ID DESC
         ";
 
         $query = $this->db->query($sql);
