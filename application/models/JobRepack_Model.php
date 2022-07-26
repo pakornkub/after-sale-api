@@ -154,9 +154,10 @@ class JobRepack_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-                select Tb_Job.JOB_ID,Tb_Job.BOM_ID,Tb_Job.FG_ITEM_ID,QR_ID,QR_NO,BOM_ID,BOX_NO
+                select Tb_Job.JOB_ID,Tb_Job.BOM_ID,Tb_Job.FG_ITEM_ID,QR_ID,QR_NO,BOM_ID,BOX_NO,ms_Item.ITEM_CODE,ms_Item.ITEM_DESCRIPTION
                 from Tb_Job
                 inner join Tb_QRBOX_Generate QR on Tb_Job.JOB_ID = QR.job_ID
+                inner join ms_Item on Tb_Job.FG_ITEM_ID = ms_Item.ITEM_ID
                 where Tb_Job.JOB_ID = ?
         ";
 
