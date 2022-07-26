@@ -11,7 +11,7 @@ class MenuType_Model extends MY_Model
     public function select_menu_type()
     {
 
-        $this->set_db('auth');
+        $this->set_db('default');
 
         $sql = "
            select * from se_MenuType

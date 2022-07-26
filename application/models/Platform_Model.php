@@ -11,7 +11,7 @@ class Platform_Model extends MY_Model
     public function select_platform()
     {
 
-        $this->set_db('auth');
+        $this->set_db('default');
 
         $sql = "
            select * from se_Platform
