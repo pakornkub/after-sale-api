@@ -62,7 +62,7 @@ class WHReceive extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($wh_receive_permission[array_keys($wh_receive_permission)[0]]['Updated']) {
+                if ($wh_receive_permission[array_keys($wh_receive_permission)[0]]['Created']) {
 
                     $data['items'] = json_decode($this->input->post('Items'), true);
 

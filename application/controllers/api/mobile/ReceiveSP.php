@@ -281,7 +281,7 @@ class ReceiveSP extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($receive_sp_permission[array_keys($receive_sp_permission)[0]]['Updated']) {
+                if ($receive_sp_permission[array_keys($receive_sp_permission)[0]]['Created']) {
 
                     $tag_data = [
                         'Rec_ID' => intval($this->input->post('Rec_ID')),

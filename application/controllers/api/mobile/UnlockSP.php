@@ -224,7 +224,7 @@ class UnlockSP extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($unlock_sp_permission[array_keys($unlock_sp_permission)[0]]['Updated']) {
+                if ($unlock_sp_permission[array_keys($unlock_sp_permission)[0]]['Created']) {
 
                     $unlock_sp_data = [
                         'Rec_ID' => intval($this->input->post('Rec_ID')),

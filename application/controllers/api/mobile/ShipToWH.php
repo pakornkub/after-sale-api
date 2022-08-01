@@ -62,7 +62,7 @@ class ShipToWH extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($ship_to_wh_permission[array_keys($ship_to_wh_permission)[0]]['Updated']) {
+                if ($ship_to_wh_permission[array_keys($ship_to_wh_permission)[0]]['Created']) {
 
                     $data['items'] = json_decode($this->input->post('Items'), true);
 

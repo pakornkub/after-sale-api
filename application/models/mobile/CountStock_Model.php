@@ -51,7 +51,7 @@ class CountStock_Model extends MY_Model
         $sql = "
 
             select      ROW_NUMBER() Over (Order by s.CountStock_ID) as 'No'
-                        ,i.ITEM_DESCRIPTION as 'Item'
+                        ,i.ITEM_CODE as 'Item'
                         ,SUM(Total_QTY) as 'Balance'
                         ,(
                         

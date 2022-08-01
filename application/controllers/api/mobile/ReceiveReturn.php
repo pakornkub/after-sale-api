@@ -281,7 +281,7 @@ class ReceiveReturn extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($receive_return_permission[array_keys($receive_return_permission)[0]]['Updated']) {
+                if ($receive_return_permission[array_keys($receive_return_permission)[0]]['Created']) {
 
                     $tag_data = [
                         'Rec_ID' => intval($this->input->post('Rec_ID')),

@@ -52,7 +52,7 @@ class ReceiveReturn_Model extends MY_Model
 
             select
                         ROW_NUMBER() Over (Order by r.Rec_ID) as 'No'
-                        ,i.ITEM_DESCRIPTION as 'FG'
+                        ,i.ITEM_CODE as 'FG'
                         ,(
                             select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and RecItem_ID = ri.RecItem_ID and ItemStatus_ID = 5 and Tag_Status = 9
                         ) as 'Good'

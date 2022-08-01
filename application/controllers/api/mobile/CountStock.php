@@ -281,7 +281,7 @@ class CountStock extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($count_stock_permission[array_keys($count_stock_permission)[0]]['Updated']) {
+                if ($count_stock_permission[array_keys($count_stock_permission)[0]]['Created']) {
 
                     $tag_data = [
                         'CountStock_ID' => intval($this->input->post('CountStock_ID')),
