@@ -59,6 +59,7 @@ class JobRecheck_Model extends MY_Model
             select
                     ROW_NUMBER() Over (Order by j.JOB_ID) as 'No'
                     ,i.ITEM_CODE as 'FG'
+                    ,i.ITEM_ID as 'Item_ID'
                     , ji.Qty as 'BOM'
                     ,(
 

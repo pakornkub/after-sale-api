@@ -52,6 +52,7 @@ class CountStock_Model extends MY_Model
 
             select      ROW_NUMBER() Over (Order by s.CountStock_ID) as 'No'
                         ,i.ITEM_CODE as 'Item'
+                        ,sb.Item_ID as 'Item_ID'
                         ,SUM(Total_QTY) as 'Balance'
                         ,(
                         
@@ -64,7 +65,7 @@ class CountStock_Model extends MY_Model
 
             where		s.CountStock_ID = ?
 
-            group by	s.CountStock_ID,i.ITEM_DESCRIPTION,sb.Item_ID
+            group by	s.CountStock_ID,i.ITEM_CODE,sb.Item_ID
 
         ";
 
