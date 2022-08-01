@@ -55,6 +55,28 @@ class StockMonitor_Model extends MY_Model
 
 
     }
+
+    /**
+     * Stock WH
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_stockwh($param)
+    {
+
+        $this->set_db('default');
+
+        $sql = "select * from GetQRHistoryTrans('$param')";
+
+        $query = $this->db->query($sql,$param);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+
+
+    }
     
 }
 
