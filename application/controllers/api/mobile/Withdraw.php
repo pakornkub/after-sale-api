@@ -62,7 +62,7 @@ class Withdraw extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($withdraw_permission[array_keys($withdraw_permission)[0]]['Updated']) {
+                if ($withdraw_permission[array_keys($withdraw_permission)[0]]['Created']) {
 
                     $data['items'] = json_decode($this->input->post('Items'), true);
 

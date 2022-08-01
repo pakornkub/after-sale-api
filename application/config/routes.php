@@ -61,14 +61,14 @@ $route['refresh_token'] = 'api/auth/refresh_token';
 
 // User API Routes
 $route['user'] = 'api/user/index';
-$route['user/:(any)'] = 'api/user/show/$1';
+//$route['user/:(any)'] = 'api/user/show/$1';
 $route['create_user'] = 'api/user/create';
 $route['update_user'] = 'api/user/update';
 $route['delete_user'] = 'api/user/delete';
 
 // Menu API Routes
 $route['menu'] = 'api/menu/index';
-$route['menu/:(any)'] = 'api/menu/show/$1';
+//$route['menu/:(any)'] = 'api/menu/show/$1';
 $route['create_menu'] = 'api/menu/create';
 $route['update_menu'] = 'api/menu/update';
 $route['delete_menu'] = 'api/menu/delete';
@@ -76,22 +76,22 @@ $route['parent_menu'] = 'api/menu/parent';
 
 // Menu Type API Routes
 $route['menu_type'] = 'api/MenuType/index';
-$route['menu_type/:(any)'] = 'api/MenuType/show/$1';
+//$route['menu_type/:(any)'] = 'api/MenuType/show/$1';
 
 // Platform API Routes
 $route['platform'] = 'api/platform/index';
-$route['platform/:(any)'] = 'api/platform/show/$1';
+//$route['platform/:(any)'] = 'api/platform/show/$1';
 
 // Group API Routes
 $route['group'] = 'api/group/index';
-$route['group/:(any)'] = 'api/group/show/$1';
+//$route['group/:(any)'] = 'api/group/show/$1';
 $route['create_group'] = 'api/group/create';
 $route['update_group'] = 'api/group/update';
 $route['delete_group'] = 'api/group/delete';
 
 // Grade API Routes
 $route['grade'] = 'api/grade/index';
-$route['grade/:(any)'] = 'api/grade/show/$1';
+//$route['grade/:(any)'] = 'api/grade/show/$1';
 $route['create_grade'] = 'api/grade/create';
 $route['update_grade'] = 'api/grade/update';
 $route['delete_grade'] = 'api/grade/delete';
@@ -109,7 +109,6 @@ $route['grade_fg'] = 'api/GradeFG/index';
 
 // Grade SP  API Routes
 $route['grade_sp'] = 'api/GradeSP/index';
-
 
 // BOMID API Routes
 $route['bomid'] = 'api/bomid/index';
@@ -137,7 +136,6 @@ $route['create_tag'] = 'api/tag/create';
 $route['delete_tag'] = 'api/tag/delete';
 $route['create_tagreturn'] = 'api/tag/createreturn';
 
-
 // Receive Return API Routes
 $route['receivereturn'] = 'api/receivereturn/index';
 $route['receivereturn/:(any)'] = 'api/receivereturn/show/$1';
@@ -145,7 +143,6 @@ $route['create_receivereturn'] = 'api/receivereturn/create';
 $route['update_receivereturn'] = 'api/receivereturn/update';
 $route['delete_receivereturn'] = 'api/receivereturn/delete';
 $route['receivereturn_item'] = 'api/receivereturn/receivereturnitem';
-
 
 // Job Repack API Routes
 $route['jobrepack'] = 'api/jobrepack/index';
@@ -168,7 +165,6 @@ $route['bomforjob'] = 'api/BomForJob/index';
 $route['select_gradeplan'] = 'api/BomForJob/selectgrade';
 $route['select_bomrev'] = 'api/BomForJob/selectrev';
 $route['select_bomitem'] = 'api/BomForJob/selectitem';
-
 
 // Job Plan API Routes
 $route['jobplan'] = 'api/jobplan/index';
@@ -194,56 +190,60 @@ $route['producttype'] = 'api/ProductType/index';
 // Location  API Routes
 $route['location'] = 'api/Location/index';
 
-
 // Stock Monitor API Routes
 $route['stockmonitor'] = 'api/StockMonitor/index';
 $route['stockmonitorgroup'] = 'api/StockMonitor/stockgroup';
 $route['stockmonitordetail'] = 'api/StockMonitor/stockdetail';
 
-// ReceiveSP API Routes
+
+// Permission API Routes
+$route['permission'] = 'api/permission/index';
+$route['create_permission'] = 'api/permission/create';
+
+// ReceiveSP API Routes (Mobile)
 $route['receive_sp'] = 'api/mobile/ReceiveSP/index';
 $route['receive_sp_item'] = 'api/mobile/ReceiveSP/item';
 $route['update_receive_sp'] = 'api/mobile/ReceiveSP/update';
 $route['exec_receive_sp_transaction'] = 'api/mobile/ReceiveSP/exec_transaction';
 
-// UnlockSP API Routes
+// UnlockSP API Routes (Mobile)
 $route['unlock_sp'] = 'api/mobile/UnlockSP/index';
 $route['update_unlock_sp'] = 'api/mobile/UnlockSP/update';
-$route['update_unlock_sp_tag'] = 'api/mobile/UnlockSP/update_tag';
+$route['exec_unlock_sp_tag'] = 'api/mobile/UnlockSP/exec_tag';
 
-// ReceiveReturn API Routes
+// ReceiveReturn API Routes (Mobile)
 $route['receive_return'] = 'api/mobile/ReceiveReturn/index';
 $route['receive_return_item'] = 'api/mobile/ReceiveReturn/item';
 $route['update_receive_return'] = 'api/mobile/ReceiveReturn/update';
 $route['exec_receive_return_transaction'] = 'api/mobile/ReceiveReturn/exec_transaction';
 
-// JobRepack API Routes
+// JobRepack API Routes (Mobile)
 $route['job_repack'] = 'api/mobile/JobRepack/index';
 $route['job_repack_bom'] = 'api/mobile/JobRepack/bom';
 $route['update_job_repack'] = 'api/mobile/JobRepack/update';
 $route['exec_job_repack_item'] = 'api/mobile/JobRepack/exec_item';
 $route['exec_job_repack_transaction'] = 'api/mobile/JobRepack/exec_transaction';
 
-// JobRecheck API Routes
+// JobRecheck API Routes (Mobile)
 $route['job_recheck'] = 'api/mobile/JobRecheck/index';
 $route['job_recheck_bom'] = 'api/mobile/JobRecheck/bom';
 $route['update_job_recheck'] = 'api/mobile/JobRecheck/update';
 $route['exec_job_recheck_item'] = 'api/mobile/JobRecheck/exec_item';
 $route['exec_job_recheck_transaction'] = 'api/mobile/JobRecheck/exec_transaction';
 
-// ShipToWH API Routes
+// ShipToWH API Routes (Mobile)
 $route['update_ship_to_wh'] = 'api/mobile/ShipToWH/update';
 
-// WHReceive API Routes
+// WHReceive API Routes (Mobile)
 $route['update_wh_receive'] = 'api/mobile/WHReceive/update';
 
-// Withdraw API Routes
+// Withdraw API Routes (Mobile)
 $route['update_withdraw'] = 'api/mobile/Withdraw/update';
 
-// CheckStock API Routes
+// CheckStock API Routes (Mobile)
 $route['check_stock'] = 'api/mobile/CheckStock/index';
 
-// CountStock API Routes
+// CountStock API Routes (Mobile)
 $route['count_stock'] = 'api/mobile/CountStock/index';
 $route['count_stock_item'] = 'api/mobile/CountStock/item';
 $route['update_count_stock'] = 'api/mobile/CountStock/update';

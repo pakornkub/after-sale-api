@@ -11,7 +11,7 @@ class Group_Model extends MY_Model
     public function select_group()
     {
 
-        $this->set_db('auth');
+        $this->set_db('default');
 
         $sql = "
            select * from se_Group
@@ -32,7 +32,7 @@ class Group_Model extends MY_Model
      */
     public function insert_group($param = [])
     {
-        $this->set_db('auth');
+        $this->set_db('default');
 
         return ($this->db->insert('se_Group', $param['data'])) ? true : false/*$this->db->error()*/;
 
@@ -45,7 +45,7 @@ class Group_Model extends MY_Model
      */
     public function update_group($param = [])
     {
-        $this->set_db('auth');
+        $this->set_db('default');
 
         return ($this->db->update('se_Group', $param['data'], ['Group_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
@@ -58,7 +58,7 @@ class Group_Model extends MY_Model
      */
     public function delete_group($param = [])
     {
-        $this->set_db('auth');
+        $this->set_db('default');
 
         return ($this->db->delete('se_Group', ['Group_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
 

@@ -14,7 +14,7 @@ class CountStock_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-           select * from Tb_StockCount where Status in (1,3)
+           select * from Tb_StockCount where Status in (1,3) order by CountStock_ID DESC
         ";
 
         $query = $this->db->query($sql);
@@ -51,7 +51,8 @@ class CountStock_Model extends MY_Model
         $sql = "
 
             select      ROW_NUMBER() Over (Order by s.CountStock_ID) as 'No'
-                        ,i.ITEM_DESCRIPTION as 'Item'
+                        ,i.ITEM_CODE as 'Item'
+                        ,sb.Item_ID as 'Item_ID'
                         ,SUM(Total_QTY) as 'Balance'
                         ,(
                         
@@ -64,7 +65,7 @@ class CountStock_Model extends MY_Model
 
             where		s.CountStock_ID = ?
 
-            group by	s.CountStock_ID,i.ITEM_DESCRIPTION,sb.Item_ID
+            group by	s.CountStock_ID,i.ITEM_CODE,sb.Item_ID
 
         ";
 

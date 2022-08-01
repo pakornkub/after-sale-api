@@ -393,7 +393,7 @@ class JobRepack extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Updated']) {
+                if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Created']) {
 
                     $tag_data = [
                         'JOB_ID' => intval($this->input->post('JOB_ID')),
