@@ -98,6 +98,7 @@ $route['delete_grade'] = 'api/grade/delete';
 
 // Permission API Routes
 $route['permission'] = 'api/permission/index';
+$route['create_permission'] = 'api/permission/create';
 
 // ReceiveSP API Routes (Mobile)
 $route['receive_sp'] = 'api/mobile/ReceiveSP/index';

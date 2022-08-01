@@ -139,7 +139,7 @@ class User extends REST_Controller
                         'UpdateDate' => null,
                         'CancelBy' => null,
                         'CancelDate' => null,
-                        'Group_Index' => null,
+                        'Group_Index' => $this->input->post('Group_Index') ? intval($this->input->post('Group_Index')) : null,
                     ];
 
                     // Create User Function
@@ -252,6 +252,7 @@ class User extends REST_Controller
                         'IsUse' => intval($this->input->post('IsUse')),
                         'UpdateBy' => $user_token['UserName'],
                         'UpdateDate' => date('Y-m-d H:i:s'),
+                        'Group_Index' => $this->input->post('Group_Index') ? intval($this->input->post('Group_Index')) : null,
                     ];
 
                     if($this->input->post('Password'))
