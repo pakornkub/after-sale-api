@@ -195,6 +195,7 @@ $route['stockmonitor'] = 'api/StockMonitor/index';
 $route['stockmonitorgroup'] = 'api/StockMonitor/stockgroup';
 $route['stockmonitordetail'] = 'api/StockMonitor/stockdetail';
 $route['stockmonitorwh'] = 'api/StockMonitor/stockwh';
+$route['stockmonitorwh_header'] = 'api/StockMonitor/stockwhheader';
 
 // Permission API Routes
 $route['permission'] = 'api/permission/index';
