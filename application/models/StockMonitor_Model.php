@@ -57,6 +57,30 @@ class StockMonitor_Model extends MY_Model
     }
 
     /**
+     * Stock WH Header
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_stockwhheader($param)
+    {
+
+        $this->set_db('default');
+
+        $sql = "select *,CONVERT(varchar, Trans.Transaction_Date, 103) AS Production_Date 
+                from (select * from GetQRHistoryTrans('$param') ) Trans
+                where Trans.Transaction_Type = 'Receive'";
+
+        $query = $this->db->query($sql,$param);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+
+
+    }
+
+    /**
      * Stock WH
      * ---------------------------------
      * @param : null
@@ -66,7 +90,8 @@ class StockMonitor_Model extends MY_Model
 
         $this->set_db('default');
 
-        $sql = "select * from GetQRHistoryTrans('$param')";
+        $sql = "select * from (select * from GetQRHistoryTrans('$param') ) Trans
+                where Trans.Transaction_Type != 'Receive'";
 
         $query = $this->db->query($sql,$param);
 
