@@ -95,11 +95,11 @@ class JobRepack_Model extends MY_Model
 
         $sql = "
 
-            exec [dbo].[SP_CreateJobWithdraw] ?,?,?,?
+            exec [dbo].[SP_CreateJobWithdraw] ?,?,?,?,?
 
         ";
 
-        $query = $this->db->query($sql, [$param['QR_NO'], $param['JOB_ID'], $param['Tag_ID'], $param['Username']]);
+        $query = $this->db->query($sql, [$param['QR_NO'], $param['JOB_ID'], $param['Tag_ID'], $param['Item_Code'], $param['Username']]);
 
         $result = ($query->num_rows() > 0) ? $query->result_array() : false;
 

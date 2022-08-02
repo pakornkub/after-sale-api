@@ -253,8 +253,8 @@ class JobRepack extends REST_Controller
 
         # Form Validation (https://codeigniter.com/userguide3/libraries/form_validation.html)
         $this->form_validation->set_rules('JOB_ID', 'JOB_ID', 'trim|required');
-        $this->form_validation->set_rules('QR_NO', 'QR_NO', 'trim|required');
-        $this->form_validation->set_rules('Tag_ID', 'Tag_ID', 'trim|required');
+        //$this->form_validation->set_rules('QR_NO', 'QR_NO', 'trim|required');
+        //$this->form_validation->set_rules('Tag_ID', 'Tag_ID', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             // Form Validation Error
@@ -282,12 +282,29 @@ class JobRepack extends REST_Controller
 
                 if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Created']) {
 
-                    $tag_data = [
-                        'JOB_ID' => $this->input->post('JOB_ID'),
-                        'QR_NO' => $this->input->post('QR_NO'),
-                        'Tag_ID' => $this->input->post('Tag_ID'),
-                        'Username' => $job_repack_token['UserName'],
-                    ];
+
+                    $Item_Code = $this->input->post('Item_Code') ? $this->input->post('Item_Code') : null;
+
+                    if($Item_Code)
+                    {
+                        $tag_data = [
+                            'JOB_ID' => $this->input->post('JOB_ID'),
+                            'QR_NO' => null,
+                            'Tag_ID' => null,
+                            'Item_Code' => $Item_Code,
+                            'Username' => $job_repack_token['UserName'],
+                        ];
+                    }
+                    else
+                    {
+                        $tag_data = [
+                            'JOB_ID' => $this->input->post('JOB_ID'),
+                            'QR_NO' => $this->input->post('QR_NO'),
+                            'Tag_ID' => $this->input->post('Tag_ID'),
+                            'Item_Code' => null,
+                            'Username' => $job_repack_token['UserName'],
+                        ];
+                    }
 
                     // Exec JobRepack Item Function
                     $job_repack_output = $this->JobRepack_Model->exec_job_repack_item($tag_data);
