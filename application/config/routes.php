@@ -136,6 +136,16 @@ $route['create_tag'] = 'api/tag/create';
 $route['delete_tag'] = 'api/tag/delete';
 $route['create_tagreturn'] = 'api/tag/createreturn';
 
+// Tag Return API Routes
+$route['tagreturn'] = 'api/tagreturn/index';
+$route['tagreturn/:(any)'] = 'api/tagreturn/show/$1';
+$route['select_receivestatusreturn'] = 'api/tagreturn/selectreceivestatus';
+$route['select_tagreturn'] = 'api/tagreturn/select';
+$route['create_tagreturn'] = 'api/tagreturn/create';
+$route['delete_tagreturn'] = 'api/tagreturn/delete';
+
+
+
 // Receive Return API Routes
 $route['receivereturn'] = 'api/receivereturn/index';
 $route['receivereturn/:(any)'] = 'api/receivereturn/show/$1';

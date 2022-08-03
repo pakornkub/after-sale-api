@@ -66,9 +66,7 @@ class StockMonitor_Model extends MY_Model
 
         $this->set_db('default');
 
-        $sql = "select *,CONVERT(varchar, Trans.Transaction_Date, 103) AS Production_Date 
-                from (select * from GetQRHistoryTrans('$param') ) Trans
-                where Trans.Transaction_Type = 'Receive'";
+        $sql = "select *,CONVERT(varchar, Pack_Date, 103) AS Production_Date FROM [GetQRBoxApprove] ('$param')";
 
         $query = $this->db->query($sql,$param);
 

@@ -4,18 +4,18 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class Tag extends REST_Controller
+class TagReturn extends REST_Controller
 {
 
-    protected $MenuId = 'ReceivePart';
+    protected $MenuId = 'ReceiveReturn';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load Tag_Model
-        $this->load->model('Tag_Model');
+        // Load TagReturn_Model
+        $this->load->model('TagReturn_Model');
 
     }
 
@@ -23,7 +23,7 @@ class Tag extends REST_Controller
      * Show Tag All API
      * ---------------------------------
      * @method : GET
-     * @link : tag/index
+     * @link : tagreturn/index
      */
     public function index_get()
     {
@@ -36,7 +36,7 @@ class Tag extends REST_Controller
      * Show Receive status API
      * ---------------------------------
      * @method : POST
-     * @link : tag/selectreceivestatus
+     * @link : tagreturn/selectreceivestatus
      */
     public function selectreceivestatus_post()
     {
@@ -59,7 +59,7 @@ class Tag extends REST_Controller
                
             ];
 
-            $tag_output = $this->Tag_Model->select_receivestatus($tag_data);
+            $tag_output = $this->TagReturn_Model->select_receivestatus($tag_data);
 
             if (isset($tag_output) && $tag_output) {
 
@@ -89,7 +89,7 @@ class Tag extends REST_Controller
      * Show Tag All API
      * ---------------------------------
      * @method : POST
-     * @link : tag/select
+     * @link : tagreturn/select
      */
     public function select_post()
     {
@@ -112,7 +112,7 @@ class Tag extends REST_Controller
                
             ];
 
-            $tag_output = $this->Tag_Model->select_tag($tag_data);
+            $tag_output = $this->TagReturn_Model->select_tag($tag_data);
 
             if (isset($tag_output) && $tag_output) {
 
@@ -144,7 +144,7 @@ class Tag extends REST_Controller
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : tag/create
+     * @link : tagreturn/create
      */
     public function create_post()
     {
@@ -178,14 +178,14 @@ class Tag extends REST_Controller
                     ];
 
                     // Create Tag Function
-                    $tag_output = $this->Tag_Model->insert_tag($tag_data);
+                    $tag_output = $this->TagReturn_Model->insert_tag($tag_data);
 
                     if (isset($tag_output) && $tag_output) {
 
                         // Create Tag Success
                         $message = [
                             'status' => true,
-                            'message' => 'Create Tag Successful',
+                            'message' => 'Create Tag Return Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -223,7 +223,6 @@ class Tag extends REST_Controller
             }
 
     }
-
     
 
     /**
@@ -232,7 +231,7 @@ class Tag extends REST_Controller
      * @param: Tag_Index
      * ---------------------------------
      * @method : POST
-     * @link : tag/delete
+     * @link : tagreturn/delete
      */
     public function delete_post()
     {
@@ -275,7 +274,7 @@ class Tag extends REST_Controller
                     ];
 
                     // Delete Tag Function
-                    $tag_output = $this->Tag_Model->delete_tag($tag_data);
+                    $tag_output = $this->TagReturn_Model->delete_tag($tag_data);
 
                     if (isset($tag_output) && $tag_output) {
 
