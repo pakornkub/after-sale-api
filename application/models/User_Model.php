@@ -14,7 +14,7 @@ class User_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-           select Title+' '+FirstName+' '+LastName as FullName ,* from se_User
+           select Title+' '+FirstName+' '+LastName as FullName ,se_User.*,se_Group.Id as GroupID from se_User inner join se_Group on se_User.Group_Index = se_Group.Group_Index
         ";
 
         $query = $this->db->query($sql);
