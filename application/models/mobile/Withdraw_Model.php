@@ -39,7 +39,7 @@ class Withdraw_Model extends MY_Model
 
         $this->db->query($sql, [$UniqueKey,$param['user']['Create_By'],'Withdraw']);
 
-        return $this->check_begintrans();/*$this->db->error()*/;
+        return $this->check_begintrans();/*$this->db->error();*/
 
     }
 

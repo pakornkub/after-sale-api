@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class ReceiveReturn extends REST_Controller
 {
 
-    protected $MenuId = 'ReceiveReturn';
+    protected $MenuId = 'ReceiveReturnMobile';
 
     public function __construct()
     {
