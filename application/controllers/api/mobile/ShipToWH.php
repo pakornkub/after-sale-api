@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class ShipToWH extends REST_Controller
 {
 
-    protected $MenuId = 'ShipToWH';
+    protected $MenuId = 'ShipToWHMobile';
 
     public function __construct()
     {

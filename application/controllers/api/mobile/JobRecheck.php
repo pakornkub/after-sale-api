@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class JobRecheck extends REST_Controller
 {
 
-    protected $MenuId = 'JobRecheck';
+    protected $MenuId = 'JobRecheckMobile';
 
     public function __construct()
     {

@@ -323,7 +323,7 @@ class Menu extends REST_Controller
 
                             if (isset($menu_update_output) && $menu_update_output) {
 
-                                if(!$upload_output['data']) $this->do_unlink($this->input->post('Id'));
+                                if(!$upload_output['data'] && !$upload_output['status']) $this->do_unlink($this->input->post('Id'));
 
                                 // Update Menu Success
                                 $message = [

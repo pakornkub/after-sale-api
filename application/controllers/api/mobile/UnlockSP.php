@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class UnlockSP extends REST_Controller
 {
 
-    protected $MenuId = 'UnlockSP';
+    protected $MenuId = 'UnlockSPMobile';
 
     public function __construct()
     {

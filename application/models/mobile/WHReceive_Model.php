@@ -39,7 +39,7 @@ class WHReceive_Model extends MY_Model
 
         $this->db->query($sql, [$UniqueKey,$param['user']['Create_By'],'WHReceive']);
 
-        return $this->check_begintrans();/*$this->db->error()*/;
+        return $this->check_begintrans();/*$this->db->error();*/
 
     }
 

@@ -38,7 +38,7 @@ class Group_Model extends MY_Model
 
     }
 
-     /**
+    /**
      * Update Group
      * ---------------------------------
      * @param : FormData
@@ -47,11 +47,11 @@ class Group_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->update('se_Group', $param['data'], ['Group_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('se_Group', $param['data'], ['Group_Index' => $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
-     /**
+    /**
      * Delete Group
      * ---------------------------------
      * @param : Group_Index
@@ -60,9 +60,16 @@ class Group_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('se_Group', ['Group_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        $this->db->trans_begin();
+
+        $this->db->update('se_User', ['Group_Index' => null], ['Group_Index' => $param['index']]);
+
+        $this->db->delete('se_GroupPermission', ['Group_Index' => $param['index']]);
+
+        $this->db->delete('se_Group', ['Group_Index' => $param['index']]);
+
+        return $this->check_begintrans() /*$this->db->error()*/;
 
     }
-
 
 }
