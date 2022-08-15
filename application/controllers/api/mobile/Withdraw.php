@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class Withdraw extends REST_Controller
 {
 
-    protected $MenuId = 'Withdraw';
+    protected $MenuId = 'WithdrawMobile';
 
     public function __construct()
     {

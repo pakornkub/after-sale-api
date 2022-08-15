@@ -14,7 +14,7 @@ class Menu_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-           select * from se_Menu
+           select se_Menu.*,se_Platform.Name as PlatformName from se_Menu inner join se_Platform on se_Menu.Platform_Index = se_Platform.Platform_Index
         ";
 
         $query = $this->db->query($sql);

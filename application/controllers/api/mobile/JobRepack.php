@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class JobRepack extends REST_Controller
 {
 
-    protected $MenuId = 'JobRepack';
+    protected $MenuId = 'JobRepackMobile';
 
     public function __construct()
     {
@@ -118,7 +118,7 @@ class JobRepack extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Updated']) {
+                if (count($job_repack_permission) > 0 && $job_repack_permission[array_keys($job_repack_permission)[0]]['Updated']) {
 
                     $job_repack_data['where'] = [
                         'JOB_ID' => $this->input->post('JOB_ID'),
@@ -280,7 +280,7 @@ class JobRepack extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Created']) {
+                if (count($job_repack_permission) > 0 && $job_repack_permission[array_keys($job_repack_permission)[0]]['Created']) {
 
 
                     $Item_Code = $this->input->post('Item_Code') ? $this->input->post('Item_Code') : null;
@@ -346,7 +346,7 @@ class JobRepack extends REST_Controller
                     // Permission Error
                     $message = [
                         'status' => false,
-                        'message' => 'You don’t currently have permission to Update',
+                        'message' => 'You don’t currently have permission to Created',
                     ];
 
                     $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
@@ -410,7 +410,7 @@ class JobRepack extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($job_repack_permission[array_keys($job_repack_permission)[0]]['Created']) {
+                if (count($job_repack_permission) > 0 && $job_repack_permission[array_keys($job_repack_permission)[0]]['Created']) {
 
                     $tag_data = [
                         'JOB_ID' => intval($this->input->post('JOB_ID')),
@@ -458,7 +458,7 @@ class JobRepack extends REST_Controller
                     // Permission Error
                     $message = [
                         'status' => false,
-                        'message' => 'You don’t currently have permission to Update',
+                        'message' => 'You don’t currently have permission to Created',
                     ];
 
                     $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);

@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class CheckStock extends REST_Controller
 {
 
-    protected $MenuId = 'CheckStock';
+    protected $MenuId = 'CheckStockMobile';
 
     public function __construct()
     {
