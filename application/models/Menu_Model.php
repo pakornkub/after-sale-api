@@ -60,7 +60,15 @@ class Menu_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('se_Menu', ['Menu_Index'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        $this->db->trans_begin();
+
+        $this->db->delete('se_GroupPermission', ['Menu_Index' => $param['index']]);
+
+        $this->db->delete('se_UserPermission', ['Menu_Index' => $param['index']]);
+
+        $this->db->delete('se_Menu', ['Menu_Index' => $param['index']]);
+
+        return $this->check_begintrans() /*$this->db->error()*/;
 
     }
 
