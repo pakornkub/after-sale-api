@@ -299,7 +299,22 @@ class Menu extends REST_Controller
                     ];
 
                     // Check Upload File
-                    $upload_output = isset($_FILES['Picture']) && $_POST['Old_Picture'] != '-1' ? $this->do_upload($_FILES['Picture'],$this->input->post('Id')) : array("status" => true, "data" => null);
+                    $upload_output = null;//isset($_FILES['Picture']) && $_POST['Old_Picture'] != '-1' ? $this->do_upload($_FILES['Picture'],$this->input->post('Id')) : array("status" => true, "data" => null);
+
+                    if(isset($_FILES['Picture']) && $_POST['Old_Picture'] != '-1') // Upload
+                    {
+                        $this->do_unlink($this->input->post('Id'));
+                        $upload_output = $this->do_upload($_FILES['Picture'],$this->input->post('Id'));
+                    }
+                    else if(!isset($_FILES['Picture']) && $_POST['Old_Picture'] != '-1') // No Upload and Delete  
+                    {
+                        $this->do_unlink($this->input->post('Id'));
+                        $upload_output = array("status" => true, "data" => null);
+                    }
+                    else //No Upload and No Delete
+                    {
+                        $upload_output = array("status" => true, "data" => null);
+                    }
 
                     if ($upload_output['status']) {
 
@@ -323,7 +338,7 @@ class Menu extends REST_Controller
 
                             if (isset($menu_update_output) && $menu_update_output) {
 
-                                if(!$upload_output['data'] && !$upload_output['status']) $this->do_unlink($this->input->post('Id'));
+                                //if(!$upload_output['data'] && $_POST['Old_Picture'] != '-1') $this->do_unlink($this->input->post('Id'));
 
                                 // Update Menu Success
                                 $message = [
