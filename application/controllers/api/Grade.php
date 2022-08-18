@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class Grade extends REST_Controller
 {
 
-    protected $MenuId = 'Grade';
+    protected $MenuId = 'Material';
 
     public function __construct()
     {
@@ -46,7 +46,7 @@ class Grade extends REST_Controller
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show grade all successful',
+                    'message' => 'Show Material all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
@@ -56,7 +56,7 @@ class Grade extends REST_Controller
                 // Show Grade All Error
                 $message = [
                     'status' => false,
-                    'message' => 'Grade data was not found in the database',
+                    'message' => 'Material data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_NOT_FOUND);
@@ -144,7 +144,7 @@ class Grade extends REST_Controller
                         // Create Grade Success
                         $message = [
                             'status' => true,
-                            'message' => 'Create Grade Successful',
+                            'message' => 'Create Material Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -154,7 +154,7 @@ class Grade extends REST_Controller
                         // Create Grade Error
                         $message = [
                             'status' => false,
-                            'message' => 'Create Grade Fail : [Insert Data Fail]',
+                            'message' => 'Create Material Fail : [Insert Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -269,7 +269,7 @@ class Grade extends REST_Controller
                         // Update Grade Success
                         $message = [
                             'status' => true,
-                            'message' => 'Update Grade Successful',
+                            'message' => 'Update Material Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -279,7 +279,7 @@ class Grade extends REST_Controller
                         // Update Grade Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Grade Fail : [Update Data Fail]',
+                            'message' => 'Update Material Fail : [Update Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -363,7 +363,7 @@ class Grade extends REST_Controller
                         // Delete grade Success
                         $message = [
                             'status' => true,
-                            'message' => 'Delete Grade Successful',
+                            'message' => 'Delete Material Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -373,7 +373,7 @@ class Grade extends REST_Controller
                         // Delete grade Error
                         $message = [
                             'status' => false,
-                            'message' => 'Delete Grade Fail : [Delete Data Fail]',
+                            'message' => 'Delete Material Fail : [Delete Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
