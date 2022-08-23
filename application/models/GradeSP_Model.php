@@ -14,7 +14,7 @@ class GradeSP_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-            select * from ms_Item where Product_ID = '2' and Status = '1'
+            select * from ms_Item where Product_ID in ('2','3') and Status = '1'
         ";
 
         $query = $this->db->query($sql);
