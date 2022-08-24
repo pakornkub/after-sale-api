@@ -14,8 +14,10 @@ class BomForJob_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select ITEM_ID,ITEM_CODE,'' as QTY
-        from ms_Item where Product_ID = '1' and Status = '1'
+        select ITEM_ID,ITEM_CODE,ms_ProductType.Product_DESCRIPTION ,'' as QTY
+        from ms_Item 
+		inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
+		where ms_Item.Product_ID = '1' and Status = '1'
         ";
 
         $query = $this->db->query($sql);
@@ -83,9 +85,10 @@ class BomForJob_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select BI.ITEM_Seq as key_index,BI.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,BI.ITEM_QTY as QTY,0 as ToTal_Use
+        select BI.ITEM_Seq as [key],BI.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,ms_ProductType.Product_DESCRIPTION as Type ,BI.ITEM_QTY as QTY,0 as ToTal_Use
         from ms_BOM_Item BI
         inner join ms_Item on BI.ITEM_ID = ms_Item.ITEM_ID
+		inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
         where BOM_ID = ?
         ";
 
