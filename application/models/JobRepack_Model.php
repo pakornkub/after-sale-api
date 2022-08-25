@@ -124,11 +124,12 @@ class JobRepack_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-                select JobItem_ID as [key],ms_Item.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Qty as QTY,TotalQty as ToTal_Use 
-                from tb_JobItem
-                inner join ms_Item on tb_JobItem.Item_ID = ms_Item.ITEM_ID
-                where Job_ID = '$param'
-                order by JobItem_ID
+            select JobItem_ID as [key],ms_Item.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,Qty as QTY,TotalQty as ToTal_Use,ms_ProductType.Product_DESCRIPTION  as Type 
+            from tb_JobItem
+            inner join ms_Item on tb_JobItem.Item_ID = ms_Item.ITEM_ID
+            inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
+            where Job_ID = '$param'
+            order by JobItem_ID
             
         ";
 
