@@ -60,6 +60,7 @@ class JobRepack_Model extends MY_Model
                     ROW_NUMBER() Over (Order by j.JOB_ID) as 'No'
                     ,i.ITEM_CODE as 'SP'
                     ,i.ITEM_ID as 'Item_ID'
+                    ,i.Product_ID
                     , ji.Qty as 'BOM'
                     ,(
 
