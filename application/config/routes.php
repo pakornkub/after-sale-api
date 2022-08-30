@@ -134,7 +134,7 @@ $route['select_receivestatus'] = 'api/tag/selectreceivestatus';
 $route['select_tag'] = 'api/tag/select';
 $route['create_tag'] = 'api/tag/create';
 $route['delete_tag'] = 'api/tag/delete';
-$route['create_tagreturn'] = 'api/tag/createreturn';
+$route['receive_auto'] = 'api/tag/receive_auto';
 
 // Tag Return API Routes
 $route['tagreturn'] = 'api/tagreturn/index';

@@ -98,6 +98,21 @@ class Tag_Model extends MY_Model
         return $this->db->query($sql,[$param['Rec_NO'],$param['username']]) ? true : false;
     }
 
+     /**
+     * Insert Receive Auto
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function insert_receive_auto($param = [])
+    {
+        $this->set_db('default');
 
+        $sql = "
+        exec [dbo].[SP_CreateReceiveTransaction_ALL]  ?,?
+          
+        ";
+
+        return $this->db->query($sql,[$param['Rec_ID'],$param['username']]) ? true : false;
+    }
 
 }
