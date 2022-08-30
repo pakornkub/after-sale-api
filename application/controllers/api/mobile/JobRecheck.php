@@ -287,6 +287,7 @@ class JobRecheck extends REST_Controller
                         'JOB_ID' => $this->input->post('JOB_ID'),
                         'QR_NO' => $this->input->post('QR_NO'),
                         'Tag_ID' => '',
+                        'Item_Code' => '',
                         'Username' => $job_recheck_token['UserName'],
                     ];
 
