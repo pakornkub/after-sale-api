@@ -35,7 +35,7 @@ class TagReturn_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-            select * from View_TagQR where Rec_ID = ?
+            select * from View_TagQR where Rec_ID = ? order by QR_NO ASC
         ";
 
         $query = $this->db->query($sql,$param['Rec_ID']);
