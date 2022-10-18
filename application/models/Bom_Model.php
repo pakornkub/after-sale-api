@@ -18,7 +18,7 @@ class Bom_Model extends MY_Model
         CASE WHEN Bom_Rev_No <   10 THEN '00'+ CONVERT(varchar(2),Bom_Rev_No)
             WHEN Bom_Rev_No >=  10 THEN '0'+ CONVERT(varchar(2),Bom_Rev_No)
             WHEN Bom_Rev_No >= 100 THEN CONVERT(varchar(2),Bom_Rev_No)	
-        ELSE 'No' END as Rev_No,Remark,ms_BOM.Status,
+        ELSE 'No' END as Rev_No,Remark,ms_BOM.Status,QTY,
         ms_BOM.Create_By,CONVERT(varchar,ms_BOM.Create_Date,103) as Add_Date
         from ms_BOM
         inner join ms_Item on ms_BOM.FG_ITEM_ID = ms_Item.ITEM_ID
