@@ -107,6 +107,9 @@ $route['bom_item'] = 'api/bom/bomitem';
 // Grade FG  API Routes
 $route['grade_fg'] = 'api/GradeFG/index';
 
+// Grade Package  API Routes
+$route['grade_package'] = 'api/GradePackage/index';
+
 // Grade SP  API Routes
 $route['grade_sp'] = 'api/GradeSP/index';
 

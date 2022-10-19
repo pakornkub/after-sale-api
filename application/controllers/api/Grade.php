@@ -59,7 +59,7 @@ class Grade extends REST_Controller
                     'message' => 'Material data was not found in the database',
                 ];
 
-                $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+                //$this->response($message, REST_Controller::HTTP_NOT_FOUND);
 
             }
 
