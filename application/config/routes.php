@@ -260,3 +260,11 @@ $route['count_stock_item'] = 'api/mobile/CountStock/item';
 $route['update_count_stock'] = 'api/mobile/CountStock/update';
 $route['exec_count_stock_item'] = 'api/mobile/CountStock/exec_item';
 
+
+// Split Part API Routes
+$route['splitpart'] = 'api/splitpart/index';
+$route['splitpart/:(any)'] = 'api/splitpart/show/$1';
+$route['create_splitpart'] = 'api/splitpart/create';
+$route['update_splitpart'] = 'api/splitpart/update';
+$route['delete_splitpart'] = 'api/splitpart/delete';
+$route['splitpart_item'] = 'api/splitpart/splitpartitem';
