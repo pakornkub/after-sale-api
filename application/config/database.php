@@ -122,9 +122,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '172.30.22.161',
-	'username' => 'pk_dev',
-	'password' => 'pk@2022',
+	'hostname' => '119.59.105.14',
+	'username' => 'sa',
+	'password' => 'Dev@2022',
 	'database' => 'PK_AfterSale',
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
