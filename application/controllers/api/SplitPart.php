@@ -456,5 +456,44 @@ class SplitPart extends REST_Controller
         }
 
     }
+    /**
+     * Show Bom Mapping API
+     * ---------------------------------
+     * @method : POST
+     * @link : splitpart/bommapping
+     */
+    public function bommapping_post()
+    {
+        header("Access-Control-Allow-Origin: *");
+
+        $_POST = $this->security->xss_clean($_POST);
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        $is_valid_token = $this->authorization_token->validateToken();
+        
+            $ITEM_ID = $this->input->post('ITEM_ID');
+
+            // $tag_data = [
+            //     'Rec_ID' => $this->input->post('Rec_ID'),
+               
+            // ];
+
+            $output = $this->SplitPart_Model->select_bommapping($ITEM_ID);
+
+            if (isset($output) && $output) {
+
+                // Show Detail All Success
+                $message = [
+                    'status' => true,
+                    'data' => $output,
+                    'message' => 'Show Bom Mapping successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+    }
 
 }

@@ -271,3 +271,4 @@ $route['create_splitpart'] = 'api/splitpart/create';
 $route['update_splitpart'] = 'api/splitpart/update';
 $route['delete_splitpart'] = 'api/splitpart/delete';
 $route['splitpart_item'] = 'api/splitpart/splitpartitem';
+$route['bommapping'] = 'api/splitpart/bommapping';

@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class Bom extends REST_Controller
 {
 
-    protected $MenuId = 'MaterialMipping';
+    protected $MenuId = 'MaterialMapping';
 
     public function __construct()
     {

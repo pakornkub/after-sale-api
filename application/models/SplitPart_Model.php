@@ -148,4 +148,34 @@ class SplitPart_Model extends MY_Model
 
     }
 
+
+    /**
+     * Bom Mapping
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_bommapping($param)
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+        select BOM_ID,SP_ITEM_ID,QTY,ms_Item.ITEM_CODE,ms_Item.ITEM_DESCRIPTION,Product_DESCRIPTION
+        from ms_BOM
+        inner join ms_Item on ms_Item.ITEM_ID = ms_BOM.SP_ITEM_ID
+        inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
+        where FG_ITEM_ID = '$param'
+
+            
+        ";
+
+        $query = $this->db->query($sql,$param);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+
+
+    }
 }
