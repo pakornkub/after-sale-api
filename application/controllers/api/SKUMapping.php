@@ -7,7 +7,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class Bom extends REST_Controller
 {
 
-    protected $MenuId = 'BOM';
+    protected $MenuId = 'MaterialMapping';
 
     public function __construct()
     {
@@ -114,7 +114,8 @@ class Bom extends REST_Controller
                         'BOM_Date' => $bom_header['Bom_Date'],
                         'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
                         'Bom_Rev_No' => $bom_header['Rev_No'],
-                        'Remark' => $bom_header['Bom_Remark'],
+                        'QTY' => $bom_header['Bom_QTY'],
+                        'SP_ITEM_ID' => $bom_header['Grade_ID_SP'],
                         'Status' => intval($bom_header['Bom_Status']),
                         'Create_Date' => date('Y-m-d H:i:s'),
                         'Create_By' => $bom_token['UserName'],
@@ -131,25 +132,7 @@ class Bom extends REST_Controller
                     if (isset($bom_output) && $bom_output) {
 
                         // Create Bom Success
-                        $bom_item = json_decode($this->input->post('data2'), true); 
-                        $i = 1;
-                        foreach ($bom_item as $value) {
-                            
-                            $bom_data_item['data'] = [
-                                'BOM_ID' => $bom_output,
-                                'ITEM_Seq' => $i,
-                                'ITEM_ID' => $value['Grade_ID'],
-                                'ITEM_QTY' => $value['QTY'],
-                                'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $bom_token['UserName'],
-                                
-                            ];
 
-                            $i = $i+1;
-
-                            $bom_output_item = $this->Bom_Model->insert_bom_item($bom_data_item);
-
-                        }
                         $message = [
                             'status' => true,
                             'message' => 'Create Bom Successful',
@@ -235,7 +218,8 @@ class Bom extends REST_Controller
                             'BOM_Date' => $bom_header['Bom_Date'],
                             'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
                             'Bom_Rev_No' => $bom_header['Rev_No'],
-                            'Remark' => $bom_header['Bom_Remark'],
+                            'QTY' => $bom_header['Bom_QTY'],
+                            'SP_ITEM_ID' => $bom_header['Grade_ID_SP'],
                             'Status' => intval($bom_header['Bom_Status']),
                             'Update_Date' => date('Y-m-d H:i:s'),
                             'Update_By' => $bom_token['UserName'],
@@ -248,26 +232,6 @@ class Bom extends REST_Controller
                     $bom_output = $this->Bom_Model->update_bom($bom_data);
 
                     if (isset($bom_output) && $bom_output) {
-                        $delete_output = $this->Bom_Model->delete_bom_item($bom_data);
-
-                        $bom_item = json_decode($this->input->post('data2'), true); 
-                        $i = 1;
-                        foreach ($bom_item as $value) {
-                            
-                            $bom_data_item['data'] = [
-                                'BOM_ID' => $bom_header['BOM_Index'],
-                                'ITEM_Seq' => $i,
-                                'ITEM_ID' => $value['Grade_ID'],
-                                'ITEM_QTY' => $value['QTY'],
-                                'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $bom_token['UserName'],
-                                
-                            ];
-
-                            $i = $i+1;
-
-                            $bom_output_item = $this->Bom_Model->insert_bom_item($bom_data_item);
-                        }
 
                         // Update Bom Success
                         $message = [

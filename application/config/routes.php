@@ -104,6 +104,14 @@ $route['update_bom'] = 'api/bom/update';
 $route['delete_bom'] = 'api/bom/delete';
 $route['bom_item'] = 'api/bom/bomitem';
 
+// SKUMapping API Routes
+$route['skumapping'] = 'api/skumapping/index';
+$route['skumapping/:(any)'] = 'api/skumapping/show/$1';
+$route['create_skumapping'] = 'api/skumapping/create';
+$route['update_skumapping'] = 'api/skumapping/update';
+$route['delete_skumapping'] = 'api/skumapping/delete';
+$route['skumapping_item'] = 'api/skumapping/skumappingitem';
+
 // Grade FG  API Routes
 $route['grade_fg'] = 'api/GradeFG/index';
 
