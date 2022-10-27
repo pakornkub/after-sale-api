@@ -4,7 +4,7 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class Bom extends REST_Controller
+class SKUMapping extends REST_Controller
 {
 
     protected $MenuId = 'MaterialMapping';
@@ -14,16 +14,16 @@ class Bom extends REST_Controller
 
         parent::__construct();
 
-        // Load Bom
-        $this->load->model('Bom_Model');
+        // Load SKUMapping
+        $this->load->model('SKUMapping_Model');
 
     }
 
     /**
-     * Show Bom All API
+     * Show SKUMapping All API
      * ---------------------------------
      * @method : GET
-     * @link : bom/index
+     * @link : skumapping/index
      */
     public function index_get()
     {
@@ -33,30 +33,30 @@ class Bom extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // Bom Token Validation
+        // SKUMapping Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load Bom Function
-            $output = $this->Bom_Model->select_bom();
+            // Load SKUMapping Function
+            $output = $this->SKUMapping_Model->select_skumapping();
 
             if (isset($output) && $output) {
 
-                // Show Bom All Success
+                // Show SKUMapping All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show Bom all successful',
+                    'message' => 'Show SKUMapping all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show Bom All Error
+                // Show SKUMapping All Error
                 // $message = [
                 //     'status' => false,
-                //     'message' => 'Bom data was not found in the database',
+                //     'message' => 'SKUMapping data was not found in the database',
                 // ];
 
                 // $this->response($message, REST_Controller::HTTP_NOT_FOUND);
@@ -76,12 +76,12 @@ class Bom extends REST_Controller
     }
 
     /**
-     * Create Bom API
+     * Create SKUMapping API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : bom/create
+     * @link : skumapping/create
      */
     public function create_post()
     {
@@ -94,22 +94,22 @@ class Bom extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // Bom Token Validation
+            // SKUMapping Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $bom_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $bom_permission = array_filter($bom_token['permission'], function ($permission) {
+                $skumapping_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $skumapping_permission = array_filter($skumapping_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
 
-                $bom_header = json_decode($this->input->post('data1'), true); 
+                $skumapping_header = json_decode($this->input->post('data1'), true); 
 
-                if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
+                if ($skumapping_permission[array_keys($skumapping_permission)[0]]['Created']) {
 
-                    $bom_data['data'] = [
+                    $skumapping_data['data'] = [
                         'BOM_Name' => $bom_header['Bom_Id'],
                         'BOM_Date' => $bom_header['Bom_Date'],
                         'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
@@ -124,18 +124,18 @@ class Bom extends REST_Controller
                         
                     ];
 
-                    // Create bom Function
-                    $bom_output = $this->Bom_Model->insert_bom($bom_data);
+                    // Create SKUMapping Function
+                    $skumapping_output = $this->SKUMapping_Model->insert_skumapping($skumapping_data);
 
 
 
-                    if (isset($bom_output) && $bom_output) {
+                    if (isset($skumapping_output) && $skumapping_output) {
 
-                        // Create Bom Success
+                        // Create SKUMapping Success
 
                         $message = [
                             'status' => true,
-                            'message' => 'Create Bom Successful',
+                            'message' => 'Create SKUMapping Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
@@ -144,10 +144,10 @@ class Bom extends REST_Controller
 
                     } else {
 
-                        // Create Bom Error
+                        // Create SKUMapping Error
                         $message = [
                             'status' => false,
-                            'message' => 'Create Bom Fail : [Insert Data Fail]',
+                            'message' => 'Create SKUMapping Fail : [Insert Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -179,12 +179,12 @@ class Bom extends REST_Controller
     }
 
     /**
-     * Update Bom API
+     * Update SKUMapping API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : bom/update
+     * @link : skumapping/update
      */
     public function update_post()
     { 
@@ -197,23 +197,23 @@ class Bom extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // Bom Token Validation
+            // SKUMapping Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $bom_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $bom_permission = array_filter($bom_token['permission'], function ($permission) {
+                $skumapping_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $skumapping_permission = array_filter($skumapping_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                    $bom_header = json_decode($this->input->post('data1'), true); 
+                    $skumapping_header = json_decode($this->input->post('data1'), true); 
 
-                    if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
+                    if ($skumapping_permission[array_keys($skumapping_permission)[0]]['Created']) {
 
-                        $bom_data['index'] = $bom_header['BOM_Index'];
+                        $skumapping_data['index'] = $skumapping_header['BOM_Index'];
 
-                        $bom_data['data'] = [
+                        $skumapping_data['data'] = [
                             'BOM_Name' => $bom_header['Bom_Id'],
                             'BOM_Date' => $bom_header['Bom_Date'],
                             'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
@@ -228,12 +228,12 @@ class Bom extends REST_Controller
 
                     
 
-                    // // Update Bom Function
-                    $bom_output = $this->Bom_Model->update_bom($bom_data);
+                    // // Update skumapping Function
+                    $skumapping_output = $this->SKUMapping_Model->update_skumapping($skumapping_data);
 
-                    if (isset($bom_output) && $bom_output) {
+                    if (isset($skumapping_output) && $skumapping_output) {
 
-                        // Update Bom Success
+                        // Update skumapping Success
                         $message = [
                             'status' => true,
                             'message' => 'Update Grade Successful',
@@ -243,10 +243,10 @@ class Bom extends REST_Controller
 
                     } else {
 
-                        // Update Bom Error
+                        // Update SKUMapping Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Bom Fail : [Update Data Fail]',
+                            'message' => 'Update SKUMapping Fail : [Update Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -278,12 +278,12 @@ class Bom extends REST_Controller
     }
 
     /**
-     * Delete Bom API
+     * Delete SKUMapping API
      * ---------------------------------
-     * @param: Bom_Index
+     * @param: SKUMapping_Index
      * ---------------------------------
      * @method : POST
-     * @link : bom/delete
+     * @link : skumapping/delete
      */
     public function delete_post()
     {
@@ -296,40 +296,39 @@ class Bom extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // Bom Token Validation
+            // SKUMapping Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $bom_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $bom_permission = array_filter($bom_token['permission'], function ($permission) {
+                $skumapping_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $skumapping_permission = array_filter($skumapping_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($bom_permission[array_keys($bom_permission)[0]]['Deleted']) {
+                if ($skumapping_permission[array_keys($skumapping_permission)[0]]['Deleted']) {
 
-                    $bom_data['index'] = $this->input->post('BOM_ID');
+                    $skumapping_data['index'] = $this->input->post('BOM_ID');
 
-                    // Delete bom Function
-                    $bom_output = $this->Bom_Model->delete_bom($bom_data);
-                    $bom_output_item = $this->Bom_Model->delete_bom_item($bom_data);
+                    // Delete skumapping Function
+                    $skumapping_output = $this->SKUMapping_Model->delete_skumapping($skumapping_data);
 
-                    if (isset($bom_output) && $bom_output) {
+                    if (isset($skumapping_output) && $skumapping_output) {
 
-                        // Delete bom Success
+                        // Delete skumapping Success
                         $message = [
                             'status' => true,
-                            'message' => 'Delete Bom Successful',
+                            'message' => 'Delete SKUMapping Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Delete bom Error
+                        // Delete skumapping Error
                         $message = [
                             'status' => false,
-                            'message' => 'Delete Bom Fail : [Delete Data Fail]',
+                            'message' => 'Delete SKUMapping Fail : [Delete Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -357,45 +356,6 @@ class Bom extends REST_Controller
             }
 
         
-
-    }
-
-        /**
-     * Show Bom item All API
-     * ---------------------------------
-     * @method : GET
-     * @link : bom/bom_item
-     */
-    public function bomitem_get()
-    {
-
-        header("Access-Control-Allow-Origin: *");
-
-        // Load Authorization Token Library
-        $this->load->library('Authorization_Token');
-
-        // BomID Token Validation
-        $is_valid_token = $this->authorization_token->validateToken();
-
-        if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load BomID Function
-            $Bom_ID = $this->input->get('Bom_ID');
-
-            $output = $this->Bom_Model->select_BomItem($Bom_ID);
-
-            if (isset($output) && $output) {
-
-                // Show BomID All Success
-                $message = [
-                    'status' => true,
-                    'data' => $output,
-                    'message' => 'Show BomItem all successful',
-                ];
-
-                $this->response($message, REST_Controller::HTTP_OK);
-
-            }
-        }
 
     }
 
