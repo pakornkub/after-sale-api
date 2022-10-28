@@ -57,7 +57,7 @@ class SKUMapping_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->update('ms_SKUMapping', $param['data'], ['BOM_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('ms_SKUMapping', $param['data'], ['SKUMapping_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -70,7 +70,7 @@ class SKUMapping_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('ms_SKUMapping', ['BOM_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('ms_SKUMapping', ['SKUMapping_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
    

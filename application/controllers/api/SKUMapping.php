@@ -110,13 +110,11 @@ class SKUMapping extends REST_Controller
                 if ($skumapping_permission[array_keys($skumapping_permission)[0]]['Created']) {
 
                     $skumapping_data['data'] = [
-                        'BOM_Name' => $bom_header['Bom_Id'],
-                        'BOM_Date' => $bom_header['Bom_Date'],
-                        'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
-                        'Bom_Rev_No' => $bom_header['Rev_No'],
-                        'QTY' => $bom_header['Bom_QTY'],
-                        'SP_ITEM_ID' => $bom_header['Grade_ID_SP'],
-                        'Status' => intval($bom_header['Bom_Status']),
+                        'SKUMapping_Date' => $skumapping_header['SKUMapping_Date'],
+                        'FG_ITEM_ID' => $skumapping_header['Grade_ID_FG'],
+                        'QTY' => $skumapping_header['SKUMapping_QTY'],
+                        'SP_ITEM_ID' => $skumapping_header['Grade_ID_SP'],
+                        'Status' => intval($skumapping_header['SKUMapping_Status']),
                         'Create_Date' => date('Y-m-d H:i:s'),
                         'Create_By' => $bom_token['UserName'],
                         'Update_Date' => null,
@@ -211,16 +209,15 @@ class SKUMapping extends REST_Controller
 
                     if ($skumapping_permission[array_keys($skumapping_permission)[0]]['Created']) {
 
-                        $skumapping_data['index'] = $skumapping_header['BOM_Index'];
+                        $skumapping_data['index'] = $skumapping_header['SKUMapping_Index'];
 
+                        
                         $skumapping_data['data'] = [
-                            'BOM_Name' => $bom_header['Bom_Id'],
-                            'BOM_Date' => $bom_header['Bom_Date'],
-                            'FG_ITEM_ID' => $bom_header['Grade_ID_FG'],
-                            'Bom_Rev_No' => $bom_header['Rev_No'],
-                            'QTY' => $bom_header['Bom_QTY'],
-                            'SP_ITEM_ID' => $bom_header['Grade_ID_SP'],
-                            'Status' => intval($bom_header['Bom_Status']),
+                            'SKUMapping_Date' => $skumapping_header['SKUMapping_Date'],
+                            'FG_ITEM_ID' => $skumapping_header['Grade_ID_FG'],
+                            'QTY' => $skumapping_header['SKUMapping_QTY'],
+                            'SP_ITEM_ID' => $skumapping_header['Grade_ID_SP'],
+                            'Status' => intval($skumapping_header['SKUMapping_Status']),
                             'Update_Date' => date('Y-m-d H:i:s'),
                             'Update_By' => $bom_token['UserName'],
                             
@@ -308,7 +305,7 @@ class SKUMapping extends REST_Controller
 
                 if ($skumapping_permission[array_keys($skumapping_permission)[0]]['Deleted']) {
 
-                    $skumapping_data['index'] = $this->input->post('BOM_ID');
+                    $skumapping_data['index'] = $this->input->post('SKUMapping_ID');
 
                     // Delete skumapping Function
                     $skumapping_output = $this->SKUMapping_Model->delete_skumapping($skumapping_data);
