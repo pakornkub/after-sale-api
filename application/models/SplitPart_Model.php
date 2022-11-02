@@ -14,7 +14,7 @@ class SplitPart_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select * from view_Receive where Rec_type = '4' order by Rec_ID DESC
+        select * from View_SplitPart order by JOB_ID DESC
 
         ";
 
@@ -32,13 +32,13 @@ class SplitPart_Model extends MY_Model
      * ---------------------------------
      * @param : null
      */
-    public function select_receive_no()
+    public function select_split_no()
     {
 
         $this->set_db('default');
 
         $sql = "
-        select dbo.[fnGetRcDocNo] ('4') as ReceiveNo
+        select dbo.[fnGetJobDocNo] ('1') as jobNo
         ";
 
         $query = $this->db->query($sql);
@@ -59,7 +59,7 @@ class SplitPart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('Tb_Receive', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_Job', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
@@ -72,7 +72,7 @@ class SplitPart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('Tb_ReceiveItem', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_JobItem', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
