@@ -127,7 +127,7 @@ class SplitPart_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-                select Tb_JobItem.JobItem_ID as [key],Tb_JobItem.BOM_ID,Tb_JobItem.QR_NO,Tb_JobItem.FG_ITEM_ID as Grade_ID_FG,SKU1.ITEM_CODE as Grade_Name_FG,
+                select Tb_JobItem.JobItem_ID as [key],Tb_JobItem.SKUMapping_ID,Tb_JobItem.QR_NO,Tb_JobItem.FG_ITEM_ID as Grade_ID_FG,SKU1.ITEM_CODE as Grade_Name_FG,
                 SKU1.ITEM_DESCRIPTION as Grade_DESCRIPTION_FG,Tb_JobItem.Lot_No,Tb_JobItem.FG_Qty as QTY_FG,
                 Tb_JobItem.SP_ITEM_ID as Grade_ID_SP,SKU2.ITEM_CODE as Grade_Name_SP,SKU2.ITEM_DESCRIPTION as Grade_DESCRIPTION_SP,Tb_JobItem.SP_Qty  as QTY_SP
                 from Tb_JobItem
@@ -149,23 +149,21 @@ class SplitPart_Model extends MY_Model
 
 
     /**
-     * Bom Mapping
+     * SKU Mapping
      * ---------------------------------
      * @param : null
      */
-    public function select_bommapping($param)
+    public function select_skumapping($param)
     {
 
         $this->set_db('default');
 
         $sql = "
-        select BOM_ID,SP_ITEM_ID,QTY,ms_Item.ITEM_CODE,ms_Item.ITEM_DESCRIPTION,Product_DESCRIPTION
-        from ms_BOM
-        inner join ms_Item on ms_Item.ITEM_ID = ms_BOM.SP_ITEM_ID
+        select SKUMapping_ID,SP_ITEM_ID,QTY,ms_Item.ITEM_CODE,ms_Item.ITEM_DESCRIPTION,Product_DESCRIPTION
+        from ms_SKUMapping
+        inner join ms_Item on ms_Item.ITEM_ID = ms_SKUMapping.SP_ITEM_ID
         inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
-        where FG_ITEM_ID = '$param'
-
-            
+        where FG_ITEM_ID = '$param' and ms_SKUMapping.Status <> -1
         ";
 
         $query = $this->db->query($sql,$param);

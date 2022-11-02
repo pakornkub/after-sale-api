@@ -147,7 +147,7 @@ class SplitPart extends REST_Controller
                                 
                                 $split_data_item['data'] = [
                                     'Job_ID' => $split_output,
-                                    'BOM_ID' => $value['BOM_ID'],
+                                    'SKUMapping_ID' => $value['SKUMapping_ID'],
                                     'Rec_NO' => $value['Rec_No'],
                                     'QR_NO' => $value['QR_NO'],
                                     'FG_ITEM_ID' => $value['Grade_ID_FG'],
@@ -461,12 +461,12 @@ class SplitPart extends REST_Controller
 
     }
     /**
-     * Show Bom Mapping API
+     * Show SKU Mapping API
      * ---------------------------------
      * @method : POST
-     * @link : splitpart/bommapping
+     * @link : splitpart/skumapping
      */
-    public function bommapping_post()
+    public function skumapping_post()
     {
         header("Access-Control-Allow-Origin: *");
 
@@ -484,7 +484,7 @@ class SplitPart extends REST_Controller
                
             // ];
 
-            $output = $this->SplitPart_Model->select_bommapping($ITEM_ID);
+            $output = $this->SplitPart_Model->select_skumapping($ITEM_ID);
 
             if (isset($output) && $output) {
 
@@ -492,7 +492,7 @@ class SplitPart extends REST_Controller
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show Bom Mapping successful',
+                    'message' => 'Show SKU Mapping successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
