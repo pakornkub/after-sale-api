@@ -441,9 +441,9 @@ class SplitPart extends REST_Controller
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
             // Load SplitPartID Function
-            $Rc_ID = $this->input->get('SplitPart_ID');
+            $Split_ID = $this->input->get('SplitPart_ID');
 
-            $output = $this->SplitPart_Model->select_splitpartitem($Rc_ID);
+            $output = $this->SplitPart_Model->select_splitpartitem($Split_ID);
 
             if (isset($output) && $output) {
 

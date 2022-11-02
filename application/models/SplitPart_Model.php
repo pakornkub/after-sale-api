@@ -127,14 +127,13 @@ class SplitPart_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-            select Tb_ReceiveItem.RecItem_ID as [key],Tb_ReceiveItem.Item_ID as Grade_ID,
-            ms_Item.ITEM_CODE as Grade_Name,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY,ms_ProductType.Product_DESCRIPTION  as Type
-            from Tb_ReceiveItem
-            inner join ms_Item on Tb_ReceiveItem.Item_ID = ms_Item.ITEM_ID
-            inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
-            where Rec_ID = '$param'
-            order by RecItem_ID
-
+                select Tb_JobItem.JobItem_ID as [key],Tb_JobItem.BOM_ID,Tb_JobItem.QR_NO,Tb_JobItem.FG_ITEM_ID as Grade_ID_FG,SKU1.ITEM_CODE as Grade_Name_FG,
+                SKU1.ITEM_DESCRIPTION as Grade_DESCRIPTION_FG,Tb_JobItem.Lot_No,Tb_JobItem.FG_Qty as QTY_FG,
+                Tb_JobItem.SP_ITEM_ID as Grade_ID_SP,SKU2.ITEM_CODE as Grade_Name_SP,SKU2.ITEM_DESCRIPTION as Grade_DESCRIPTION_SP,Tb_JobItem.SP_Qty  as QTY_SP
+                from Tb_JobItem
+                LEFT JOIN ms_Item SKU1 on Tb_JobItem.FG_ITEM_ID = SKU1.ITEM_ID
+                LEFT JOIN ms_Item SKU2 on Tb_JobItem.SP_ITEM_ID = SKU2.ITEM_ID
+                where Job_ID = '$param'
             
         ";
 
