@@ -85,7 +85,7 @@ class SplitPart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->update('Tb_Receive', $param['data'], ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('Tb_Job', $param['data'], ['JOB_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -98,7 +98,7 @@ class SplitPart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_Receive', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_Job', ['JOB_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
          /**
@@ -110,7 +110,7 @@ class SplitPart_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_ReceiveItem', ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_JobItem', ['job_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -127,13 +127,13 @@ class SplitPart_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-                select Tb_JobItem.JobItem_ID as [key],Tb_JobItem.SKUMapping_ID,Tb_JobItem.QR_NO,Tb_JobItem.FG_ITEM_ID as Grade_ID_FG,SKU1.ITEM_CODE as Grade_Name_FG,
-                SKU1.ITEM_DESCRIPTION as Grade_DESCRIPTION_FG,Tb_JobItem.Lot_No,Tb_JobItem.FG_Qty as QTY_FG,
-                Tb_JobItem.SP_ITEM_ID as Grade_ID_SP,SKU2.ITEM_CODE as Grade_Name_SP,SKU2.ITEM_DESCRIPTION as Grade_DESCRIPTION_SP,Tb_JobItem.SP_Qty  as QTY_SP
-                from Tb_JobItem
-                LEFT JOIN ms_Item SKU1 on Tb_JobItem.FG_ITEM_ID = SKU1.ITEM_ID
-                LEFT JOIN ms_Item SKU2 on Tb_JobItem.SP_ITEM_ID = SKU2.ITEM_ID
-                where Job_ID = '$param'
+        select Tb_JobItem.JobItem_ID as [key],Tb_JobItem.SKUMapping_ID,Tb_JobItem.Rec_NO,Tb_JobItem.QR_NO,Tb_JobItem.FG_ITEM_ID as Grade_ID_FG,SKU1.ITEM_CODE as Grade_Name_FG,
+        SKU1.ITEM_DESCRIPTION as Grade_DESCRIPTION_FG,Tb_JobItem.Lot_No,Tb_JobItem.FG_Qty as QTY_FG,
+        Tb_JobItem.SP_ITEM_ID as Grade_ID_SP,SKU2.ITEM_CODE as Grade_Name_SP,SKU2.ITEM_DESCRIPTION as Grade_DESCRIPTION_SP,Tb_JobItem.SP_Qty  as QTY_SP
+        from Tb_JobItem
+        LEFT JOIN ms_Item SKU1 on Tb_JobItem.FG_ITEM_ID = SKU1.ITEM_ID
+        LEFT JOIN ms_Item SKU2 on Tb_JobItem.SP_ITEM_ID = SKU2.ITEM_ID
+        where Job_ID = '$param'
             
         ";
 

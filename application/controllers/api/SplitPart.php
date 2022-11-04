@@ -176,7 +176,7 @@ class SplitPart extends REST_Controller
     
                         } else {
     
-                            // Create receive Error
+                            // Create split Error
                             $message = [
                                 'status' => false,
                                 'message' => 'Create Split Part Fail : [Insert Data Fail]',
@@ -245,55 +245,57 @@ class SplitPart extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $split_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $split_permission = array_filter($split_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                    $receive_header = json_decode($this->input->post('data1'), true); 
+                    $split_header = json_decode($this->input->post('data1'), true); 
 
-                    if ($receive_permission[array_keys($receive_permission)[0]]['Created']) {
+                    if ($split_permission[array_keys($split_permission)[0]]['Created']) {
 
-                        $receive_data['index'] = $receive_header['Split_Index'];
-
-                        $receive_data['data'] = [
-                            'Rec_type' => '4',
-                            'Rec_NO' => $receive_header['Split_No'],
-                            'Rec_Datetime' => $receive_header['Split_Date'],
-                            'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
-                            'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
-                            'Remark' => (isset($receive_header['Split_Remark']) && $receive_header['Split_Remark']) ? $receive_header['Split_Remark'] : null,
+                        $split_data['index'] = $split_header['Split_Index'];
+                        
+                        $split_data['data'] = [
+                            'JOB_Date' => $split_header['Split_Date'],
+                            'JobType_ID' => '1',
+                            'Ref_DocNo_1' => (isset($split_header['Ref_No1']) && $split_header['Ref_No1']) ? $split_header['Ref_No1'] : null,
+                            'Ref_DocNo_2' => (isset($split_header['Ref_No2']) && $split_header['Ref_No2']) ? $split_header['Ref_No2'] : null,
+                            'Remark' => (isset($split_header['Split_Remark']) && $split_header['Split_Remark']) ? $split_header['Split_Remark'] : null,
                             'Update_Date' => date('Y-m-d H:i:s'),
-                            'Update_By' => $receive_token['UserName'],
+                            'Update_By' => $split_token['UserName'],
                             
                         ];
 
                     
-
                    // Update SplitPart Function
-                    $receive_output = $this->SplitPart_Model->update_splitpart($receive_data);
+                    $split_output = $this->SplitPart_Model->update_splitpart($split_data);
 
-                    if (isset($receive_output) && $receive_output) {
+                    if (isset($split_output) && $split_output) {
 
 
-                        $delete_output = $this->SplitPart_Model->delete_splitpart_item($receive_data);
+                        $delete_output = $this->SplitPart_Model->delete_splitpart_item($split_data);
 
-                        $receive_item = json_decode($this->input->post('data2'), true); 
+                        $split_item = json_decode($this->input->post('data2'), true); 
                         
-                        foreach ($receive_item as $value) {
+                        foreach ($split_item as $value) {
                             
-                            $receive_data_item['data'] = [
-                                'Rec_ID' => $receive_header['Split_Index'],
-                                'Qty' => $value['QTY'],
-                                'Item_ID' => $value['Grade_ID'],
-                                'Lot_No' => $value['Lot_No'],
-                                'ItemStatus_ID' => $value['QTY'],
+                            $split_data_item['data'] = [
+                                'Job_ID' => $split_header['Split_Index'],
+                                'SKUMapping_ID' => $value['SKUMapping_ID'],
+                                'Rec_NO' => $value['Rec_NO'],
+                                'QR_NO' => $value['QR_NO'],
+                                'FG_ITEM_ID' => $value['Grade_ID_FG'],
+                                'Lot_No' => (isset($value['Lot_No']) && $value['Lot_No']) ? $value['Lot_No'] : null,
+                                'FG_Qty' => $value['QTY_FG'],
+                                'SP_ITEM_ID' => $value['Grade_ID_SP'],
+                                'SP_Qty' => $value['QTY_SP'],
                                 'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $receive_token['UserName'],
+                                'Create_By' => $split_token['UserName'],
                                 
                             ];
 
-                            $receive_output_item = $this->SplitPart_Model->insert_splitpart_item($receive_data_item);
+                            $split_output_item = $this->SplitPart_Model->insert_splitpart_item($split_data_item);
                         }
                             // Update SplitPart Success
                         $message = [
@@ -363,25 +365,25 @@ class SplitPart extends REST_Controller
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_permission = array_filter($receive_token['permission'], function ($permission) {
+                $split_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $split_permission = array_filter($split_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($receive_permission[array_keys($receive_permission)[0]]['Deleted']) {
+                if ($split_permission[array_keys($split_permission)[0]]['Deleted']) {
 
-                    $receive_data['index'] = $this->input->post('Rec_ID');
+                    $split_data['index'] = $this->input->post('Split_Index');
 
                     // Delete SplitPart Function
-                    $receive_output = $this->SplitPart_Model->delete_splitpart($receive_data);
-                    $receive_output_item = $this->SplitPart_Model->delete_splitpart_item($receive_data);
+                    $split_output = $this->SplitPart_Model->delete_splitpart($split_data);
+                    $split_output_item = $this->SplitPart_Model->delete_splitpart_item($split_data);
 
-                    if (isset($receive_output) && $receive_output) {
+                    if (isset($split_output) && $split_output) {
 
                         // Delete SplitPart Success
                         $message = [
                             'status' => true,
-                            'message' => $receive_output,
+                            'message' => $split_output,
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
