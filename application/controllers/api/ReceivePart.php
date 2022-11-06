@@ -149,7 +149,7 @@ class ReceivePart extends REST_Controller
                                     'Qty' => $value['QTY'],
                                     'Item_ID' => $value['Grade_ID'],
                                     'Lot_No' => $value['Lot_No'],
-                                    'ItemStatus_ID' => $value['QTY'],
+                                    'ItemStatus_ID' => '1',
                                     'Create_Date' => date('Y-m-d H:i:s'),
                                     'Create_By' => $receive_token['UserName'],
                                     

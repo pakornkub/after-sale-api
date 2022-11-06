@@ -175,4 +175,30 @@ class SplitPart_Model extends MY_Model
 
 
     }
+
+        /**
+     * Insert ReceivePart
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function insert_receivepart($param = [])
+    {
+        $this->set_db('default');
+
+        return ($this->db->insert('Tb_Receive', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+
+    }
+
+    /**
+     * Insert ReceivePart Item
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function insert_receivepart_item($param = [])
+    {
+        $this->set_db('default');
+
+        return ($this->db->insert('Tb_ReceiveItem', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+
+    }
 }

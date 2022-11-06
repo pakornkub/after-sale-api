@@ -135,6 +135,26 @@ class SplitPart extends REST_Controller
     
                         // Create split Function
                         $split_output = $this->SplitPart_Model->insert_splitpart($split_data);
+
+                        // -------------------- Create Receive ----------------------
+
+                        $receive_data['data'] = [
+                            'Rec_type' => '4',
+                            'Rec_NO' => $split_no,
+                            'Rec_Datetime' => $split_header['Receive_Date'],
+                            'status' => '1',
+                            'Ref_DocNo_1' => (isset($split_header['Ref_No1']) && $split_header['Ref_No1']) ? $split_header['Ref_No1'] : null,
+                            'Ref_DocNo_2' => (isset($split_header['Ref_No2']) && $split_header['Ref_No2']) ? $split_header['Ref_No2'] : null,
+                            'Remark' => (isset($split_header['Split_Remark']) && $split_header['Split_Remark']) ? $split_header['Split_Remark'] : null,
+                            'Create_Date' => date('Y-m-d H:i:s'),
+                            'Create_By' => $split_token['UserName'],
+                            'Update_Date' => null,
+                            'Update_By' => null,
+                            
+                        ];
+    
+                        // Create receive Function
+                        $receive_output = $this->SplitPart_Model->insert_receivepart($receive_data);
     
     
     
@@ -180,6 +200,53 @@ class SplitPart extends REST_Controller
                             $message = [
                                 'status' => false,
                                 'message' => 'Create Split Part Fail : [Insert Data Fail]',
+                            ];
+    
+                            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+    
+                        }
+
+                        // -------------------- Create Item ReceiveItem ----------------------
+
+                        if (isset($receive_output) && $receive_output) {
+    
+                            //Create Item Success
+                            $receive_item = json_decode($this->input->post('data2'), true); 
+                            
+                            foreach ($receive_item as $value) {
+                                
+                                $receive_data_item['data'] = [
+                                    'Rec_ID' => $receive_output,
+                                    'Qty' => $value['QTY_SP'],
+                                    'Item_ID' => $value['Grade_ID_SP'],
+                                    'Lot_No' => (isset($value['Lot_No']) && $value['Lot_No']) ? $value['Lot_No'] : null,
+                                    'ItemStatus_ID' => '1',
+                                    'Create_Date' => date('Y-m-d H:i:s'),
+                                    'Create_By' => $split_token['UserName'],
+                                    
+                                ];
+    
+    
+                                $receive_output_item = $this->SplitPart_Model->insert_receivepart_item($receive_data_item);
+    
+                            }
+                            
+    
+                            $message = [
+                                'status' => true,
+                                'message' => 'Create Receive Part Successful',
+                            ];
+    
+                            $this->response($message, REST_Controller::HTTP_OK);
+    
+    
+    
+                        } else {
+    
+                            // Create receive Error
+                            $message = [
+                                'status' => false,
+                                'message' => 'Create Receive Part Fail : [Insert Data Fail]',
                             ];
     
                             $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);

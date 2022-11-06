@@ -280,3 +280,14 @@ $route['update_splitpart'] = 'api/splitpart/update';
 $route['delete_splitpart'] = 'api/splitpart/delete';
 $route['splitpart_item'] = 'api/splitpart/splitpartitem';
 $route['skumapping'] = 'api/splitpart/skumapping';
+
+
+
+// Tag Split API Routes
+$route['tagsplit'] = 'api/tagsplit/index';
+$route['tagsplit/:(any)'] = 'api/tagsplit/show/$1';
+$route['select_receivestatussplit'] = 'api/tagsplit/selectreceivestatus';
+$route['select_tagsplit'] = 'api/tagsplit/select';
+$route['create_tagsplit'] = 'api/tagsplit/create';
+$route['delete_tagsplit'] = 'api/tagsplit/delete';
+$route['receive_auto_split'] = 'api/tagsplit/receive_auto';
