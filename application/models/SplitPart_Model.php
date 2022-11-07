@@ -94,11 +94,11 @@ class SplitPart_Model extends MY_Model
      * ---------------------------------
      * @param : SplitPart_Index
      */
-    public function delete_splitpart($param = [])
+    public function delete_splitpart($param)
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_Job', ['JOB_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_Job', ['JOB_ID'=> $param])) ? true : false/*$this->db->error()*/;
 
     }
          /**
@@ -106,11 +106,49 @@ class SplitPart_Model extends MY_Model
      * ---------------------------------
      * @param : SplitPart_ID
      */
-    public function delete_splitpart_item($param = [])
+    public function delete_splitpart_item($param)
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_JobItem', ['job_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_JobItem', ['job_ID'=> $param])) ? true : false/*$this->db->error()*/;
+
+    }
+
+         /**
+     * Delete ReceivePart
+     * ---------------------------------
+     * @param : ReceivePart_Index
+     */
+    public function delete_receivepart($param)
+    {
+        $this->set_db('default');
+
+        return ($this->db->delete('Tb_Receive', ['Rec_ID'=> $param])) ? true : false/*$this->db->error()*/;
+
+    }
+         /**
+     * Delete ReceivePart Item
+     * ---------------------------------
+     * @param : ReceivePart_ID
+     */
+    public function delete_receivepart_item($param)
+    {
+        $this->set_db('default');
+
+        return ($this->db->delete('Tb_ReceiveItem', ['Rec_ID'=> $param])) ? true : false/*$this->db->error()*/;
+
+    }
+
+        /**
+     * Update StockBalance
+     * ---------------------------------
+     * @param : QR_NO
+     */
+    public function update_stockbalance($param = [])
+    {
+        $this->set_db('default');
+        
+        return ($this->db->update('Tb_StockBalance', $param['StockBalance'], ['QR_NO'=> $param['QR_NO']])) ? true : false/*$this->db->error()*/;
 
     }
 

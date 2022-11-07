@@ -57,11 +57,11 @@ class TagSplit_Model extends MY_Model
 
         $sql = "
 
-        exec [dbo].[SP_CreateReturnTag]  ?,?
+        exec [dbo].[SP_CreateSplitTag]  ?,?,?
           
         ";
 
-        return $this->db->query($sql,[$param['Rec_NO'],$param['username']]) ? true : false;
+        return $this->db->query($sql,[$param['Rec_ID'],$param['QR_NO'],$param['username']]) ? true : false;
     }
 
 
@@ -74,9 +74,11 @@ class TagSplit_Model extends MY_Model
     {
         $this->set_db('default');
 
-        $this->db->update('Tb_Receive', $param['data1'], ['Rec_ID'=> $param['index']]) ? true : false;
+        $this->db->update('Tb_Receive', $param['data1'], ['Rec_ID'=> $param['REC_ID']]) ? true : false;
+
+        $this->db->update('Tb_StockBalance', $param['StockBalance'], ['QR_NO'=> $param['QR_NO']]) ? true : false;
         
-        return ($this->db->update('Tb_TagQR', $param['data'], ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('Tb_TagQR', $param['data'], ['Rec_ID'=> $param['REC_ID']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -90,7 +92,7 @@ class TagSplit_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        exec [dbo].[SP_CreateReceiveTransaction_ALL]  ?,?
+        exec [dbo].[SP_CreateSplitTransaction_ALL]  ?,?
           
         ";
 

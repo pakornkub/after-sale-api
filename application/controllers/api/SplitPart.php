@@ -141,7 +141,7 @@ class SplitPart extends REST_Controller
                         $receive_data['data'] = [
                             'Rec_type' => '4',
                             'Rec_NO' => $split_no,
-                            'Rec_Datetime' => $split_header['Receive_Date'],
+                            'Rec_Datetime' => $split_header['Split_Date'],
                             'status' => '1',
                             'Ref_DocNo_1' => (isset($split_header['Ref_No1']) && $split_header['Ref_No1']) ? $split_header['Ref_No1'] : null,
                             'Ref_DocNo_2' => (isset($split_header['Ref_No2']) && $split_header['Ref_No2']) ? $split_header['Ref_No2'] : null,
@@ -217,8 +217,8 @@ class SplitPart extends REST_Controller
                                 
                                 $receive_data_item['data'] = [
                                     'Rec_ID' => $receive_output,
-                                    'Qty' => $value['QTY_SP'],
-                                    'Item_ID' => $value['Grade_ID_SP'],
+                                    'Qty' => $value['QTY_FG'],
+                                    'Item_ID' => $value['Grade_ID_FG'],
                                     'Lot_No' => (isset($value['Lot_No']) && $value['Lot_No']) ? $value['Lot_No'] : null,
                                     'ItemStatus_ID' => '1',
                                     'Create_Date' => date('Y-m-d H:i:s'),
@@ -439,13 +439,36 @@ class SplitPart extends REST_Controller
 
                 if ($split_permission[array_keys($split_permission)[0]]['Deleted']) {
 
-                    $split_data['index'] = $this->input->post('Split_Index');
+                    // $split_data['index'] = $this->input->post('Split_Index');
+
+                    $JOB_ID = json_decode($this->input->post('data1'), true); 
+                    $REC_ID = json_decode($this->input->post('data2'), true);
+                    $QR_NO = json_decode($this->input->post('data3'), true);  
 
                     // Delete SplitPart Function
-                    $split_output = $this->SplitPart_Model->delete_splitpart($split_data);
-                    $split_output_item = $this->SplitPart_Model->delete_splitpart_item($split_data);
+                    $split_output = $this->SplitPart_Model->delete_splitpart($JOB_ID);
+                    $split_output_item = $this->SplitPart_Model->delete_splitpart_item($JOB_ID);
 
-                    if (isset($split_output) && $split_output) {
+                    // Delete ReceivePart Function
+                    $receive_output = $this->SplitPart_Model->delete_receivepart($REC_ID);
+                    $receive_output_item = $this->SplitPart_Model->delete_receivepart_item($REC_ID);
+
+                    // update StockBalance
+                    $tag_data['QR_NO'] = $QR_NO;
+
+                    $tag_data['StockBalance'] = [
+                        'ReserveQTY' =>  0,
+                        'ReserveBy' => null,
+                        'Update_Date' => date('Y-m-d H:i:s'),
+                        'Update_By' => $split_token['UserName'],
+                        
+                    ];
+
+                    $tag_output = $this->SplitPart_Model->update_stockbalance($tag_data);
+
+
+
+                    if ((isset($split_output) && $split_output) && (isset($receive_output) && $receive_output)) {
 
                         // Delete SplitPart Success
                         $message = [
@@ -533,9 +556,9 @@ class SplitPart extends REST_Controller
      * Show SKU Mapping API
      * ---------------------------------
      * @method : POST
-     * @link : splitpart/skumapping
+     * @link : splitpart/skumappingsplit
      */
-    public function skumapping_post()
+    public function skumappingsplit_post()
     {
         header("Access-Control-Allow-Origin: *");
 

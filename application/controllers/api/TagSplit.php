@@ -170,9 +170,12 @@ class TagSplit extends REST_Controller
 
                 if ($tag_permission[array_keys($tag_permission)[0]]['Created']) {
 
-                    
+                    $REC_ID = json_decode($this->input->post('data1'), true); 
+                    $QR_NO = json_decode($this->input->post('data2'), true); 
+
                     $tag_data = [
-                        'Rec_NO' => $this->input->post('Rec_NO'),
+                        'Rec_ID' => $REC_ID,
+                        'QR_NO' => $QR_NO,
                         'username' => $tag_token['UserName'],
                        
                     ];
@@ -256,8 +259,12 @@ class TagSplit extends REST_Controller
 
                 if ($tag_permission[array_keys($tag_permission)[0]]['Deleted']) {
                     
+                    $REC_ID = json_decode($this->input->post('data1'), true); 
+                    $QR_NO = json_decode($this->input->post('data2'), true); 
 
-                    $tag_data['index'] = $this->input->post('Rec_ID');
+
+                    $tag_data['REC_ID'] = $REC_ID;
+                    $tag_data['QR_NO'] = $QR_NO;
 
                     $tag_data['data'] = [
                         'Tag_Status' => -1,
@@ -268,6 +275,14 @@ class TagSplit extends REST_Controller
 
                     $tag_data['data1'] = [
                         'status' =>  1,
+                        'Update_Date' => date('Y-m-d H:i:s'),
+                        'Update_By' => $tag_token['UserName'],
+                        
+                    ];
+
+                    $tag_data['StockBalance'] = [
+                        'ReserveQTY' =>  0,
+                        'ReserveBy' => null,
                         'Update_Date' => date('Y-m-d H:i:s'),
                         'Update_By' => $tag_token['UserName'],
                         
@@ -362,7 +377,7 @@ class TagSplit extends REST_Controller
                     ];
 
                     // Receive Auto Function
-                    $receive_output = $this->Tag_Model->insert_receive_auto($receive_data);
+                    $receive_output = $this->TagSplit_Model->insert_receive_auto($receive_data);
 
                     if (isset($receive_output) && $receive_output) {
 
