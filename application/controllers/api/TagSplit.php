@@ -280,13 +280,13 @@ class TagSplit extends REST_Controller
                         
                     ];
 
-                    $tag_data['StockBalance'] = [
-                        'ReserveQTY' =>  0,
-                        'ReserveBy' => null,
-                        'Update_Date' => date('Y-m-d H:i:s'),
-                        'Update_By' => $tag_token['UserName'],
+                    // $tag_data['StockBalance'] = [
+                    //     'ReserveQTY' =>  0,
+                    //     'ReserveBy' => null,
+                    //     'Update_Date' => date('Y-m-d H:i:s'),
+                    //     'Update_By' => $tag_token['UserName'],
                         
-                    ];
+                    // ];
 
                     // Delete Tag Function
                     $tag_output = $this->TagSplit_Model->delete_tag($tag_data);

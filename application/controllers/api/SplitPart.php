@@ -181,6 +181,7 @@ class SplitPart extends REST_Controller
                                 ];
     
                                 $split_output_item = $this->SplitPart_Model->insert_splitpart_item($split_data_item);
+                                // $update_stockbal = $this->SplitPart_Model->update_stockbalance($split_data_item);
     
                             }
                             
@@ -526,15 +527,15 @@ class SplitPart extends REST_Controller
                     // update StockBalance
                     $tag_data['QR_NO'] = $QR_NO;
 
-                    $tag_data['StockBalance'] = [
-                        'ReserveQTY' =>  0,
-                        'ReserveBy' => null,
-                        'Update_Date' => date('Y-m-d H:i:s'),
-                        'Update_By' => $split_token['UserName'],
+                    // $tag_data['StockBalance'] = [
+                    //     'ReserveQTY' =>  0,
+                    //     'ReserveBy' => null,
+                    //     'Update_Date' => date('Y-m-d H:i:s'),
+                    //     'Update_By' => $split_token['UserName'],
                         
-                    ];
+                    // ];
 
-                    $tag_output = $this->SplitPart_Model->update_stockbalance($tag_data);
+                    // $tag_output = $this->SplitPart_Model->update_stockbalance($tag_data);
 
 
 

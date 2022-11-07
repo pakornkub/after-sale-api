@@ -76,6 +76,24 @@ class SplitPart_Model extends MY_Model
 
     }
 
+       /**
+     * Update Stock Balance
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function update_stockbalance($param = [])
+    {
+        $this->set_db('default');
+
+        $sql = "
+
+        exec [dbo].[SP_CreateSplitOrder]  ?,?
+          
+        ";
+
+        return $this->db->query($sql,[$param['QR_NO'],$param['username']]) ? true : false;
+    }
+
      /**
      * Update SplitPart
      * ---------------------------------
@@ -151,20 +169,6 @@ class SplitPart_Model extends MY_Model
         return ($this->db->delete('Tb_ReceiveItem', ['Rec_ID'=> $param])) ? true : false/*$this->db->error()*/;
 
     }
-
-        /**
-     * Update StockBalance
-     * ---------------------------------
-     * @param : QR_NO
-     */
-    public function update_stockbalance($param = [])
-    {
-        $this->set_db('default');
-        
-        return ($this->db->update('Tb_StockBalance', $param['StockBalance'], ['QR_NO'=> $param['QR_NO']])) ? true : false/*$this->db->error()*/;
-
-    }
-
 
 
     /**

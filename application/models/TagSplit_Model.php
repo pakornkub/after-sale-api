@@ -76,7 +76,7 @@ class TagSplit_Model extends MY_Model
 
         $this->db->update('Tb_Receive', $param['data1'], ['Rec_ID'=> $param['REC_ID']]) ? true : false;
 
-        $this->db->update('Tb_StockBalance', $param['StockBalance'], ['QR_NO'=> $param['QR_NO']]) ? true : false;
+        // $this->db->update('Tb_StockBalance', $param['StockBalance'], ['QR_NO'=> $param['QR_NO']]) ? true : false;
         
         return ($this->db->update('Tb_TagQR', $param['data'], ['Rec_ID'=> $param['REC_ID']])) ? true : false/*$this->db->error()*/;
 
