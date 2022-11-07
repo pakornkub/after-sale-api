@@ -89,6 +89,19 @@ class SplitPart_Model extends MY_Model
 
     }
 
+    /**
+     * Update Receive Part
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function update_receivepart($param = [])
+    {
+        $this->set_db('default');
+
+        return ($this->db->update('Tb_Receive', $param['data'], ['Rec_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+
+    }
+
      /**
      * Delete SplitPart
      * ---------------------------------
