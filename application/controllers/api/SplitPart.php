@@ -179,9 +179,12 @@ class SplitPart extends REST_Controller
                                     'Create_By' => $split_token['UserName'],
                                     
                                 ];
+
+                                $split_update_bal['QR_NO'] = $value['QR_NO'];
+                                $split_update_bal['username'] = $split_token['UserName'];
     
                                 $split_output_item = $this->SplitPart_Model->insert_splitpart_item($split_data_item);
-                                // $update_stockbal = $this->SplitPart_Model->update_stockbalance($split_data_item);
+                                $update_stockbal = $this->SplitPart_Model->reserve_stockbalance($split_update_bal);
     
                             }
                             
@@ -361,6 +364,16 @@ class SplitPart extends REST_Controller
 
                     if (isset($split_output) && $split_output) {
 
+                        //ค้นหา QR CODE จาก tb_jobitem
+                        $output_qr = json_decode(json_encode($this->SplitPart_Model->select_qr_no($split_data['index'])), true);
+                        $qr_no = $output_qr[array_keys($output_qr)[0]]['QR_NO'];
+                        
+
+                        $split_update_bal['QR_NO'] = $qr_no;
+                        $split_update_bal['username'] = $split_token['UserName'];
+    
+                        $unreserve_stockbal = $this->SplitPart_Model->unreserve_stockbalance($split_update_bal);
+
 
                         $delete_output = $this->SplitPart_Model->delete_splitpart_item($split_data['index']);
 
@@ -383,7 +396,12 @@ class SplitPart extends REST_Controller
                                 
                             ];
 
+                            $split_update_bal['QR_NO'] = $value['QR_NO'];
+                            $split_update_bal['username'] = $split_token['UserName'];
+
                             $split_output_item = $this->SplitPart_Model->insert_splitpart_item($split_data_item);
+                            $update_stockbal = $this->SplitPart_Model->reserve_stockbalance($split_update_bal);
+
                         }
                             // Update SplitPart Success
                         $message = [
@@ -524,18 +542,12 @@ class SplitPart extends REST_Controller
                     $receive_output = $this->SplitPart_Model->delete_receivepart($REC_ID);
                     $receive_output_item = $this->SplitPart_Model->delete_receivepart_item($REC_ID);
 
-                    // update StockBalance
-                    $tag_data['QR_NO'] = $QR_NO;
+                    // unreserve StockBalance
 
-                    // $tag_data['StockBalance'] = [
-                    //     'ReserveQTY' =>  0,
-                    //     'ReserveBy' => null,
-                    //     'Update_Date' => date('Y-m-d H:i:s'),
-                    //     'Update_By' => $split_token['UserName'],
-                        
-                    // ];
+                    $split_update_bal['QR_NO'] = $QR_NO;
+                    $split_update_bal['username'] = $split_token['UserName'];
 
-                    // $tag_output = $this->SplitPart_Model->update_stockbalance($tag_data);
+                    $unreserve_stockbal = $this->SplitPart_Model->unreserve_stockbalance($split_update_bal);
 
 
 

@@ -49,6 +49,28 @@ class SplitPart_Model extends MY_Model
 
     }
 
+    /**
+     * QR Code
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_qr_no($param)
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+        select QR_NO from Tb_JobItem where Job_ID = $param
+        ";
+
+        $query = $this->db->query($sql);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    }
+
 
     /**
      * Insert SplitPart
@@ -77,17 +99,35 @@ class SplitPart_Model extends MY_Model
     }
 
        /**
-     * Update Stock Balance
+     * Reserve Stock Balance
      * ---------------------------------
      * @param : FormData
      */
-    public function update_stockbalance($param = [])
+    public function reserve_stockbalance($param = [])
     {
         $this->set_db('default');
 
         $sql = "
 
         exec [dbo].[SP_CreateSplitOrder]  ?,?
+          
+        ";
+
+        return $this->db->query($sql,[$param['QR_NO'],$param['username']]) ? true : false;
+    }
+
+       /**
+     * Unreserve Stock Balance (cancel reserve)
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function unreserve_stockbalance($param = [])
+    {
+        $this->set_db('default');
+
+        $sql = "
+
+        exec [dbo].[SP_CancelSplitOrder]  ?,?
           
         ";
 
