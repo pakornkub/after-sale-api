@@ -211,7 +211,7 @@ class Group extends REST_Controller
                 'message' => validation_errors(),
             ];
 
-            $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
+            $this->response($message, REST_Controller::HTTP_NOT_FOUND);
         } else {
 
             // Load Authorization Token Library
@@ -261,7 +261,7 @@ class Group extends REST_Controller
                             'message' => 'Update Group Fail : [Update Data Fail]',
                         ];
 
-                        $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                        $this->response($message, REST_Controller::HTTP_NOT_FOUND);
 
                     }
 
@@ -272,7 +272,7 @@ class Group extends REST_Controller
                         'message' => 'You don’t currently have permission to Update',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -282,7 +282,7 @@ class Group extends REST_Controller
                     'message' => $is_valid_token['message'],
                 ];
 
-                $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                $this->response($message, REST_Controller::HTTP_NOT_FOUND);
             }
 
         }
@@ -316,7 +316,7 @@ class Group extends REST_Controller
                 'message' => validation_errors(),
             ];
 
-            $this->response($message, REST_Controller::HTTP_BAD_REQUEST);
+            $this->response($message, REST_Controller::HTTP_NOT_FOUND);
         } else {
 
             // Load Authorization Token Library
@@ -357,7 +357,7 @@ class Group extends REST_Controller
                             'message' => 'Delete Group Fail : [Delete Data Fail]',
                         ];
 
-                        $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                        $this->response($message, REST_Controller::HTTP_NOT_FOUND);
 
                     }
 
@@ -368,7 +368,7 @@ class Group extends REST_Controller
                         'message' => 'You don’t currently have permission to Delete',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -378,7 +378,7 @@ class Group extends REST_Controller
                     'message' => $is_valid_token['message'],
                 ];
 
-                $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                $this->response($message, REST_Controller::HTTP_NOT_FOUND);
             }
 
         }
