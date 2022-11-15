@@ -127,6 +127,9 @@ $route['bomid'] = 'api/bomid/index';
 //Receive Type  API Routes
 $route['receive_type'] = 'api/ReceiveType/index';
 
+//Request Type  API Routes
+$route['request_type'] = 'api/RequestType/index';
+
 //Receive No  API Routes
 $route['receive_no'] = 'api/ReceiveNo/index';
 
@@ -291,3 +294,12 @@ $route['select_tagsplit'] = 'api/tagsplit/select';
 $route['create_tagsplit'] = 'api/tagsplit/create';
 $route['delete_tagsplit'] = 'api/tagsplit/delete';
 $route['receive_auto_split'] = 'api/tagsplit/receive_auto';
+
+
+// Request Sale API Routes
+$route['requestsale'] = 'api/requestsale/index';
+$route['requestsale/:(any)'] = 'api/requestsale/show/$1';
+$route['create_requestsale'] = 'api/requestsale/create';
+$route['update_requestsale'] = 'api/requestsale/update';
+$route['delete_requestsale'] = 'api/requestsale/delete';
+$route['requestsale_item'] = 'api/requestsale/requestsaleitem';

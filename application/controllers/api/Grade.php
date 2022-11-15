@@ -134,6 +134,7 @@ class Grade extends REST_Controller
                         'Update_By' => null,
                         'MinQTY' => $this->input->post('Min_Qty') ? : null,
                         'MaxQTY' => $this->input->post('Max_Qty') ? : null,
+                        'Price' => $this->input->post('Grade_Price') ? : null,
                     ];
 
                     // Create grade Function
@@ -256,6 +257,7 @@ class Grade extends REST_Controller
                         'Update_By' => $grade_token['UserName'],
                         'MinQTY' => $this->input->post('Min_Qty') ? : null,
                         'MaxQTY' => $this->input->post('Max_Qty') ? : null,
+                        'Price' => $this->input->post('Grade_Price') ? : null,
                         
                     ];
 
