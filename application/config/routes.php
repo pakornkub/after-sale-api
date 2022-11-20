@@ -295,6 +295,9 @@ $route['create_tagsplit'] = 'api/tagsplit/create';
 $route['delete_tagsplit'] = 'api/tagsplit/delete';
 $route['receive_auto_split'] = 'api/tagsplit/receive_auto';
 
+//Request No  API Routes
+$route['request_no'] = 'api/RequestNo/index';
+
 
 // Request Sale API Routes
 $route['requestsale'] = 'api/requestsale/index';

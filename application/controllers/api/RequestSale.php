@@ -111,20 +111,25 @@ class RequestSale extends REST_Controller
 
 
 
-                    $request_no_output = json_decode(json_encode($this->RequestSale_Model->select_request_no()), true);
-                    $request_no = $request_no_output[array_keys($request_no_output)[0]]['jobNo'];
+                    $request_no_output = json_decode(json_encode($this->RequestSale_Model->select_request_no($request_header['Request_Type'])), true);
+                    $request_no = $request_no_output[array_keys($request_no_output)[0]]['RequestNo'];
 
                     if (isset($request_no) && $request_no) {
 
                     
                         $request_data['data'] = [
-                            'JOB_No' => $request_no,
-                            'JOB_Date' => $request_header['Split_Date'],
-                            'JobType_ID' => '1',
-                            'Ref_DocNo_1' => (isset($request_header['Ref_No1']) && $request_header['Ref_No1']) ? $request_header['Ref_No1'] : null,
-                            'Ref_DocNo_2' => (isset($request_header['Ref_No2']) && $request_header['Ref_No2']) ? $request_header['Ref_No2'] : null,
-                            'Remark' => (isset($request_header['Split_Remark']) && $request_header['Split_Remark']) ? $request_header['Split_Remark'] : null,
-                            'JOB_STATUS' => '1',
+                            'Withdraw_No' => $request_no,
+                            'Withdraw_Date' => $request_header['Request_Date'],
+                            'Withdraw_type' => $request_header['Request_Type'],
+                            'Quotation_No' => $request_header['Quotation_No'],
+                            'Customer_Name' => $request_header['Customer_Name'],
+                            'User_Request' => $request_header['User'],
+                            'Plan_Team' => $request_header['Plan_Team'],
+                            'Ref_No1' => null,
+                            'Remark' => (isset($request_header['Request_Remark']) && $request_header['Request_Remark']) ? $request_header['Request_Remark'] : null,
+                            'Stock_By' => null,
+                            'BOM_ID' => null,
+                            'status' => '1',
                             'Create_Date' => date('Y-m-d H:i:s'),
                             'Create_By' => $request_token['UserName'],
                             'Update_Date' => null,
@@ -147,15 +152,12 @@ class RequestSale extends REST_Controller
                             foreach ($request_item as $value) {
                                 
                                 $request_data_item['data'] = [
-                                    'Job_ID' => $request_output,
-                                    'SKUMapping_ID' => $value['SKUMapping_ID'],
-                                    'Rec_NO' => $value['Rec_No'],
+                                    'Withdraw_ID' => $request_output,
+                                    'W_Datetime' => date('Y-m-d H:i:s'),
                                     'QR_NO' => $value['QR_NO'],
-                                    'FG_ITEM_ID' => $value['Grade_ID_FG'],
-                                    'Lot_No' => (isset($value['Lot_No']) && $value['Lot_No']) ? $value['Lot_No'] : null,
-                                    'FG_Qty' => $value['QTY_FG'],
-                                    'SP_ITEM_ID' => $value['Grade_ID_SP'],
-                                    'SP_Qty' => $value['QTY_SP'],
+                                    'ITEM_ID' => $value['ITEM_ID'],
+                                    'Status' => '1',
+                                    'Qty' => $value['QTY'],
                                     'Create_Date' => date('Y-m-d H:i:s'),
                                     'Create_By' => $request_token['UserName'],
                                     
@@ -195,7 +197,7 @@ class RequestSale extends REST_Controller
                             // Create Request NO Error
                             $message = [
                                 'status' => false,
-                                'message' => 'Split No Fail',
+                                'message' => 'Request Sale Fail',
                             ];
 
                             $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -484,9 +486,9 @@ class RequestSale extends REST_Controller
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
             // Load RequestSaleID Function
-            $Split_ID = $this->input->get('RequestSale_ID');
+            $Request_ID = $this->input->get('RequestSale_ID');
 
-            $output = $this->RequestSale_Model->select_requestsaleitem($Split_ID);
+            $output = $this->RequestSale_Model->select_requestsaleitem($Request_ID);
 
             if (isset($output) && $output) {
 

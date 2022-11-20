@@ -14,7 +14,7 @@ class RequestSale_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select * from View_SplitPart order by JOB_ID DESC
+        select * from View_Request order by Withdraw_ID DESC
 
         ";
 
@@ -32,13 +32,13 @@ class RequestSale_Model extends MY_Model
      * ---------------------------------
      * @param : null
      */
-    public function select_split_no()
+    public function select_request_no($param)
     {
 
         $this->set_db('default');
 
         $sql = "
-        select dbo.[fnGetJobDocNo] ('1') as jobNo
+        select dbo.[fnGetRqDocNo] ('$param') as RequestNo
         ";
 
         $query = $this->db->query($sql);
@@ -81,7 +81,7 @@ class RequestSale_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('Tb_Job', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_Withdraw', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
@@ -94,7 +94,7 @@ class RequestSale_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('Tb_JobItem', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        return ($this->db->insert('Tb_WithdrawItem', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
 
     }
 
@@ -109,7 +109,7 @@ class RequestSale_Model extends MY_Model
 
         $sql = "
 
-        exec [dbo].[SP_CreateSplitOrder]  ?,?
+        exec [dbo].[SP_ReserveItem]  ?,?
           
         ";
 
@@ -199,13 +199,11 @@ class RequestSale_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select Tb_JobItem.JobItem_ID as [key],Tb_JobItem.SKUMapping_ID,Tb_JobItem.Rec_NO,Tb_JobItem.QR_NO,Tb_JobItem.FG_ITEM_ID as Grade_ID_FG,SKU1.ITEM_CODE as Grade_Name_FG,
-        SKU1.ITEM_DESCRIPTION as Grade_DESCRIPTION_FG,Tb_JobItem.Lot_No,Tb_JobItem.FG_Qty as QTY_FG,
-        Tb_JobItem.SP_ITEM_ID as Grade_ID_SP,SKU2.ITEM_CODE as Grade_Name_SP,SKU2.ITEM_DESCRIPTION as Grade_DESCRIPTION_SP,Tb_JobItem.SP_Qty  as QTY_SP
-        from Tb_JobItem
-        LEFT JOIN ms_Item SKU1 on Tb_JobItem.FG_ITEM_ID = SKU1.ITEM_ID
-        LEFT JOIN ms_Item SKU2 on Tb_JobItem.SP_ITEM_ID = SKU2.ITEM_ID
-        where Job_ID = '$param'
+        
+            select Tb_WithdrawItem.QR_NO as [key],View_Stock_Detail.* 
+            from Tb_WithdrawItem
+            Left join View_Stock_Detail on View_Stock_Detail.QR_NO = Tb_WithdrawItem.QR_NO
+            where Tb_WithdrawItem.Withdraw_ID = '$param'
             
         ";
 
