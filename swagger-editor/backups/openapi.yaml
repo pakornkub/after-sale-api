@@ -11,8 +11,8 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: https://119.59.105.14/pk-rest-server
-  - url: http://119.59.105.14/pk-rest-server
+  - url: https://119.59.105.14/pk-rest-server-dev
+  - url: http://119.59.105.14/pk-rest-server-dev
 tags:
   - name: pet
     description: Everything about your Pets
