@@ -4,26 +4,26 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class CheckStock extends REST_Controller
+class CheckPart extends REST_Controller
 {
 
-    protected $MenuId = 'CheckStockMobile';
+    protected $MenuId = 'CheckPartMobile';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load CheckStock_Model
-        $this->load->model('mobile/CheckStock_Model');
+        // Load CheckPart_Model
+        $this->load->model('mobile/CheckPart_Model');
 
     }
 
     /**
-     * Show CheckStock API
+     * Show CheckPart API
      * ---------------------------------
      * @method : GET
-     * @link : check_stock/index
+     * @link : check_part/index
      */
     public function index_get()
     {
@@ -33,16 +33,16 @@ class CheckStock extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // CheckStock Token Validation
+        // CheckPart Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load CheckStock Function
-            $output = $this->CheckStock_Model->select_check_stock($this->input->get('QR_NO'));
+            // Load CheckPart Function
+            $output = $this->CheckPart_Model->select_check_part($this->input->get('QR_NO'));
 
             if (isset($output) && $output) {
 
-                // Show CheckStock Success
+                // Show CheckPart Success
                 $message = [
                     'status' => true,
                     'data' => $output[0],
@@ -53,7 +53,7 @@ class CheckStock extends REST_Controller
 
             } else {
 
-                // Show CheckStock Error
+                // Show CheckPart Error
                 $message = [
                     'status' => false,
                     'message' => 'Item data was not found in the database',

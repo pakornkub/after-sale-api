@@ -1,12 +1,12 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class CheckStock_Model extends MY_Model
+class CheckPart_Model extends MY_Model
 {
 
     /**
-     * CheckStock
+     * CheckPart
      * ---------------------------------
-     * @param : Tag_ID
+     * @param : QR_NO
      */
     public function select_check_stock($QR_NO)
     {

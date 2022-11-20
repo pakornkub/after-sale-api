@@ -96,7 +96,6 @@ class Menu extends REST_Controller
         $this->form_validation->set_rules('Id', 'Id', 'trim|required');
         $this->form_validation->set_rules('Name', 'Name', 'trim|required');
         $this->form_validation->set_rules('Seq', 'Seq', 'trim|required');
-        $this->form_validation->set_rules('IsParent', 'IsParent', 'trim|required');
         $this->form_validation->set_rules('IsUse', 'IsUse', 'trim|required');
         $this->form_validation->set_rules('MenuType_Index', 'MenuType_Index', 'trim|required');
 
@@ -135,7 +134,7 @@ class Menu extends REST_Controller
                         'Part' => '/' . $this->input->post('Id'),
                         'Icon' => $this->input->post('Icon'),
                         'Picture' => null,
-                        'IsParent' => intval($this->input->post('IsParent')),
+                        'IsParent' => intval(0),
                         'IsUse' => intval($this->input->post('IsUse')),
                         'AddBy' => $menu_token['UserName'],
                         'AddDate' => date('Y-m-d H:i:s'),
@@ -256,7 +255,6 @@ class Menu extends REST_Controller
         $this->form_validation->set_rules('Id', 'Id', 'trim|required');
         $this->form_validation->set_rules('Name', 'Name', 'trim|required');
         $this->form_validation->set_rules('Seq', 'Seq', 'trim|required');
-        $this->form_validation->set_rules('IsParent', 'IsParent', 'trim|required');
         $this->form_validation->set_rules('IsUse', 'IsUse', 'trim|required');
         $this->form_validation->set_rules('MenuType_Index', 'MenuType_Index', 'trim|required');
 
@@ -292,7 +290,7 @@ class Menu extends REST_Controller
                         'Name' => $this->input->post('Name'),
                         'Icon' => $this->input->post('Icon'),
                         'Des' => $this->input->post('Des'),
-                        'IsParent' => intval($this->input->post('IsParent')),
+                        'IsParent' => intval(0),
                         'IsUse' => intval($this->input->post('IsUse')),
                         'UpdateBy' => $menu_token['UserName'],
                         'UpdateDate' => date('Y-m-d H:i:s'),
