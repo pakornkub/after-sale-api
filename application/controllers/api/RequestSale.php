@@ -398,26 +398,17 @@ class RequestSale extends REST_Controller
 
                 if ($request_permission[array_keys($request_permission)[0]]['Deleted']) {
 
-                    // $request_data['index'] = $this->input->post('Split_Index');
 
-                    $JOB_ID = json_decode($this->input->post('data1'), true); 
-                    $REC_ID = json_decode($this->input->post('data2'), true);
-                    $QR_NO = json_decode($this->input->post('data3'), true);  
+                    $Withdraw_No = json_decode($this->input->post('data1'), true); 
+
+                    $request_del['Withdraw_No'] = $Withdraw_No;
+                    $request_del['username'] = $request_token['UserName'];
 
                     // Delete RequestSale Function
-                    $request_output = $this->RequestSale_Model->delete_requestsale($JOB_ID);
-                    $request_output_item = $this->RequestSale_Model->delete_requestsale_item($JOB_ID);
+                    $request_output = $this->RequestSale_Model->delete_requestsale($request_del);
+                    
 
-                    // unreserve StockBalance
-
-                    $request_update_bal['QR_NO'] = $QR_NO;
-                    $request_update_bal['username'] = $request_token['UserName'];
-
-                    $unreserve_stockbal = $this->RequestSale_Model->unreserve_stockbalance($request_update_bal);
-
-
-
-                    if ((isset($request_output) && $request_output)  {
+                    if (isset($request_output) && $request_output)  {
 
                         // Delete RequestSale Success
                         $message = [
@@ -499,6 +490,92 @@ class RequestSale extends REST_Controller
 
             }
         }
+
+    }
+
+        /**
+     * Confirm Request API
+     * ---------------------------------
+     * @param: FormData
+     * ---------------------------------
+     * @method : POST
+     * @link : requestsale/confirm_request
+     */
+    public function confirm_request_post()
+    {
+
+        header("Access-Control-Allow-Origin: *");
+
+        # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
+        $_POST = $this->security->xss_clean($_POST);
+
+        
+            // Load Authorization Token Library
+            $this->load->library('Authorization_Token');
+
+            // request Token Validation
+            $is_valid_token = $this->authorization_token->validateToken();
+
+            if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+
+                $request_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $request_permission = array_filter($request_token['permission'], function ($permission) {
+                    return $permission['MenuId'] == $this->MenuId;
+                });
+
+                if ($request_permission[array_keys($request_permission)[0]]['Approved1']) {
+
+                    
+                    $request_data = [
+                        'Withdraw_ID' => $this->input->post('Withdraw_ID'),
+                        'username' => $request_token['UserName'],
+                       
+                    ];
+
+                    // request Confirm Function
+                    $request_output = $this->RequestSale_Model->confirm_request($request_data);
+
+                    if (isset($request_output) && $request_output) {
+
+                        // Confirm Request Success
+                        $message = [
+                            'status' => true,
+                            'message' => 'Confirm Request completed',
+                        ];
+
+                        $this->response($message, REST_Controller::HTTP_OK);
+
+                    } else {
+
+                        // Confirm Request Error
+                        $message = [
+                            'status' => false,
+                            'message' => 'Confirm Request Fail : [Insert Data Fail]',
+                        ];
+
+                        $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+                    }
+
+                } else {
+                    // Permission Error
+                    $message = [
+                        'status' => false,
+                        'message' => 'You don’t currently have permission to Create',
+                    ];
+
+                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                }
+
+            } else {
+                // Validate Error
+                $message = [
+                    'status' => false,
+                    'message' => $is_valid_token['message'],
+                ];
+
+                $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+            }
 
     }
 

@@ -306,3 +306,4 @@ $route['create_requestsale'] = 'api/requestsale/create';
 $route['update_requestsale'] = 'api/requestsale/update';
 $route['delete_requestsale'] = 'api/requestsale/delete';
 $route['requestsale_item'] = 'api/requestsale/requestsaleitem';
+$route['confirm_request'] = 'api/requestsale/confirm_request';

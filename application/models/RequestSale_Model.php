@@ -157,7 +157,13 @@ class RequestSale_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_Job', ['JOB_ID'=> $param])) ? true : false/*$this->db->error()*/;
+        $sql = "
+
+        exec [dbo].[SP_CancelWithdraw]  ?,?
+          
+        ";
+
+        return $this->db->query($sql,[$param['Withdraw_No'],$param['username']]) ? true : false;
 
     }
          /**
@@ -216,6 +222,22 @@ class RequestSale_Model extends MY_Model
 
 
     }
+    
+    /**
+     * Confirm Request
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function confirm_request($param = [])
+    {
+        $this->set_db('default');
 
+        $sql = "
+        exec [dbo].[SP_WithdrawAutoReceive]  ?,?
+          
+        ";
+
+        return $this->db->query($sql,[$param['Withdraw_ID'],$param['username']]) ? true : false;
+    }
 
 }
