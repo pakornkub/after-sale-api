@@ -8,7 +8,7 @@ class CheckPart_Model extends MY_Model
      * ---------------------------------
      * @param : QR_NO
      */
-    public function select_check_stock($QR_NO)
+    public function select_check_part($QR_NO)
     {
 
         $this->set_db('default');

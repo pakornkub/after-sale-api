@@ -100,16 +100,11 @@ $route['delete_grade'] = 'api/grade/delete';
 $route['permission'] = 'api/permission/index';
 $route['create_permission'] = 'api/permission/create';
 
-// ReceiveSP API Routes (Mobile)
-$route['receive_sp'] = 'api/mobile/ReceiveSP/index';
-$route['receive_sp_item'] = 'api/mobile/ReceiveSP/item';
-$route['update_receive_sp'] = 'api/mobile/ReceiveSP/update';
-$route['exec_receive_sp_transaction'] = 'api/mobile/ReceiveSP/exec_transaction';
-
-// UnlockSP API Routes (Mobile)
-$route['unlock_sp'] = 'api/mobile/UnlockSP/index';
-$route['update_unlock_sp'] = 'api/mobile/UnlockSP/update';
-$route['exec_unlock_sp_tag'] = 'api/mobile/UnlockSP/exec_tag';
+// ReceivePart API Routes (Mobile)
+$route['receive_part'] = 'api/mobile/ReceivePart/index';
+$route['receive_part_item'] = 'api/mobile/ReceivePart/item';
+$route['update_receive_part'] = 'api/mobile/ReceivePart/update';
+$route['exec_receive_part_transaction'] = 'api/mobile/ReceivePart/exec_transaction';
 
 // ReceiveReturn API Routes (Mobile)
 $route['receive_return'] = 'api/mobile/ReceiveReturn/index';
@@ -137,11 +132,11 @@ $route['update_ship_to_wh'] = 'api/mobile/ShipToWH/update';
 // WHReceive API Routes (Mobile)
 $route['update_wh_receive'] = 'api/mobile/WHReceive/update';
 
-// Withdraw API Routes (Mobile)
-$route['update_withdraw'] = 'api/mobile/Withdraw/update';
+// ReturnPart API Routes (Mobile)
+$route['update_return_part'] = 'api/mobile/ReturnPart/update';
 
-// CheckStock API Routes (Mobile)
-$route['check_stock'] = 'api/mobile/CheckStock/index';
+// CheckPart API Routes (Mobile)
+$route['check_part'] = 'api/mobile/CheckPart/index';
 
 // CountStock API Routes (Mobile)
 $route['count_stock'] = 'api/mobile/CountStock/index';

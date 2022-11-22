@@ -4,26 +4,26 @@ use Restserver\Libraries\REST_Controller;
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class UnlockSP extends REST_Controller
+class ReceivePart extends REST_Controller
 {
 
-    protected $MenuId = 'UnlockSPMobile';
+    protected $MenuId = 'ReceivePartMobile';
 
     public function __construct()
     {
 
         parent::__construct();
 
-        // Load UnlockSP_Model
-        $this->load->model('mobile/UnlockSP_Model');
+        // Load ReceivePart_Model
+        $this->load->model('mobile/ReceivePart_Model');
 
     }
 
     /**
-     * Show UnlockSP All API
+     * Show ReceivePart All API
      * ---------------------------------
      * @method : GET
-     * @link : unlock_sp/index
+     * @link : receive_part/index
      */
     public function index_get()
     {
@@ -33,30 +33,30 @@ class UnlockSP extends REST_Controller
         // Load Authorization Token Library
         $this->load->library('Authorization_Token');
 
-        // UnlockSP Token Validation
+        // ReceivePart Token Validation
         $is_valid_token = $this->authorization_token->validateToken();
 
         if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
-            // Load UnlockSP Function
-            $output = $this->UnlockSP_Model->select_unlock_sp();
+            // Load ReceivePart Function
+            $output = $this->ReceivePart_Model->select_receive_part();
 
             if (isset($output) && $output) {
 
-                // Show UnlockSP All Success
+                // Show ReceivePart All Success
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show unlock sp all successful',
+                    'message' => 'Show receive part all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
 
-                // Show UnlockSP All Error
+                // Show ReceivePart All Error
                 $message = [
                     'status' => false,
-                    'message' => 'Unlock SP data was not found in the database',
+                    'message' => 'Receive Part data was not found in the database',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
@@ -76,12 +76,12 @@ class UnlockSP extends REST_Controller
     }
 
     /**
-     * Update UnlockSP API
+     * Update ReceivePart API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : unlock_sp/update
+     * @link : receive_part/update
      */
     public function update_post()
     {
@@ -108,47 +108,47 @@ class UnlockSP extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // UnlockSP Token Validation
+            // ReceivePart Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $unlock_sp_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $unlock_sp_permission = array_filter($unlock_sp_token['permission'], function ($permission) {
+                $receive_part_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $receive_part_permission = array_filter($receive_part_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($unlock_sp_permission[array_keys($unlock_sp_permission)[0]]['Updated']) {
+                if ($receive_part_permission[array_keys($receive_part_permission)[0]]['Updated']) {
 
-                    $unlock_sp_data['where'] = [
+                    $receive_part_data['where'] = [
                         'Rec_ID' =>  $this->input->post('Rec_ID')
                     ];
 
-                    $unlock_sp_data['data'] = [
+                    $receive_part_data['data'] = [
                         'status' => 9,
-                        'Update_By' => $unlock_sp_token['UserName'],
+                        'Update_By' => $receive_part_token['UserName'],
                         'Update_Date' => date('Y-m-d H:i:s'),
                     ];
 
-                    // Update UnlockSP Function
-                    $unlock_sp_output = $this->UnlockSP_Model->update_unlock_sp($unlock_sp_data);
+                    // Update ReceivePart Function
+                    $receive_part_output = $this->ReceivePart_Model->update_receive_part($receive_part_data);
 
-                    if (isset($unlock_sp_output) && $unlock_sp_output) {
+                    if (isset($receive_part_output) && $receive_part_output) {
 
-                        // Update UnlockSP Success
+                        // Update ReceivePart Success
                         $message = [
                             'status' => true,
-                            'message' => 'Update Unlock SP Successful',
+                            'message' => 'Update Receive Part Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
                     } else {
 
-                        // Update UnlockSP Error
+                        // Update ReceivePart Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Unlock SP Fail : [Update Data Fail]',
+                            'message' => 'Update Receive Part Fail : [Update Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -179,15 +179,72 @@ class UnlockSP extends REST_Controller
 
     }
 
-    /**
-     * Exec UnlockSP Tag API
+
+     /**
+     * Show ReceivePart Item API
+     * ---------------------------------
+     * @method : GET
+     * @link : receive_part/item
+     */
+    public function item_get()
+    {
+
+        header("Access-Control-Allow-Origin: *");
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // ReceivePart Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            // Load ReceivePart Function
+            $output = $this->ReceivePart_Model->select_receive_part_item($this->input->get('Rec_ID'));
+
+            if (isset($output) && $output) {
+
+                // Show ReceivePart All Success
+                $message = [
+                    'status' => true,
+                    'data' => $output,
+                    'message' => 'Show receive part item successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            } else {
+
+                // Show ReceivePart All Error
+                $message = [
+                    'status' => false,
+                    'message' => 'Receive Part Item data was not found in the database',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+
+        } else {
+            // Validate Error
+            $message = [
+                'status' => false,
+                'message' => $is_valid_token['message'],
+            ];
+
+            $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+        }
+
+    }
+
+     /**
+     * Exec ReceivePart Transaction API
      * ---------------------------------
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : unlock_sp/exec_tag
+     * @link : receive_part/exec_transaction
      */
-    public function exec_tag_post()
+    public function exec_transaction_post()
     {
 
         header("Access-Control-Allow-Origin: *");
@@ -214,47 +271,47 @@ class UnlockSP extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // UnlockSP Token Validation
+            // ReceivePart Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $unlock_sp_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $unlock_sp_permission = array_filter($unlock_sp_token['permission'], function ($permission) {
+                $receive_part_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $receive_part_permission = array_filter($receive_part_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-                if ($unlock_sp_permission[array_keys($unlock_sp_permission)[0]]['Created']) {
+                if ($receive_part_permission[array_keys($receive_part_permission)[0]]['Created']) {
 
-                    $unlock_sp_data = [
+                    $tag_data = [
                         'Rec_ID' => intval($this->input->post('Rec_ID')),
                         'QR_NO' => $this->input->post('QR_NO'),
                         'Tag_ID' => intval($this->input->post('Tag_ID')),
-                        'Username' => $unlock_sp_token['UserName'],
+                        'Username' => $receive_part_token['UserName'],
                     ];
 
-                    // Exec UnlockSP Tag Function
-                    $unlock_sp_output = $this->UnlockSP_Model->exec_unlock_sp_tag($unlock_sp_data);
+                    // Exec ReceivePart Transaction Function
+                    $receive_part_output = $this->ReceivePart_Model->exec_receive_part_transaction($tag_data);
 
-                    if (isset($unlock_sp_output) && $unlock_sp_output) {
+                    if (isset($receive_part_output) && $receive_part_output) {
 
-                        if(boolval($unlock_sp_output[0]['Result_status']) === true)
+                        if(boolval($receive_part_output[0]['Result_status']) === true)
                         {
                         
-                            // Exec UnlockSP Tag Success
+                            // Exec ReceivePart Transaction Success
                             $message = [
                                 'status' => true,
-                                'message' => $unlock_sp_output[0]['Result_Desc'],
+                                'message' => $receive_part_output[0]['Result_Desc'],
                             ];
 
                             $this->response($message, REST_Controller::HTTP_OK);
                         }
                         else
                         {
-                             // Exec UnlockSP Tag Error Condition
+                             // Exec ReceivePart Transaction Error Condition
                              $message = [
                                 'status' => false,
-                                'message' => $unlock_sp_output[0]['Result_Desc'],
+                                'message' => $receive_part_output[0]['Result_Desc'],
                             ];
 
                             $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
@@ -262,16 +319,15 @@ class UnlockSP extends REST_Controller
 
                     } else {
 
-                        // Exec UnlockSP Tag Error
+                        // Exec ReceivePart Transaction Error
                         $message = [
                             'status' => false,
-                            'message' => 'Exec Tag Fail : [Exec Data Fail]',
+                            'message' => 'Exec Transaction Fail : [Exec Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
 
                     }
-
 
                 } else {
                     // Permission Error
@@ -296,6 +352,7 @@ class UnlockSP extends REST_Controller
         }
 
     }
+
  
 
 }

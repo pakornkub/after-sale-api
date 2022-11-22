@@ -1,14 +1,14 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class ReceiveSP_Model extends MY_Model
+class ReceivePart_Model extends MY_Model
 {
 
     /**
-     * ReceiveSP
+     * ReceivePart
      * ---------------------------------
      * @param : null
      */
-    public function select_receive_sp()
+    public function select_receive_part()
     {
 
         $this->set_db('default');
@@ -26,11 +26,11 @@ class ReceiveSP_Model extends MY_Model
     }
 
     /**
-     * Update ReceiveSP
+     * Update ReceivePart
      * ---------------------------------
      * @param : FormData
      */
-    public function update_receive_sp($param = [])
+    public function update_receive_part($param = [])
     {
         $this->set_db('default');
 
@@ -39,11 +39,11 @@ class ReceiveSP_Model extends MY_Model
     }
 
     /**
-     * ReceiveSP Item
+     * ReceivePart Item
      * ---------------------------------
      * @param : Rec_ID
      */
-    public function select_receive_sp_Item($Rec_ID)
+    public function select_receive_part_Item($Rec_ID)
     {
 
         $this->set_db('default');
@@ -52,14 +52,11 @@ class ReceiveSP_Model extends MY_Model
 
             select
                         ROW_NUMBER() Over (Order by r.Rec_ID) as 'No'
-                        ,i.ITEM_CODE as 'SP'
+                        ,i.ITEM_CODE as 'Part'
                         ,i.ITEM_ID as 'Item_ID'
                         ,(
-                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and RecItem_ID = ri.RecItem_ID and ItemStatus_ID = 2 and Tag_Status = 9
-                        ) as 'Unlock'
-                        ,(
-                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and RecItem_ID = ri.RecItem_ID and ItemStatus_ID = 1 and Tag_Status = 3
-                        ) as 'Lock'
+                            select count(*) from Tb_TagQR where Rec_ID = r.Rec_ID and Item_ID = ri.Item_ID and RecItem_ID = ri.RecItem_ID and ItemStatus_ID = 5 and Tag_Status = 9
+                        ) as 'Good'
                         ,ri.Qty as 'Total'
 
             from		Tb_Receive r
@@ -79,11 +76,11 @@ class ReceiveSP_Model extends MY_Model
     }
 
     /**
-     * Exec ReceiveSP Transaction
+     * Exec ReceivePart Transaction
      * ---------------------------------
      * @param : Rec_ID, QR_NO, Tag_ID, Username
      */
-    public function exec_receive_sp_transaction($param = [])
+    public function exec_receive_part_transaction($param = [])
     {
 
         $this->set_db('default');

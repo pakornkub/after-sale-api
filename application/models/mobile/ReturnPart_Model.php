@@ -1,13 +1,13 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Withdraw_Model extends MY_Model
+class ReturnPart_Model extends MY_Model
 {
     /**
-     * Update Withdraw
+     * Update ReturnPart
      * ---------------------------------
      * @param : FormData
      */
-    public function update_withdraw($param = [])
+    public function update_return_part($param = [])
     {
         $this->set_db('default');
 
