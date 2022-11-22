@@ -408,10 +408,6 @@ class RequestSale extends REST_Controller
                     $request_output = $this->RequestSale_Model->delete_requestsale($JOB_ID);
                     $request_output_item = $this->RequestSale_Model->delete_requestsale_item($JOB_ID);
 
-                    // Delete ReceivePart Function
-                    $receive_output = $this->RequestSale_Model->delete_receivepart($REC_ID);
-                    $receive_output_item = $this->RequestSale_Model->delete_receivepart_item($REC_ID);
-
                     // unreserve StockBalance
 
                     $request_update_bal['QR_NO'] = $QR_NO;
@@ -421,7 +417,7 @@ class RequestSale extends REST_Controller
 
 
 
-                    if ((isset($request_output) && $request_output) && (isset($receive_output) && $receive_output)) {
+                    if ((isset($request_output) && $request_output)  {
 
                         // Delete RequestSale Success
                         $message = [
