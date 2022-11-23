@@ -307,3 +307,11 @@ $route['update_requestsale'] = 'api/requestsale/update';
 $route['delete_requestsale'] = 'api/requestsale/delete';
 $route['requestsale_item'] = 'api/requestsale/requestsaleitem';
 $route['confirm_request'] = 'api/requestsale/confirm_request';
+
+
+// Receive Sale API Routes
+$route['receivesale'] = 'api/receivesale/index';
+$route['receivesale/:(any)'] = 'api/receivesale/show/$1';
+$route['update_receivesale'] = 'api/receivesale/update';
+$route['delete_receivesale'] = 'api/receivesale/delete';
+$route['receivesale_item'] = 'api/receivesale/receivesaleitem';
