@@ -214,6 +214,9 @@ $route['producttype'] = 'api/ProductType/index';
 // Location  API Routes
 $route['location'] = 'api/Location/index';
 
+//Location Team  API Routes
+$route['location_team'] = 'api/LocationTeam/index';
+
 // Stock Monitor API Routes
 $route['stockmonitor'] = 'api/StockMonitor/index';
 $route['stockmonitorgroup'] = 'api/StockMonitor/stockgroup';

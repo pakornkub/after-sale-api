@@ -14,7 +14,7 @@ class RequestSale_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select * from View_Request order by Withdraw_ID DESC
+        select * from View_Request where Withdraw_type in ('1','2') order by Withdraw_ID DESC
 
         ";
 
