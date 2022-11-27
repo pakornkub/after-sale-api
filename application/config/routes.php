@@ -318,3 +318,9 @@ $route['receivesale/:(any)'] = 'api/receivesale/show/$1';
 $route['update_receivesale'] = 'api/receivesale/update';
 $route['delete_receivesale'] = 'api/receivesale/delete';
 $route['receivesale_item'] = 'api/receivesale/receivesaleitem';
+
+// Quotation  API Routes
+$route['quotation'] = 'api/Quotation/index';
+
+// Quotation Item  API Routes
+$route['quotation_item'] = 'api/QuotationItem/index';
