@@ -37,7 +37,7 @@ class ReturnPart_Model extends MY_Model
 
         ";
 
-        $this->db->query($sql, [$UniqueKey,$param['user']['Create_By'],'Withdraw']);
+        $this->db->query($sql, [$UniqueKey,$param['user']['Create_By'],'Return']);
 
         return $this->check_begintrans();/*$this->db->error();*/
 

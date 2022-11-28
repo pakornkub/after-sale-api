@@ -71,6 +71,7 @@ class Auth extends REST_Controller
           'UserName' => $login_output[0]['UserName'],
           'FirstName' => $login_output[0]['FirstName'],
           'LastName' => $login_output[0]['LastName'],
+          'GroupName' => $login_output[0]['Name'],
           'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
           'time' => time(), //Recommend for Token
         ];
@@ -83,6 +84,7 @@ class Auth extends REST_Controller
           'UserName' => $login_output[0]['UserName'],
           'FirstName' => $login_output[0]['FirstName'],
           'LastName' => $login_output[0]['LastName'],
+          'GroupName' => $login_output[0]['Name'],
           'permission' => (isset($permission_output) && $permission_output) ? $permission_output : null,
           'token' => $user_token,
         ];

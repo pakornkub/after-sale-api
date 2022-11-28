@@ -106,31 +106,29 @@ $route['receive_part_item'] = 'api/mobile/ReceivePart/item';
 $route['update_receive_part'] = 'api/mobile/ReceivePart/update';
 $route['exec_receive_part_transaction'] = 'api/mobile/ReceivePart/exec_transaction';
 
+// SplitPart API Routes (Mobile)
+$route['split_part'] = 'api/mobile/SplitPart/index';
+$route['split_part_item'] = 'api/mobile/SplitPart/item';
+$route['update_split_part'] = 'api/mobile/SplitPart/update';
+$route['exec_split_part_transaction'] = 'api/mobile/SplitPart/exec_transaction';
+
+// ReceiveSaleService API Routes (Mobile)
+$route['receive_sale_service'] = 'api/mobile/ReceiveSaleService/index';
+$route['receive_sale_service_item'] = 'api/mobile/ReceiveSaleService/item';
+$route['update_receive_sale_service'] = 'api/mobile/ReceiveSaleService/update';
+$route['exec_receive_sale_service_transaction'] = 'api/mobile/ReceiveSaleService/exec_transaction';
+
+// RequestSaleService API Routes (Mobile)
+$route['request_sale_service'] = 'api/mobile/RequestSaleService/index';
+$route['request_sale_service_item'] = 'api/mobile/RequestSaleService/item';
+$route['update_request_sale_service'] = 'api/mobile/RequestSaleService/update';
+$route['exec_request_sale_service_transaction'] = 'api/mobile/RequestSaleService/exec_transaction';
+
 // ReceiveReturn API Routes (Mobile)
 $route['receive_return'] = 'api/mobile/ReceiveReturn/index';
 $route['receive_return_item'] = 'api/mobile/ReceiveReturn/item';
 $route['update_receive_return'] = 'api/mobile/ReceiveReturn/update';
 $route['exec_receive_return_transaction'] = 'api/mobile/ReceiveReturn/exec_transaction';
-
-// JobRepack API Routes (Mobile)
-$route['job_repack'] = 'api/mobile/JobRepack/index';
-$route['job_repack_bom'] = 'api/mobile/JobRepack/bom';
-$route['update_job_repack'] = 'api/mobile/JobRepack/update';
-$route['exec_job_repack_item'] = 'api/mobile/JobRepack/exec_item';
-$route['exec_job_repack_transaction'] = 'api/mobile/JobRepack/exec_transaction';
-
-// JobRecheck API Routes (Mobile)
-$route['job_recheck'] = 'api/mobile/JobRecheck/index';
-$route['job_recheck_bom'] = 'api/mobile/JobRecheck/bom';
-$route['update_job_recheck'] = 'api/mobile/JobRecheck/update';
-$route['exec_job_recheck_item'] = 'api/mobile/JobRecheck/exec_item';
-$route['exec_job_recheck_transaction'] = 'api/mobile/JobRecheck/exec_transaction';
-
-// ShipToWH API Routes (Mobile)
-$route['update_ship_to_wh'] = 'api/mobile/ShipToWH/update';
-
-// WHReceive API Routes (Mobile)
-$route['update_wh_receive'] = 'api/mobile/WHReceive/update';
 
 // ReturnPart API Routes (Mobile)
 $route['update_return_part'] = 'api/mobile/ReturnPart/update';

@@ -1,20 +1,20 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class ReceivePart_Model extends MY_Model
+class SplitPart_Model extends MY_Model
 {
 
     /**
-     * ReceivePart
+     * SplitPart
      * ---------------------------------
      * @param : null
      */
-    public function select_receive_part()
+    public function select_split_part()
     {
 
         $this->set_db('default');
 
         $sql = "
-           select * from Tb_Receive where Rec_type = 1 and Status in (2,3) order by Rec_ID DESC
+           select * from Tb_Receive where Rec_type = 4 and Status in (2,3) order by Rec_ID DESC
         ";
 
         $query = $this->db->query($sql);
@@ -26,11 +26,11 @@ class ReceivePart_Model extends MY_Model
     }
 
     /**
-     * Update ReceivePart
+     * Update SplitPart
      * ---------------------------------
      * @param : FormData
      */
-    public function update_receive_part($param = [])
+    public function update_split_part($param = [])
     {
         $this->set_db('default');
 
@@ -39,11 +39,11 @@ class ReceivePart_Model extends MY_Model
     }
 
     /**
-     * ReceivePart Item
+     * SplitPart Item
      * ---------------------------------
      * @param : Rec_ID
      */
-    public function select_receive_part_Item($Rec_ID)
+    public function select_split_part_Item($Rec_ID)
     {
 
         $this->set_db('default');
@@ -76,18 +76,18 @@ class ReceivePart_Model extends MY_Model
     }
 
     /**
-     * Exec ReceivePart Transaction
+     * Exec SplitPart Transaction
      * ---------------------------------
      * @param : Rec_ID, QR_NO, Tag_ID, Username
      */
-    public function exec_receive_part_transaction($param = [])
+    public function exec_split_part_transaction($param = [])
     {
 
         $this->set_db('default');
 
         $sql = "
 
-            exec [dbo].[SP_CreateReceiveTransaction] ?,?,?,?
+            exec [dbo].[SP_CreateSplitTransaction] ?,?,?,?
 
         ";
 

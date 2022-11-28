@@ -21,7 +21,7 @@ class Auth_Model extends MY_Model {
 
             select *
 
-            from 	se_User
+            from 	se_User u left join se_Group g on u.Group_Index = g.Group_Index and g.IsUse = 1
 
             where 	UserName = @username COLLATE Latin1_General_CS_AS and CurrentPassword = @password
 

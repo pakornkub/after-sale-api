@@ -1,23 +1,24 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class ReceivePart_Model extends MY_Model
+class ReceiveSaleService_Model extends MY_Model
 {
 
     /**
-     * ReceivePart
+     * ReceiveSaleService
      * ---------------------------------
      * @param : null
      */
-    public function select_receive_part()
+    public function select_receive_sale_service($GroupName = '')
     {
 
         $this->set_db('default');
 
         $sql = "
-           select * from Tb_Receive where Rec_type = 1 and Status in (2,3) order by Rec_ID DESC
+           select * from Tb_Receive left join ms_Location on  Tb_Receive.Actual_Team = ms_Location.Location_ID
+           where Rec_type in (3,5,6) and Status in (2,3) and Location = ? order by Rec_ID DESC
         ";
 
-        $query = $this->db->query($sql);
+        $query = $this->db->query($sql,[$GroupName]);
 
         $result = ($query->num_rows() > 0) ? $query->result_array() : false;
 
@@ -26,11 +27,11 @@ class ReceivePart_Model extends MY_Model
     }
 
     /**
-     * Update ReceivePart
+     * Update ReceiveSaleService
      * ---------------------------------
      * @param : FormData
      */
-    public function update_receive_part($param = [])
+    public function update_receive_sale_service($param = [])
     {
         $this->set_db('default');
 
@@ -39,11 +40,11 @@ class ReceivePart_Model extends MY_Model
     }
 
     /**
-     * ReceivePart Item
+     * ReceiveSaleService Item
      * ---------------------------------
      * @param : Rec_ID
      */
-    public function select_receive_part_Item($Rec_ID)
+    public function select_receive_sale_service_Item($Rec_ID)
     {
 
         $this->set_db('default');
@@ -76,11 +77,11 @@ class ReceivePart_Model extends MY_Model
     }
 
     /**
-     * Exec ReceivePart Transaction
+     * Exec ReceiveSaleService Transaction
      * ---------------------------------
      * @param : Rec_ID, QR_NO, Tag_ID, Username
      */
-    public function exec_receive_part_transaction($param = [])
+    public function exec_receive_sale_service_transaction($param = [])
     {
 
         $this->set_db('default');
