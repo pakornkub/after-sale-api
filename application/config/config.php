@@ -24,6 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://119.59.105.14/after-sale-api/';
+// $config['base_url'] = 'http://as-spare-part.ttlsystem.com:5000/after-sale-api/';
 
 /*
 |--------------------------------------------------------------------------
