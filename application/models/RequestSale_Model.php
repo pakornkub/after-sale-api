@@ -209,7 +209,7 @@ class RequestSale_Model extends MY_Model
             select Tb_WithdrawItem.QR_NO as [key],View_Stock_Detail.* 
             from Tb_WithdrawItem
             Left join View_Stock_Detail on View_Stock_Detail.QR_NO = Tb_WithdrawItem.QR_NO
-            where Tb_WithdrawItem.Withdraw_ID = '$param'
+            where Tb_WithdrawItem.Withdraw_ID = '$param' and View_Stock_Detail.Location_ID = '1'
             
         ";
 
