@@ -143,7 +143,7 @@ class RequestSale_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->update('Tb_Job', $param['data'], ['JOB_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('Tb_Withdraw', $param['data'], ['Withdraw_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -233,7 +233,7 @@ class RequestSale_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        exec [dbo].[SP_WithdrawAutoReceive]  ?,?
+        exec [dbo].[SP_WithdrawAutoReceive_ALL]  ?,?
           
         ";
 

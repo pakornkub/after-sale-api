@@ -262,20 +262,27 @@ class RequestSale extends REST_Controller
 
                     if ($request_permission[array_keys($request_permission)[0]]['Created']) {
 
-                        $request_data['index'] = $request_header['Split_Index'];
+                        $request_data['index'] = $request_header['Request_Index'];
                         
                         $request_data['data'] = [
-                            'JOB_Date' => $request_header['Split_Date'],
-                            'JobType_ID' => '1',
-                            'Ref_DocNo_1' => (isset($request_header['Ref_No1']) && $request_header['Ref_No1']) ? $request_header['Ref_No1'] : null,
-                            'Ref_DocNo_2' => (isset($request_header['Ref_No2']) && $request_header['Ref_No2']) ? $request_header['Ref_No2'] : null,
-                            'Remark' => (isset($request_header['Split_Remark']) && $request_header['Split_Remark']) ? $request_header['Split_Remark'] : null,
+                            'Withdraw_No' => $request_header['Request_No'],
+                            'Withdraw_Date' => $request_header['Request_Date'],
+                            'Withdraw_type' => $request_header['Request_Type'],
+                            'Quotation_No' => $request_header['Quotation_No'],
+                            'Customer_Name' => $request_header['Customer_Name'],
+                            'User_Request' => $request_header['User'],
+                            'Plan_Team' => $request_header['Plan_Team'],
+                            'Ref_No1' => null,
+                            'Remark' => (isset($request_header['Request_Remark']) && $request_header['Request_Remark']) ? $request_header['Request_Remark'] : null,
+                            'Stock_By' => null,
+                            'BOM_ID' => null,
+                            'status' => '1',
                             'Update_Date' => date('Y-m-d H:i:s'),
                             'Update_By' => $request_token['UserName'],
                             
                         ];
 
-                    
+    
                    // Update RequestSale Function
                     $request_output = $this->RequestSale_Model->update_requestsale($request_data);
 
@@ -283,45 +290,6 @@ class RequestSale extends REST_Controller
 
                     if (isset($request_output) && $request_output) {
 
-                        //ค้นหา QR CODE จาก tb_jobitem
-                        $output_qr = json_decode(json_encode($this->RequestSale_Model->select_qr_no($request_data['index'])), true);
-                        $qr_no = $output_qr[array_keys($output_qr)[0]]['QR_NO'];
-                        
-
-                        $request_update_bal['QR_NO'] = $qr_no;
-                        $request_update_bal['username'] = $request_token['UserName'];
-    
-                        $unreserve_stockbal = $this->RequestSale_Model->unreserve_stockbalance($request_update_bal);
-
-
-                        $delete_output = $this->RequestSale_Model->delete_requestsale_item($request_data['index']);
-
-                        $request_item = json_decode($this->input->post('data2'), true); 
-                        
-                        foreach ($request_item as $value) {
-                            
-                            $request_data_item['data'] = [
-                                'Job_ID' => $request_header['Split_Index'],
-                                'SKUMapping_ID' => $value['SKUMapping_ID'],
-                                'Rec_NO' => $value['Rec_NO'],
-                                'QR_NO' => $value['QR_NO'],
-                                'FG_ITEM_ID' => $value['Grade_ID_FG'],
-                                'Lot_No' => (isset($value['Lot_No']) && $value['Lot_No']) ? $value['Lot_No'] : null,
-                                'FG_Qty' => $value['QTY_FG'],
-                                'SP_ITEM_ID' => $value['Grade_ID_SP'],
-                                'SP_Qty' => $value['QTY_SP'],
-                                'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $request_token['UserName'],
-                                
-                            ];
-
-                            $request_update_bal['QR_NO'] = $value['QR_NO'];
-                            $request_update_bal['username'] = $request_token['UserName'];
-
-                            $request_output_item = $this->RequestSale_Model->insert_requestsale_item($request_data_item);
-                            $update_stockbal = $this->RequestSale_Model->reserve_stockbalance($request_update_bal);
-
-                        }
                             // Update RequestSale Success
                         $message = [
                             'status' => true,

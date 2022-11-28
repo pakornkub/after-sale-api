@@ -113,12 +113,7 @@ class ReceiveSale extends REST_Controller
                         $receive_data['index'] = $receive_header['Receive_Index'];
 
                         $receive_data['data'] = [
-                            'Rec_type' => '1',
-                            'Rec_NO' => $receive_header['Receive_No'],
-                            'Rec_Datetime' => $receive_header['Receive_Date'],
-                            'Ref_DocNo_1' => (isset($receive_header['Ref_No1']) && $receive_header['Ref_No1']) ? $receive_header['Ref_No1'] : null,
-                            'Ref_DocNo_2' => (isset($receive_header['Ref_No2']) && $receive_header['Ref_No2']) ? $receive_header['Ref_No2'] : null,
-                            'Remark' => (isset($receive_header['Receive_Remark']) && $receive_header['Receive_Remark']) ? $receive_header['Receive_Remark'] : null,
+                            'Actual_Team' => $receive_header['Action_Team'],
                             'Update_Date' => date('Y-m-d H:i:s'),
                             'Update_By' => $receive_token['UserName'],
                             
@@ -131,26 +126,6 @@ class ReceiveSale extends REST_Controller
 
                     if (isset($receive_output) && $receive_output) {
 
-
-                        $delete_output = $this->ReceiveSale_Model->delete_receivesale_item($receive_data);
-
-                        $receive_item = json_decode($this->input->post('data2'), true); 
-                        
-                        foreach ($receive_item as $value) {
-                            
-                            $receive_data_item['data'] = [
-                                'Rec_ID' => $receive_header['Receive_Index'],
-                                'Qty' => $value['QTY'],
-                                'Item_ID' => $value['Grade_ID'],
-                                'Lot_No' => $value['Lot_No'],
-                                'ItemStatus_ID' => $value['QTY'],
-                                'Create_Date' => date('Y-m-d H:i:s'),
-                                'Create_By' => $receive_token['UserName'],
-                                
-                            ];
-
-                            $receive_output_item = $this->ReceiveSale_Model->insert_receivesale_item($receive_data_item);
-                        }
                             // Update ReceiveSale Success
                         $message = [
                             'status' => true,

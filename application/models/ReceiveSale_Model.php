@@ -14,7 +14,7 @@ class ReceiveSale_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select * from view_Receive_Sale where Rec_type in ('3') order by Rec_ID DESC
+        select * from view_Receive_Sale where Rec_type in ('3','5','6') order by Rec_ID DESC
 
         ";
 
