@@ -324,3 +324,9 @@ $route['quotation'] = 'api/Quotation/index';
 
 // Quotation Item  API Routes
 $route['quotation_item'] = 'api/QuotationItem/index';
+
+
+// Transfer Team API Routes
+$route['transferteam'] = 'api/transferteam/index';
+$route['transferteam/:(any)'] = 'api/transferteam/show/$1';
+$route['create_transferteam'] = 'api/transferteam/create';
