@@ -130,7 +130,7 @@ class TransferTeam extends REST_Controller
                         if (isset($request_output) && $request_output) {
     
                             //Create Item Success
-                            $request_item = json_decode($this->input->post('data2'), true); 
+                            $request_item = json_decode($this->input->post('Item'), true); 
                             
                             foreach ($request_item as $value) {
                                 
