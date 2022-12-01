@@ -94,13 +94,13 @@ class TransferTeam extends REST_Controller
             // Load Authorization Token Library
             $this->load->library('Authorization_Token');
 
-            // Request Sale Token Validation
+            // Transfer Team Token Validation
             $is_valid_token = $this->authorization_token->validateToken();
 
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
-                $request_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $request_permission = array_filter($request_token['permission'], function ($permission) {
+                $tf_token = json_decode(json_encode($this->authorization_token->userData()), true);
+                $tf_permission = array_filter($tf_token['permission'], function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -110,52 +110,53 @@ class TransferTeam extends REST_Controller
                 // $TF_New_Team = json_decode($this->input->post('New_Team'), true); 
                 // $TF_Quotation_No = json_decode($this->input->post('Quotation_No'), true); 
 
-                if ($request_permission[array_keys($request_permission)[0]]['Created']) {
+                if ($tf_permission[array_keys($tf_permission)[0]]['Created']) {
                     
                         $tf_data['data'] = [
-                            'Withdraw_No' => $this->input->post('Withdraw_No'),
+                            'Withdraw_No' => 'www',
                             'Old_Team' => $this->input->post('Old_Team'),
                             'New_Team' => $this->input->post('New_Team'),
                             'Quotation_No' => $this->input->post('Quotation_No'),
-                            'Create_By' => $request_token['UserName'],
+                            'Create_By' => $tf_token['UserName'],
                         ];
 
     
                         // Create TransferTeam Function
-                        $request_output = $this->TransferTeam_Model->insert_transferteam($tf_data);
+                        $tf_output = $this->TransferTeam_Model->insert_transferteam($tf_data);
 
     
     
     
-                        if (isset($request_output) && $request_output) {
+                        if (isset($tf_output) && $tf_output) {
     
                             //Create Item Success
-                            $request_item = json_decode($this->input->post('Item'), true); 
+                            // $request_item = json_decode($this->input->post('Item'), true); 
                             
-                            foreach ($request_item as $value) {
+                            // foreach ($request_item as $value) {
                                 
-                                $request_data_item['data'] = [
-                                    'Withdraw_ID' => $request_output,
-                                    'W_Datetime' => date('Y-m-d H:i:s'),
-                                    'QR_NO' => $value['QR_NO'],
-                                    'ITEM_ID' => $value['ITEM_ID'],
-                                    'Status' => '1',
-                                    'Qty' => $value['QTY'],
-                                    'Create_Date' => date('Y-m-d H:i:s'),
-                                    'Create_By' => $request_token['UserName'],
+                            //     $request_data_item['data'] = [
+                            //         'Withdraw_ID' => $request_output,
+                            //         'W_Datetime' => date('Y-m-d H:i:s'),
+                            //         'QR_NO' => $value['QR_NO'],
+                            //         'ITEM_ID' => $value['ITEM_ID'],
+                            //         'Status' => '1',
+                            //         'Qty' => $value['QTY'],
+                            //         'Create_Date' => date('Y-m-d H:i:s'),
+                            //         'Create_By' => $request_token['UserName'],
                                     
-                                ];
+                            //     ];
 
-                                $request_update_bal['QR_NO'] = $value['QR_NO'];
-                                $request_update_bal['username'] = $request_token['UserName'];
+                            //     $request_update_bal['QR_NO'] = $value['QR_NO'];
+                            //     $request_update_bal['username'] = $request_token['UserName'];
     
-                                $request_output_item = $this->TransferTeam_Model->insert_transferteam_item($request_data_item);
+                            //     $request_output_item = $this->TransferTeam_Model->insert_transferteam_item($request_data_item);
     
-                            }
+                            // }
                             
     
                             $message = [
                                 'status' => true,
+                                'data' => $tf_output,
                                 'message' => 'Create Transfer Team Successful',
                             ];
     

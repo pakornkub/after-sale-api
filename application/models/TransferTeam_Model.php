@@ -1,14 +1,14 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class RequestSale_Model extends MY_Model
+class TransferTeam_Model extends MY_Model
 {
 
     /**
-     * RequestSale
+     * TransferTeam
      * ---------------------------------
      * @param : null
      */
-    public function select_requestsale()
+    public function select_transferteam()
     {
 
         $this->set_db('default');
@@ -33,7 +33,7 @@ class RequestSale_Model extends MY_Model
 
 
     /**
-     * Insert RequestSale
+     * Insert TransferTeam
      * ---------------------------------
      * @param : FormData
      */
@@ -68,7 +68,7 @@ class RequestSale_Model extends MY_Model
     
 
     /**
-     * Insert RequestSale Item
+     * Insert TransferTeam Item
      * ---------------------------------
      * @param : FormData
      */
@@ -82,23 +82,6 @@ class RequestSale_Model extends MY_Model
 
     
 
-       /**
-     * Reserve Stock Balance
-     * ---------------------------------
-     * @param : FormData
-     */
-    public function reserve_stockbalance($param = [])
-    {
-        $this->set_db('default');
-
-        $sql = "
-
-        exec [dbo].[SP_ReserveItem]  ?,?
-          
-        ";
-
-        return $this->db->query($sql,[$param['QR_NO'],$param['username']]) ? true : false;
-    }
 
     
 
