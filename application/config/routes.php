@@ -330,3 +330,10 @@ $route['quotation_item'] = 'api/QuotationItem/index';
 $route['transferteam'] = 'api/transferteam/index';
 $route['transferteam/:(any)'] = 'api/transferteam/show/$1';
 $route['create_transferteam'] = 'api/transferteam/create';
+
+
+// Issue API Routes
+$route['issue'] = 'api/issue/index';
+$route['issue/:(any)'] = 'api/issue/show/$1';
+$route['create_issue'] = 'api/issue/create';
+$route['stock_bal'] = 'api/issue/stock_bal';
