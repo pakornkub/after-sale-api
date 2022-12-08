@@ -105,70 +105,42 @@ class Issue extends REST_Controller
                 });
 
 
-                $TF_Withdraw_No = $this->input->post('Withdraw_No'); 
-                $TF_Old_Team = $this->input->post('Old_Team'); 
-                $TF_New_Team = $this->input->post('New_Team'); 
+                $TF_UniqueKey = $this->input->post('UniqueKey'); 
                 $TF_Quotation_No = $this->input->post('Quotation_No'); 
 
                 if ($tf_permission[array_keys($tf_permission)[0]]['Created']) {
-                    
-                        // $tf_data['data'] = [
-                        //     'Withdraw_No' => $this->input->post('Withdraw_No'),
-                        //     'Old_Team' => $this->input->post('Old_Team'),
-                        //     'New_Team' => $this->input->post('New_Team'),
-                        //     'Quotation_No' => $this->input->post('Quotation_No'),
-                        //     'Create_By' => $tf_token['UserName'],
-                        // ];
 
+                    $data['items'] = json_decode($this->input->post('Item'), true);
+
+                    $data['user'] = [
+                        'Create_By' => $tf_token['UserName'],
+                        'Create_Date' => date('Y-m-d H:i:s'),
+                    ];
     
-                        // Create Issue Function
-                        $tf_output = $this->Issue_Model->insert_issue($TF_Quotation_No,$TF_Old_Team,$TF_New_Team,$tf_token['UserName']);
+                    $withdraw_output = $this->Issue_Model->insert_issue_item($data);
+    
+                    if (isset($withdraw_output) && $withdraw_output) {
+
+                        $message = [
+                            'status' => true,
+                            'message' => 'Create Issue Successful',
+                        ];
+
+                        $this->response($message, REST_Controller::HTTP_OK);
 
 
-                        
-    
-    
-    
-                        if (isset($tf_output) && $tf_output) {
-    
-                            $request_item = json_decode($this->input->post('Item'), true); 
-                            
-                            foreach ($request_item as $value) {
-                                    $tf_data_item['data'] = [
-                                    'UniqueKey' => $this->input->post('Quotation_No'),
-                                    'Withdraw_No' => $value['Withdraw_No'],
-                                    'QR_NO' => $value['QR_NO'],
-                                    'ITEM_ID' => $value['ITEM_ID'],
-                                    'Qty' => $value['Qty'],
-                                    'Create_Date' => date('Y-m-d H:i:s'),
-                                    'Create_By' => $tf_token['UserName'],
-                                    
-                                ];
 
-                                $tf_output_item = $this->Issue_Model->insert_issue_item($tf_data_item);
-                            }
-                            
-    
-                            $message = [
-                                'status' => true,
-                                'message' => 'Create Transfer Team Successful',
-                            ];
-    
-                            $this->response($message, REST_Controller::HTTP_OK);
-    
-    
-    
-                        } else {
-    
-                            // Create Issue Error
-                            $message = [
-                                'status' => false,
-                                'message' => 'Create Issue Fail : [Insert Data Fail]',
-                            ];
-    
-                            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-    
-                        }
+                    } else {
+
+                        // Create Issue Error
+                        $message = [
+                            'status' => false,
+                            'message' => 'Create Issue Fail : [Insert Data Fail]',
+                        ];
+
+                        $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+                    }
 
                     
 

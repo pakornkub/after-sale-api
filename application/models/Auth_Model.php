@@ -19,9 +19,9 @@ class Auth_Model extends MY_Model {
             set @username = ?
             set @password = ?
 
-            select *
-
+            select se_User.*,se_Group.Name as Group_Name 
             from 	se_User
+            left join se_Group on se_User.Group_Index = se_Group.Group_Index
 
             where 	UserName = @username COLLATE Latin1_General_CS_AS and CurrentPassword = @password
 

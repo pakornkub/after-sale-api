@@ -65,8 +65,36 @@ class Issue_Model extends MY_Model
     {
         $this->set_db('default');
 
-        return ($this->db->insert('Temp_TransferTeam', $param['data'])) ? $this->db->insert_id() : false/*$this->db->error()*/;
+        $this->db->trans_begin();
 
+        $UniqueKey = date('YmdHis');
+
+        foreach ($param['items'] as $value) {
+
+            $data = [
+                'UniqueKey' => $UniqueKey,
+                'Withdraw_ID' => null,
+                'QR_NO' => $value['QR_NO'],
+                'ITEM_ID' => $value['ITEM_ID'],
+                'Qty' => $value['Qty'],
+                'Create_Date' => $param['user']['Create_Date'],
+                'Create_By' => $param['user']['Create_By'],
+     
+            ];
+
+            $this->db->insert('Temp_WithdrawItem', $data);
+
+        }
+
+        $sql = "
+
+            exec [dbo].[SP_WithdrawTrans] ?,?,?
+
+        ";
+
+        $this->db->query($sql, [$UniqueKey,$param['user']['Create_By'],'Issue']);
+
+        return $this->check_begintrans();/*$this->db->error();*/
     }
 
 
