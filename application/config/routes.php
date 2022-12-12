@@ -319,11 +319,14 @@ $route['update_receivesale'] = 'api/receivesale/update';
 $route['delete_receivesale'] = 'api/receivesale/delete';
 $route['receivesale_item'] = 'api/receivesale/receivesaleitem';
 
-// Quotation  API Routes
+// Quotation All API Routes
 $route['quotation'] = 'api/Quotation/index';
 
 // Quotation Item  API Routes
 $route['quotation_item'] = 'api/QuotationItem/index';
+
+// Quotation Location  API Routes
+$route['quotation_location'] = 'api/Quotationlocation/index';
 
 
 // Transfer Team API Routes
