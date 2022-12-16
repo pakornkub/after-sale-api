@@ -104,8 +104,6 @@ class Issue extends REST_Controller
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
-
-                $TF_UniqueKey = $this->input->post('UniqueKey'); 
                 $TF_Quotation_No = $this->input->post('Quotation_No'); 
 
                 if ($tf_permission[array_keys($tf_permission)[0]]['Created']) {
