@@ -14,7 +14,7 @@ class RequestSaleService_Model extends MY_Model
     $this->set_db('default');
 
     $sql = "
-          select * from Tb_Withdraw where Withdraw_type in (1,2)  and status in (1,3) order by Withdraw_ID DESC
+          select * from Tb_Withdraw where Withdraw_type in (1,2)  and status in (1,3,4) order by Withdraw_ID DESC
         ";
 
     $query = $this->db->query($sql);
@@ -59,11 +59,11 @@ class RequestSaleService_Model extends MY_Model
       $request_type = 'Request Sale';
     }
 
-    //? exec SP_WithdrawTrans
+    //? exec SP_WithdrawAutoReceive
 
     $sql_exec = "
 
-        exec [dbo].[SP_WithdrawTrans] ?,?,?
+        exec [dbo].[SP_WithdrawAutoReceive] ?,?,?
 
     ";;
 
@@ -134,11 +134,12 @@ class RequestSaleService_Model extends MY_Model
     //? insert temp withdraw
     $data_temp = [
       'UniqueKey' => $param['Withdraw_ID'],
+      'Withdraw_ID' => $param['Withdraw_ID'],
       'QR_NO' => $param['QR_NO'],
       'ITEM_ID' => $result_tag[0]['Item_ID'],
       'Qty' => $result_tag[0]['Qty'],
       'Create_Date' => $param['Create_Date'],
-      'Create_By' => $param['Username'],
+      'Create_By' => $param['Create_By'],
     ];
 
     $result_temp = ($this->db->insert('Temp_WithdrawItem', $data_temp)) ? true : false;
@@ -151,7 +152,7 @@ class RequestSaleService_Model extends MY_Model
     $data_item = [
       'Status' => 9,
       'Update_Date' => $param['Create_Date'],
-      'Update_By' => $param['Username'],
+      'Update_By' => $param['Create_By'],
     ];
 
     $where_item = [
@@ -168,9 +169,9 @@ class RequestSaleService_Model extends MY_Model
 
     //? update status withdraw 
     $data_withdraw = [
-      'status' => 3,
+      'status' => 4,
       'Update_Date' => $param['Create_Date'],
-      'Update_By' => $param['Username'],
+      'Update_By' => $param['Create_By'],
     ];
 
     $where_withdraw = [
