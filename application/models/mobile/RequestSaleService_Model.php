@@ -186,4 +186,58 @@ class RequestSaleService_Model extends MY_Model
 
     return true;
   }
+
+  /**
+   * Exec RequestSaleService Item
+   * ---------------------------------
+   * @param : Withdraw_ID, QR_NO, Tag_ID, Username
+   */
+  public function check_request_sale_service_item($param = [])
+  {
+
+    $this->set_db('default');
+
+    $sql = " 
+
+      declare @Result_status bit
+      declare @Result_Desc varchar(200)
+
+      declare @Withdraw_ID int
+      declare @QR_NO varchar(200)
+
+      set @Result_status = 1
+      set @Result_Desc = ''
+
+      set @Withdraw_ID = ?
+      set @QR_NO = ?
+
+      if ( select COUNT(*) as CountItem from Tb_WithdrawItem where Withdraw_ID = @Withdraw_ID and QR_NO = @QR_NO ) <= 0
+      begin 
+
+        set @Result_status = 0    
+        set @Result_Desc = 'QR not found in This Order'
+    
+      end
+
+      if ( select COUNT(*) as CountItem from Temp_WithdrawItem where ( Withdraw_ID = @Withdraw_ID or UniqueKey = @Withdraw_ID ) and QR_NO = @QR_NO ) > 0
+      begin 
+
+        set @Result_status = 0    
+        set @Result_Desc = 'QR has been scanned in This Order'
+    
+      end
+
+      select 
+		    @Result_status as Result_status
+		   ,@Result_Desc as Result_Desc
+    
+    ";
+
+    $query = $this->db->query($sql,[$param['Withdraw_ID'],$param['QR_NO']]);
+
+    $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+    return $result;
+  }
+  
 }

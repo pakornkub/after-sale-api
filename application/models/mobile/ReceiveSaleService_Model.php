@@ -15,7 +15,7 @@ class ReceiveSaleService_Model extends MY_Model
 
         $sql = "
            select * from Tb_Receive left join ms_Location on  Tb_Receive.Actual_Team = ms_Location.Location_ID
-           where Rec_type in (3,5,6) and Status in (2,3) and Location = ? order by Rec_ID DESC
+           where Rec_type in (3,5,6) and Status in (2,3,4) and Location = ? order by Rec_ID DESC
         ";
 
         $query = $this->db->query($sql,[$GroupName]);

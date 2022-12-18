@@ -276,24 +276,51 @@ class RequestSaleService extends REST_Controller
             'Create_By' => $request_sale_service_token['UserName'],
           ];
 
-          // Exec RequestSaleService Transaction Function
-          $request_sale_service_output = $this->RequestSaleService_Model->exec_request_sale_service_transaction($tag_data);
+          // Exec RequestSaleService Item Function
+          $request_sale_service_item = $this->RequestSaleService_Model->check_request_sale_service_item($tag_data);
 
-          if (isset($request_sale_service_output) && $request_sale_service_output) {
+          if (isset($request_sale_service_item) && $request_sale_service_item) {
 
-            // Exec RequestSaleService Transaction Success
-            $message = [
-              'status' => true,
-              'message' => 'Insert Request Sale Service Successful',
-            ];
+            if (boolval($request_sale_service_item[0]['Result_status']) === true) {
 
-            $this->response($message, REST_Controller::HTTP_OK);
+              // Exec RequestSaleService Transaction Function
+              $request_sale_service_output = $this->RequestSaleService_Model->exec_request_sale_service_transaction($tag_data);
+
+              if (isset($request_sale_service_output) && $request_sale_service_output) {
+
+                // Exec RequestSaleService Transaction Success
+                $message = [
+                  'status' => true,
+                  'message' => 'Insert Request Sale Service Successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+              } else {
+
+                // Exec RequestSaleService Transaction Error
+                $message = [
+                  'status' => false,
+                  'message' => 'Insert Request Sale Service Fail : [Insert Data Fail]',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+              }
+            } else {
+
+              // Exec RequestSaleService Item Error Condition
+              $message = [
+                'status' => false,
+                'message' => $request_sale_service_item[0]['Result_Desc'],
+              ];
+
+              $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            }
           } else {
 
-            // Exec RequestSaleService Transaction Error
+            // Exec RequestSaleService Item Error
             $message = [
               'status' => false,
-              'message' => 'Insert Request Sale Service Fail : [Insert Data Fail]',
+              'message' => 'Exec Transaction Fail : [Exec Data Fail]',
             ];
 
             $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
