@@ -87,11 +87,11 @@ class ReceiveReturn_Model extends MY_Model
 
         $sql = "
 
-            exec [dbo].[SP_CreateReturnTransaction] ?,?,?,?
+            exec [dbo].[SP_CreateReceiveTransaction] ?,?,?,?
 
         ";
 
-        $query = $this->db->query($sql,[$param['QR_NO'],$param['Rec_ID'],$param['Item_ID'],$param['Username']]);
+        $query = $this->db->query($sql,[$param['QR_NO'],$param['Rec_ID'],$param['Tag_ID'],$param['Username']]);
 
         $result = ($query->num_rows() > 0) ? $query->result_array() : false;
 
