@@ -80,7 +80,22 @@ class TagReturn_Model extends MY_Model
 
     }
 
-     
+      /**
+     * Insert Receive Auto
+     * ---------------------------------
+     * @param : FormData
+     */
+    public function insert_receive_auto($param = [])
+    {
+        $this->set_db('default');
+
+        $sql = "
+        exec [dbo].[SP_CreateReceiveTransaction_ALL]  ?,?
+          
+        ";
+
+        return $this->db->query($sql,[$param['Rec_ID'],$param['username']]) ? true : false;
+    }
 
 
 

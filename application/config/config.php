@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://119.59.105.14/after-sale-api/';
+$config['base_url'] = 'https://119.59.105.14/after-sale-api/';
 // $config['base_url'] = 'https://as-spare-part.ttlsystem.com:5000/after-sale-api/';
 
 /*
