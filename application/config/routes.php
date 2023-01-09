@@ -121,6 +121,9 @@ $route['grade_package'] = 'api/GradePackage/index';
 // Grade SP  API Routes
 $route['grade_sp'] = 'api/GradeSP/index';
 
+// Grade All API Routes
+$route['grade_all'] = 'api/GradeAll/index';
+
 // BOMID API Routes
 $route['bomid'] = 'api/bomid/index';
 
