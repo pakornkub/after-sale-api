@@ -14,10 +14,11 @@ class BomForJob_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select ITEM_ID,ITEM_CODE,ms_ProductType.Product_DESCRIPTION ,'' as QTY
-        from ms_Item 
-		inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
-		where ms_Item.Product_ID = '1' and Status = '1'
+        select FG_ITEM_ID,ITEM_CODE,ITEM_DESCRIPTION 
+		from ms_BOM
+		inner join ms_Item on ms_BOM.FG_ITEM_ID = ms_Item.ITEM_ID
+		where ms_BOM.Status = '1' and ms_Item.Product_ID = '3'
+		group by FG_ITEM_ID,ITEM_CODE,ITEM_DESCRIPTION 
         ";
 
         $query = $this->db->query($sql);
@@ -63,9 +64,7 @@ class BomForJob_Model extends MY_Model
 
         $this->set_db('default');
 
-        $sql = "
-        select BOM_ID,BOM_Name as BOM_Name from ms_BOM where FG_ITEM_ID = ? and Status = '1' order by Bom_Rev_No DESC
-";
+        $sql = "select BOM_ID,Remark from ms_BOM where FG_ITEM_ID = ? and Status = '1' order by Bom_Rev_No ASC";
 
         $query = $this->db->query($sql,$param['GRADE_ID']);
 
@@ -85,7 +84,8 @@ class BomForJob_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select BI.ITEM_Seq as [key],BI.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,ms_ProductType.Product_DESCRIPTION as Type ,BI.ITEM_QTY as QTY,0 as ToTal_Use
+        select BI.BOM_ITEM_ID as [key],BI.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,ms_Item.ITEM_DESCRIPTION as Grade_Des,
+		ms_ProductType.Product_DESCRIPTION as Type ,BI.ITEM_QTY as QTY,0 as Qty_Action
         from ms_BOM_Item BI
         inner join ms_Item on BI.ITEM_ID = ms_Item.ITEM_ID
 		inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
