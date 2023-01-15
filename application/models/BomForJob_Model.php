@@ -84,7 +84,7 @@ class BomForJob_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select BI.BOM_ITEM_ID as [key],BI.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,ms_Item.ITEM_DESCRIPTION as Grade_Des,
+        select BI.ITEM_ID as [key],BI.ITEM_ID as Grade_ID,ms_Item.ITEM_CODE as Grade_Name,ms_Item.ITEM_DESCRIPTION as Grade_Des,
 		ms_ProductType.Product_DESCRIPTION as Type ,BI.ITEM_QTY as QTY,0 as Qty_Action
         from ms_BOM_Item BI
         inner join ms_Item on BI.ITEM_ID = ms_Item.ITEM_ID
