@@ -109,11 +109,11 @@ class RequestSale_Model extends MY_Model
 
         $sql = "
 
-        exec [dbo].[SP_ReserveItem]  ?,?
+        exec [dbo].[SP_ReserveItem]  ?,?,?
           
         ";
 
-        return $this->db->query($sql,[$param['QR_NO'],$param['username']]) ? true : false;
+        return $this->db->query($sql,[$param['QR_NO'],$param['username'],$param['Withdraw_No']]) ? true : false;
     }
 
        /**
