@@ -41,7 +41,7 @@ class StockMonitor_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select QR_NO as [key],* from View_Stock_Detail $param
+        select QR_NO as [key],* from View_Stock_Detail $param order by QR_NO
 
             
         ";

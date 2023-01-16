@@ -206,10 +206,11 @@ class RequestSale_Model extends MY_Model
 
         $sql = "
         
-            select Tb_WithdrawItem.QR_NO as [key],View_Stock_Detail.* 
+            select Tb_WithdrawItem.QR_NO as [key],Tb_WithdrawItem.Qty as QTY,Stock.Location,Stock.Product_DESCRIPTION,Stock.ITEM_CODE,Stock.ITEM_DESCRIPTION,Stock.QR_NO,Stock.ReserveQTY,Stock.Unit,Stock.Status_desc,
+            Stock.Product_ID,Stock.ITEM_ID,Stock.LOT,Stock.Ref_No
             from Tb_WithdrawItem
-            Left join View_Stock_Detail on View_Stock_Detail.QR_NO = Tb_WithdrawItem.QR_NO
-            where Tb_WithdrawItem.Withdraw_ID = '$param' and View_Stock_Detail.Location_ID = '1'
+            Left join View_Stock_Detail Stock on Stock.QR_NO = Tb_WithdrawItem.QR_NO
+            where Tb_WithdrawItem.Withdraw_ID = '$param' and Stock.Location_ID = '1'
             
         ";
 
