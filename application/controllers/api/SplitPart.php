@@ -179,7 +179,7 @@ class SplitPart extends REST_Controller
                                     'Create_By' => $split_token['UserName'],
                                     
                                 ];
-
+                                $split_update_bal['Split_No'] = $split_no;    
                                 $split_update_bal['QR_NO'] = $value['QR_NO'];
                                 $split_update_bal['username'] = $split_token['UserName'];
     

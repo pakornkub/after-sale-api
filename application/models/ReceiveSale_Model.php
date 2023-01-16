@@ -81,7 +81,7 @@ class ReceiveSale_Model extends MY_Model
 
         $sql = "
             select Tb_ReceiveItem.RecItem_ID as [key],Tb_ReceiveItem.Item_ID ,
-            ms_Item.ITEM_CODE,ms_Item.ITEM_DESCRIPTION,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY,ms_ProductType.Product_DESCRIPTION
+            ms_Item.ITEM_CODE,ms_Item.ITEM_DESCRIPTION,Tb_ReceiveItem.Lot_No,Tb_ReceiveItem.Qty as QTY,ms_ProductType.Product_DESCRIPTION,QR_Code
             from Tb_ReceiveItem
             inner join ms_Item on Tb_ReceiveItem.Item_ID = ms_Item.ITEM_ID
             inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID

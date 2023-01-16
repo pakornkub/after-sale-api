@@ -109,11 +109,11 @@ class SplitPart_Model extends MY_Model
 
         $sql = "
 
-        exec [dbo].[SP_CreateSplitOrder]  ?,?
+        exec [dbo].[SP_CreateSplitOrder]  ?,?,?
           
         ";
 
-        return $this->db->query($sql,[$param['QR_NO'],$param['username']]) ? true : false;
+        return $this->db->query($sql,[$param['QR_NO'],$param['username'],$param['Split_No']]) ? true : false;
     }
 
        /**
