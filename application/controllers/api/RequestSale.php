@@ -162,7 +162,7 @@ class RequestSale extends REST_Controller
                                     'Create_By' => $request_token['UserName'],
                                     
                                 ];
-
+                                $request_update_bal['Withdraw_No'] = $request_no;
                                 $request_update_bal['QR_NO'] = $value['QR_NO'];
                                 $request_update_bal['username'] = $request_token['UserName'];
     
