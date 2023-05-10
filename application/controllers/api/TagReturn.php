@@ -328,9 +328,9 @@ class TagReturn extends REST_Controller
      * @param: FormData
      * ---------------------------------
      * @method : POST
-     * @link : tag/receive_auto
+     * @link : tag/receive_auto_return
      */
-    public function receive_auto_post()
+    public function receive_auto_return_post()
     {
 
         header("Access-Control-Allow-Origin: *");
@@ -362,7 +362,7 @@ class TagReturn extends REST_Controller
                     ];
 
                     // Receive Auto Function
-                    $receive_output = $this->Tag_Model->insert_receive_auto($receive_data);
+                    $receive_output = $this->TagReturn_Model->insert_receive_auto($receive_data);
 
                     if (isset($receive_output) && $receive_output) {
 
