@@ -344,3 +344,6 @@ $route['issue'] = 'api/issue/index';
 $route['issue/:(any)'] = 'api/issue/show/$1';
 $route['create_issue'] = 'api/issue/create';
 $route['stock_bal'] = 'api/issue/stock_bal';
+
+// Reprint API Routes
+$route['reprintqrcode'] = 'api/reprint/qrcode';
