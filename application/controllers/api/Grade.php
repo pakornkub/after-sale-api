@@ -122,45 +122,74 @@ class Grade extends REST_Controller
 
                 if ($grade_permission[array_keys($grade_permission)[0]]['Created']) {
 
-                    $grade_data['data'] = [
-                        'ITEM_CODE' => $this->input->post('Grade_Id'),
-                        'ITEM_DESCRIPTION' => $this->input->post('Grade_Description'),
-                        'Product_ID' => $this->input->post('Product_Type'),
-                        'Unit' => $this->input->post('Grade_Unit'),
-                        'Status' => intval($this->input->post('Grade_Status')),
-                        'Create_Date' => date('Y-m-d H:i:s'),
-                        'Create_By' => $grade_token['UserName'],
-                        'Update_Date' => null,
-                        'Update_By' => null,
-                        'MinQTY' => $this->input->post('Min_Qty') ? : null,
-                        'MaxQTY' => $this->input->post('Max_Qty') ? : null,
-                        'Price' => $this->input->post('Grade_Price') ? : null,
+                    $grade_check['data'] = [
+                        'ITEM_CODE' => $this->input->post('Grade_Id')
                     ];
 
-                    // Create grade Function
-                    $grade_output = $this->Grade_Model->insert_grade($grade_data);
+                    // Check grade Function
+                    $check_output = $this->Grade_Model->check_grade($grade_check);
 
-                    if (isset($grade_output) && $grade_output) {
-
-                        // Create Grade Success
-                        $message = [
-                            'status' => true,
-                            'message' => 'Create Material Successful',
-                        ];
-
-                        $this->response($message, REST_Controller::HTTP_OK);
-
-                    } else {
-
-                        // Create Grade Error
+                    if (isset($check_output) && $check_output) {
+                        
+                        // ซ้ำ Grade Error
                         $message = [
                             'status' => false,
-                            'message' => 'Create Material Fail : [Insert Data Fail]',
+                            'data' => $check_output,
+                            'message' => 'Material Code ซ้ำ : [Insert Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                    
+                    } else {
+
+                        // ไม่ซ้ำ Grade Success
+                        $grade_data['data'] = [
+                            'ITEM_CODE' => $this->input->post('Grade_Id'),
+                            'ITEM_DESCRIPTION' => $this->input->post('Grade_Description'),
+                            'Product_ID' => $this->input->post('Product_Type'),
+                            'Unit' => $this->input->post('Grade_Unit'),
+                            'Status' => intval($this->input->post('Grade_Status')),
+                            'Create_Date' => date('Y-m-d H:i:s'),
+                            'Create_By' => $grade_token['UserName'],
+                            'Update_Date' => null,
+                            'Update_By' => null,
+                            'MinQTY' => $this->input->post('Min_Qty') ? : null,
+                            'MaxQTY' => $this->input->post('Max_Qty') ? : null,
+                            'Price' => $this->input->post('Grade_Price') ? : null,
+                        ];
+
+                        // Create grade Function
+                        $grade_output = $this->Grade_Model->insert_grade($grade_data);
+
+                        if (isset($grade_output) && $grade_output) {
+
+                            // Create Grade Success
+                            $message = [
+                                'status' => true,
+                                'message' => 'Create Material Successful',
+                            ];
+
+                            $this->response($message, REST_Controller::HTTP_OK);
+
+                        } else {
+
+                            // Create Grade Error
+                            $message = [
+                                'status' => false,
+                                'message' => 'Create Material Fail : [Insert Data Fail]',
+                            ];
+
+                            $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+                        }
+                         
+                        
 
                     }
+
+
+
+                    
 
                 } else {
                     // Permission Error
@@ -235,18 +264,7 @@ class Grade extends REST_Controller
 
                     $grade_data['index'] = $this->input->post('Grade_Index');
 
-                    // $grade_data['data'] = [
-                    //     'Id' => $this->input->post('Id'),
-                    //     'UserName' => $this->input->post('UserName'),
-                    //     //'CurrentPassword' => md5($this->input->post('Password')),
-                    //     'Title' => $this->input->post('Title'),
-                    //     'FirstName' => $this->input->post('FirstName'),
-                    //     'LastName' => $this->input->post('LastName'),
-                    //     'Email' => $this->input->post('Email'),
-                    //     'IsUse' => intval($this->input->post('IsUse')),
-                    //     'UpdateBy' => $grade_token['UserName'],
-                    //     'UpdateDate' => date('Y-m-d H:i:s'),
-                    // ];
+                    
                     $grade_data['data'] = [
                         'ITEM_CODE' => $this->input->post('Grade_Id'),
                         'ITEM_DESCRIPTION' => $this->input->post('Grade_Description'),

@@ -65,5 +65,29 @@ class Grade_Model extends MY_Model
 
     }
 
+    /**
+     * CheckGrade
+     * ---------------------------------
+     * @param : null
+     */             
+    public function check_grade($param = [])
+    {
+        $this->set_db('default');
+
+        $sql = "
+
+        select ITEM_CODE from ms_Item where ITEM_CODE = ?
+            
+        ";
+
+        $query = $this->db->query($sql,$param['data']['ITEM_CODE']);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+
+
+    }
 
 }
