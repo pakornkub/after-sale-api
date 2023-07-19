@@ -204,13 +204,24 @@ class RequestSale_Model extends MY_Model
 
         $this->set_db('default');
 
+        // $sql = "
+        
+        //     select Tb_WithdrawItem.QR_NO as [key],Tb_WithdrawItem.Qty as QTY,Stock.Location,Stock.Product_DESCRIPTION,Stock.ITEM_CODE,Stock.ITEM_DESCRIPTION,Stock.QR_NO,Stock.ReserveQTY,Stock.Unit,Stock.Status_desc,
+        //     Stock.Product_ID,Stock.ITEM_ID,Stock.LOT,Stock.Ref_No
+        //     from Tb_WithdrawItem
+        //     Left join View_Stock_Detail Stock on Stock.QR_NO = Tb_WithdrawItem.QR_NO
+        //     where Tb_WithdrawItem.Withdraw_ID = '$param' and Stock.Location_ID = '1'
+            
+        // ";
         $sql = "
         
-            select Tb_WithdrawItem.QR_NO as [key],Tb_WithdrawItem.Qty as QTY,Stock.Location,Stock.Product_DESCRIPTION,Stock.ITEM_CODE,Stock.ITEM_DESCRIPTION,Stock.QR_NO,Stock.ReserveQTY,Stock.Unit,Stock.Status_desc,
+	    select Tb_WithdrawItem.QR_NO as [key],Tb_WithdrawItem.Qty as QTY,Stock.Location,Stock.Product_DESCRIPTION,Stock.ITEM_CODE,Stock.ITEM_DESCRIPTION,Stock.QR_NO,Stock.ReserveQTY,Stock.Unit,Stock.Status_desc,
             Stock.Product_ID,Stock.ITEM_ID,Stock.LOT,Stock.Ref_No
             from Tb_WithdrawItem
-            Left join View_Stock_Detail Stock on Stock.QR_NO = Tb_WithdrawItem.QR_NO
-            where Tb_WithdrawItem.Withdraw_ID = '$param' and Stock.Location_ID = '1'
+            CROSS APPLY (select TOP 1 Stock.Location,Stock.Product_DESCRIPTION,Stock.ITEM_CODE,Stock.ITEM_DESCRIPTION,Stock.QR_NO,Stock.ReserveQTY,Stock.Unit,Stock.Status_desc,
+                         Stock.Product_ID,Stock.ITEM_ID,Stock.LOT,Stock.Ref_No 
+			from View_Stock_Detail Stock where Stock.Location_ID = '1' and Stock.QR_NO = Tb_WithdrawItem.QR_NO order by ReserveQTY DESC) Stock
+                        where Tb_WithdrawItem.Withdraw_ID = '$param' 
             
         ";
 

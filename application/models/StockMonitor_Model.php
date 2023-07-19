@@ -100,6 +100,31 @@ class StockMonitor_Model extends MY_Model
 
 
     }
+
+    /**
+     * Report Issue
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_reportissue($param)
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+        select CONVERT(varchar, Request_Date, 103) AS Request_Date1,CONVERT(varchar, Issue_Date, 103) AS Issue_Date1,* from View_Report_Issue $param
+   
+        ";
+
+        $query = $this->db->query($sql,$param);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+
+
+    }
     
 }
 

@@ -227,6 +227,7 @@ $route['stockmonitorgroup'] = 'api/StockMonitor/stockgroup';
 $route['stockmonitordetail'] = 'api/StockMonitor/stockdetail';
 $route['stockmonitorwh'] = 'api/StockMonitor/stockwh';
 $route['stockmonitorwh_header'] = 'api/StockMonitor/stockwhheader';
+$route['reportissue'] = 'api/StockMonitor/reportissue';
 
 // Permission API Routes
 $route['permission'] = 'api/permission/index';
@@ -347,3 +348,13 @@ $route['stock_bal'] = 'api/issue/stock_bal';
 
 // Reprint API Routes
 $route['reprintqrcode'] = 'api/reprint/qrcode';
+
+
+// Customer Issue  API Routes
+$route['customer_issue'] = 'api/CustomerIssue/index';
+
+// Request No Issue  API Routes
+$route['requestno_issue'] = 'api/RequestNoIssue/index';
+
+// Quotation No Issue  API Routes
+$route['quotationno_issue'] = 'api/QuotationNoIssue/index';
