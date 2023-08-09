@@ -16,6 +16,7 @@ class CountStock extends REST_Controller
 
         // Load CountStock
         $this->load->model('CountStock_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -100,7 +101,12 @@ class CountStock extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $countstock_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $countstock_permission = array_filter($countstock_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $countstock_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $countstock_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -199,7 +205,7 @@ class CountStock extends REST_Controller
                         'message' => 'You don’t currently have permission to Create',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -241,7 +247,12 @@ class CountStock extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $countstock_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $countstock_permission = array_filter($countstock_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $countstock_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $countstock_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -249,7 +260,7 @@ class CountStock extends REST_Controller
                 $countstock_header1 = json_decode($this->input->post('data3'), true); 
                 
 
-                    if ($countstock_permission[array_keys($countstock_permission)[0]]['Created']) {
+                    if ($countstock_permission[array_keys($countstock_permission)[0]]['Updated']) {
 
                         $Status_output = json_decode(json_encode($this->CountStock_Model->select_countstockstatus($countstock_header['CountStock_Index'])), true);
                         $countstock_Status = $Status_output[array_keys($Status_output)[0]]['Status'];
@@ -332,7 +343,7 @@ class CountStock extends REST_Controller
                         'message' => 'You don’t currently have permission to Update',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -374,7 +385,12 @@ class CountStock extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $countstock_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $countstock_permission = array_filter($countstock_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $countstock_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $countstock_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -415,7 +431,7 @@ class CountStock extends REST_Controller
                         'message' => 'You don’t currently have permission to Delete',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {

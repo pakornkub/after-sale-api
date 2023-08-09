@@ -16,6 +16,7 @@ class Withdraw extends REST_Controller
 
         // Load Withdraw_Model
         $this->load->model('mobile/Withdraw_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -58,7 +59,12 @@ class Withdraw extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $withdraw_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $withdraw_permission = array_filter($withdraw_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $withdraw_token['UserName'],
+                  ];
+                  $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+          
+                $withdraw_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 

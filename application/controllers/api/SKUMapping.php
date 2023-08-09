@@ -16,6 +16,7 @@ class SKUMapping extends REST_Controller
 
         // Load SKUMapping
         $this->load->model('SKUMapping_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -100,7 +101,12 @@ class SKUMapping extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $skumapping_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $skumapping_permission = array_filter($skumapping_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $skumapping_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $skumapping_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -116,7 +122,7 @@ class SKUMapping extends REST_Controller
                         'SP_ITEM_ID' => $skumapping_header['Grade_ID_SP'],
                         'Status' => intval($skumapping_header['SKUMapping_Status']),
                         'Create_Date' => date('Y-m-d H:i:s'),
-                        'Create_By' => $bom_token['UserName'],
+                        'Create_By' => $skumapping_token['UserName'],
                         'Update_Date' => null,
                         'Update_By' => null,
                         
@@ -159,7 +165,7 @@ class SKUMapping extends REST_Controller
                         'message' => 'You don’t currently have permission to Create',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -201,13 +207,18 @@ class SKUMapping extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $skumapping_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $skumapping_permission = array_filter($skumapping_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $skumapping_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $skumapping_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
                     $skumapping_header = json_decode($this->input->post('data1'), true); 
 
-                    if ($skumapping_permission[array_keys($skumapping_permission)[0]]['Created']) {
+                    if ($skumapping_permission[array_keys($skumapping_permission)[0]]['Updated']) {
 
                         $skumapping_data['index'] = $skumapping_header['SKUMapping_Index'];
 
@@ -219,7 +230,7 @@ class SKUMapping extends REST_Controller
                             'SP_ITEM_ID' => $skumapping_header['Grade_ID_SP'],
                             'Status' => intval($skumapping_header['SKUMapping_Status']),
                             'Update_Date' => date('Y-m-d H:i:s'),
-                            'Update_By' => $bom_token['UserName'],
+                            'Update_By' => $skumapping_token['UserName'],
                             
                         ];
 
@@ -257,7 +268,7 @@ class SKUMapping extends REST_Controller
                         'message' => 'You don’t currently have permission to Update',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -299,7 +310,12 @@ class SKUMapping extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $skumapping_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $skumapping_permission = array_filter($skumapping_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $skumapping_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $skumapping_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -339,7 +355,7 @@ class SKUMapping extends REST_Controller
                         'message' => 'You don’t currently have permission to Delete',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {

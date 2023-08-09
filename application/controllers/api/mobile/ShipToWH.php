@@ -16,6 +16,7 @@ class ShipToWH extends REST_Controller
 
         // Load ShipToWH_Model
         $this->load->model('mobile/ShipToWH_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -58,7 +59,12 @@ class ShipToWH extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $ship_to_wh_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $ship_to_wh_permission = array_filter($ship_to_wh_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $ship_to_wh_token['UserName'],
+                  ];
+                  $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+          
+                $ship_to_wh_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 

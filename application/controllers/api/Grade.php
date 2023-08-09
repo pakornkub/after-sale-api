@@ -16,6 +16,7 @@ class Grade extends REST_Controller
 
         // Load Grade_Model
         $this->load->model('Grade_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -116,7 +117,12 @@ class Grade extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $grade_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $grade_permission = array_filter($grade_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $grade_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $grade_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -198,7 +204,7 @@ class Grade extends REST_Controller
                         'message' => 'You don’t currently have permission to Create',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -256,7 +262,12 @@ class Grade extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $grade_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $grade_permission = array_filter($grade_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $grade_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $grade_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -313,7 +324,7 @@ class Grade extends REST_Controller
                         'message' => 'You don’t currently have permission to Update',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -367,7 +378,12 @@ class Grade extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $grade_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $grade_permission = array_filter($grade_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $grade_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $grade_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -407,7 +423,7 @@ class Grade extends REST_Controller
                         'message' => 'You don’t currently have permission to Delete',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {

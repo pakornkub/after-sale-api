@@ -16,6 +16,7 @@ class WHReceive extends REST_Controller
 
         // Load WHReceive_Model
         $this->load->model('mobile/WHReceive_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -58,7 +59,12 @@ class WHReceive extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $wh_receive_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $wh_receive_permission = array_filter($wh_receive_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $wh_receive_token['UserName'],
+                  ];
+                  $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+          
+                $wh_receive_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 

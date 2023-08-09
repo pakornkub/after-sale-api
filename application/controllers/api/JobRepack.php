@@ -16,6 +16,7 @@ class JobRepack extends REST_Controller
 
         // Load JobRepack
         $this->load->model('JobRepack_Model');
+        $this->load->model('Auth_Model');
         
     }
 
@@ -100,7 +101,12 @@ class JobRepack extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $job_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $job_permission = array_filter($job_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $job_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $job_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -190,7 +196,7 @@ class JobRepack extends REST_Controller
                         'message' => 'You don’t currently have permission to Create',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -232,14 +238,19 @@ class JobRepack extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $job_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $job_permission = array_filter($job_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $job_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $job_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
                     $job_header = json_decode($this->input->post('data1'), true);
                     $job_header1 = json_decode($this->input->post('data3'), true);  
 
-                    if ($job_permission[array_keys($job_permission)[0]]['Created']) {
+                    if ($job_permission[array_keys($job_permission)[0]]['Updated']) {
 
                         $job_data['index'] = $job_header['Job_Index'];
 
@@ -309,7 +320,7 @@ class JobRepack extends REST_Controller
                         'message' => 'You don’t currently have permission to Update',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -351,7 +362,12 @@ class JobRepack extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $job_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $job_permission = array_filter($job_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $job_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $job_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -392,7 +408,7 @@ class JobRepack extends REST_Controller
                         'message' => 'You don’t currently have permission to Delete',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {

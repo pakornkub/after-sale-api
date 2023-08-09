@@ -16,6 +16,7 @@ class Issue extends REST_Controller
 
         // Load Issue
         $this->load->model('Issue_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -100,7 +101,12 @@ class Issue extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $tf_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $tf_permission = array_filter($tf_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $tf_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $tf_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -151,7 +157,7 @@ class Issue extends REST_Controller
                         'message' => 'You don’t currently have permission to Create',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {

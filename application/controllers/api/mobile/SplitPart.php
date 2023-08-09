@@ -16,6 +16,7 @@ class SplitPart extends REST_Controller
 
         // Load SplitPart_Model
         $this->load->model('mobile/SplitPart_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -114,7 +115,12 @@ class SplitPart extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $split_part_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $split_part_permission = array_filter($split_part_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $split_part_token['UserName'],
+                  ];
+                  $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+          
+                $split_part_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -277,7 +283,12 @@ class SplitPart extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $split_part_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $split_part_permission = array_filter($split_part_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $split_part_token['UserName'],
+                  ];
+                  $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+          
+                $split_part_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 

@@ -16,6 +16,7 @@ class JobRepack extends REST_Controller
 
         // Load JobRepack_Model
         $this->load->model('mobile/JobRepack_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -114,7 +115,12 @@ class JobRepack extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $job_repack_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $job_repack_permission = array_filter($job_repack_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $job_repack_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $job_repack_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -276,7 +282,12 @@ class JobRepack extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $job_repack_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $job_repack_permission = array_filter($job_repack_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $job_repack_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $job_repack_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -406,7 +417,12 @@ class JobRepack extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $job_repack_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $job_repack_permission = array_filter($job_repack_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $job_repack_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $job_repack_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 

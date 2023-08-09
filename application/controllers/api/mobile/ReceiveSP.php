@@ -16,6 +16,7 @@ class ReceiveSP extends REST_Controller
 
         // Load ReceiveSP_Model
         $this->load->model('mobile/ReceiveSP_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -114,7 +115,12 @@ class ReceiveSP extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $receive_sp_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_sp_permission = array_filter($receive_sp_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $receive_sp_token['UserName'],
+                  ];
+                  $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+          
+                $receive_sp_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -277,7 +283,12 @@ class ReceiveSP extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $receive_sp_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $receive_sp_permission = array_filter($receive_sp_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $receive_sp_token['UserName'],
+                  ];
+                  $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+          
+                $receive_sp_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 

@@ -16,6 +16,7 @@ class Bom extends REST_Controller
 
         // Load Bom
         $this->load->model('Bom_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -100,7 +101,12 @@ class Bom extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $bom_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $bom_permission = array_filter($bom_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $bom_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $bom_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -178,7 +184,7 @@ class Bom extends REST_Controller
                         'message' => 'You don’t currently have permission to Create',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -220,13 +226,18 @@ class Bom extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $bom_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $bom_permission = array_filter($bom_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $bom_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $bom_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
                     $bom_header = json_decode($this->input->post('data1'), true); 
 
-                    if ($bom_permission[array_keys($bom_permission)[0]]['Created']) {
+                    if ($bom_permission[array_keys($bom_permission)[0]]['Updated']) {
 
                         $bom_data['index'] = $bom_header['BOM_Index'];
 
@@ -296,7 +307,7 @@ class Bom extends REST_Controller
                         'message' => 'You don’t currently have permission to Update',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
@@ -338,7 +349,12 @@ class Bom extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $bom_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $bom_permission = array_filter($bom_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $bom_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+
+                $bom_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -379,7 +395,7 @@ class Bom extends REST_Controller
                         'message' => 'You don’t currently have permission to Delete',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {

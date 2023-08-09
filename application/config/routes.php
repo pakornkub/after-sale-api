@@ -358,3 +358,13 @@ $route['requestno_issue'] = 'api/RequestNoIssue/index';
 
 // Quotation No Issue  API Routes
 $route['quotationno_issue'] = 'api/QuotationNoIssue/index';
+
+
+// Request Branch API Routes
+$route['requestbranch'] = 'api/requestbranch/index';
+$route['requestbranch/:(any)'] = 'api/requestbranch/show/$1';
+$route['create_requestbranch'] = 'api/requestbranch/create';
+$route['update_requestbranch'] = 'api/requestbranch/update';
+$route['delete_requestbranch'] = 'api/requestbranch/delete';
+$route['requestbranch_item'] = 'api/requestbranch/requestbranchitem';
+$route['confirm_request'] = 'api/requestbranch/confirm_request';

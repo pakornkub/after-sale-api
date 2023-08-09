@@ -58,4 +58,27 @@ class Auth_Model extends MY_Model {
 
     }
 
+    /**
+     * Permission not token
+     * ---------------------------------
+     * @param : {array} username
+     */
+    public function select_permission_new($param = [])
+    {
+        $this->set_db('default');
+
+        $sql = "
+
+            exec SP_Permission_New ?,?
+          
+        ";
+        
+        $query = $this->db->query($sql, [ $param['username'],'WA' ]);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    }
+
 }

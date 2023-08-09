@@ -16,6 +16,7 @@ class Permission extends REST_Controller
 
         // Load Permission_Model
         $this->load->model('Permission_Model');
+        $this->load->model('Auth_Model');
 
     }
 
@@ -121,7 +122,12 @@ class Permission extends REST_Controller
             if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
 
                 $permission_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $permission_permission = array_filter($permission_token['permission'], function ($permission) {
+                $check_permission = [
+                    'username' => $permission_token['UserName'],
+                  ];
+                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
+                
+                $permission_permission = array_filter($permission_output, function ($permission) {
                     return $permission['MenuId'] == $this->MenuId;
                 });
 
@@ -166,10 +172,10 @@ class Permission extends REST_Controller
                     // Permission Error
                     $message = [
                         'status' => false,
-                        'message' => 'You don’t currently have permission to Create',
+                        'message' => 'You don’t currently have permission to Create!!',
                     ];
 
-                    $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
                 }
 
             } else {
