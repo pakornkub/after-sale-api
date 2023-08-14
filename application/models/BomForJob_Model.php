@@ -99,5 +99,31 @@ class BomForJob_Model extends MY_Model
         return $result;
 
     }
+    /**
+     * Bom Item V1
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_bomitem_v1($param = [])
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+        select BI.ITEM_ID as [key],BI.ITEM_ID as ITEM_ID,ms_Item.ITEM_CODE as ITEM_CODE,ms_Item.ITEM_DESCRIPTION as ITEM_DESCRIPTION,
+		ms_ProductType.Product_DESCRIPTION as Product_DESCRIPTION 
+        from ms_BOM_Item BI
+        inner join ms_Item on BI.ITEM_ID = ms_Item.ITEM_ID
+		inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
+        where BOM_ID = ?
+        ";
+
+        $query = $this->db->query($sql,$param['BOM_ID']);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+    }
 
 }

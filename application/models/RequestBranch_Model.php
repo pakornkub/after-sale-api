@@ -14,7 +14,13 @@ class RequestBranch_Model extends MY_Model
         $this->set_db('default');
 
         $sql = "
-        select * from View_Request where Withdraw_type in ('1','2') order by Withdraw_ID DESC
+        select Tb_RequestBranch.*,CONVERT(varchar, dbo.Tb_RequestBranch.RequestBranch_Date, 103) AS Date1, 
+        dbo.ms_RequestType.DESCRIPTION, dbo.ms_Location.Location_ID, dbo.ms_Location.Location 
+        from Tb_RequestBranch
+        INNER JOIN ms_RequestType ON dbo.ms_RequestType.RequestType_ID = Tb_RequestBranch.RequestBranch_type 
+        LEFT OUTER JOIN dbo.ms_Location ON dbo.ms_Location.Location_ID = Tb_RequestBranch.Plan_Team
+        where Tb_RequestBranch.Status <> -1
+        order by RequestBranch_ID DESC
 
         ";
 
@@ -118,43 +124,37 @@ class RequestBranch_Model extends MY_Model
      * ---------------------------------
      * @param : RequestBranch_Index
      */
-    public function delete_requestbranch($param)
+    public function delete_requestbranch($param = [])
     {
-        $this->set_db('default');
+        // $this->set_db('default');
 
-        $sql = "
+        // $sql = "
 
-        exec [dbo].[SP_CancelWithdraw]  ?,?
+        // exec [dbo].[SP_CancelWithdraw]  ?,?
           
-        ";
+        // ";
 
-        return $this->db->query($sql,[$param['RequestBranch_No'],$param['username']]) ? true : false;
+        // return $this->db->query($sql,[$param['RequestBranch_No'],$param['username']]) ? true : false;
 
-    }
-         /**
-     * Delete RequestBranch Item
-     * ---------------------------------
-     * @param : RequestBranch_ID
-     */
-    public function delete_requestbranch_item($param)
-    {
+
+
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_JobItem', ['job_ID'=> $param])) ? true : false/*$this->db->error()*/;
+        return ($this->db->update('Tb_RequestBranch', $param['data'], ['RequestBranch_NO'=> $param['RequestBranch_No']])) ? true : false/*$this->db->error()*/;
 
     }
-
+   
   
          /**
-     * Delete ReceivePart Item
+     * Delete requestbranch Item
      * ---------------------------------
-     * @param : ReceivePart_ID
+     * @param : requestbranch_ID
      */
-    public function delete_receivepart_item($param)
+    public function delete_requestbranch_item($param = [])
     {
         $this->set_db('default');
 
-        return ($this->db->delete('Tb_ReceiveItem', ['Rec_ID'=> $param])) ? true : false/*$this->db->error()*/;
+        return ($this->db->delete('Tb_RequestBranchItem', ['requestbranch_ID'=> $param['index']])) ? true : false/*$this->db->error()*/;
 
     }
 
@@ -180,13 +180,12 @@ class RequestBranch_Model extends MY_Model
         // ";
         $sql = "
         
-	    select Tb_WithdrawItem.QR_NO as [key],Tb_WithdrawItem.Qty as QTY,Stock.Location,Stock.Product_DESCRIPTION,Stock.ITEM_CODE,Stock.ITEM_DESCRIPTION,Stock.QR_NO,Stock.ReserveQTY,Stock.Unit,Stock.Status_desc,
-            Stock.Product_ID,Stock.ITEM_ID,Stock.LOT,Stock.Ref_No
-            from Tb_WithdrawItem
-            CROSS APPLY (select TOP 1 Stock.Location,Stock.Product_DESCRIPTION,Stock.ITEM_CODE,Stock.ITEM_DESCRIPTION,Stock.QR_NO,Stock.ReserveQTY,Stock.Unit,Stock.Status_desc,
-                         Stock.Product_ID,Stock.ITEM_ID,Stock.LOT,Stock.Ref_No 
-			from View_Stock_Detail Stock where Stock.Location_ID = '1' and Stock.QR_NO = Tb_WithdrawItem.QR_NO order by ReserveQTY DESC) Stock
-                        where Tb_WithdrawItem.Withdraw_ID = '$param' 
+	    select Tb_RequestBranchItem.ITEM_ID as [key],ms_Item.ITEM_ID as ITEM_ID,ms_Item.ITEM_CODE as ITEM_CODE,ms_Item.ITEM_DESCRIPTION as ITEM_DESCRIPTION,
+		ms_ProductType.Product_DESCRIPTION as Product_DESCRIPTION   
+		from Tb_RequestBranchItem
+		inner join ms_Item on ms_Item.ITEM_ID = Tb_RequestBranchItem.ITEM_ID
+		inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID
+		where RequestBranch_ID = '$param' 
             
         ";
 
@@ -200,21 +199,33 @@ class RequestBranch_Model extends MY_Model
 
     }
     
+
     /**
-     * Confirm Request
+     * RequestBranchItem
      * ---------------------------------
-     * @param : FormData
+     * @param : null
      */
-    public function confirm_request($param = [])
+    public function select_quotation_requestbranch()
     {
+
         $this->set_db('default');
 
         $sql = "
-        exec [dbo].[SP_WithdrawAutoReceive_ALL]  ?,?
-          
+        select Tb_RequestBranch.*,ms_Location.Location
+		from Tb_RequestBranch
+		LEFT JOIN ms_Location on ms_Location.Location_ID = Tb_RequestBranch.Plan_Team
+		where Status = '1'
+
         ";
 
-        return $this->db->query($sql,[$param['Withdraw_ID'],$param['username']]) ? true : false;
+        $query = $this->db->query($sql);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+
+
     }
 
 }

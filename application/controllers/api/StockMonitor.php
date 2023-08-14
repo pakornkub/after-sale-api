@@ -219,6 +219,47 @@ class StockMonitor extends REST_Controller
             }
     }
 
+
+    /**
+     * Show Stock Grade API
+     * ---------------------------------
+     * @method : POST
+     * @link : stockmonitor/stockgrade
+     */
+    public function stockgrade_post()
+    {
+        header("Access-Control-Allow-Origin: *");
+
+        $_POST = $this->security->xss_clean($_POST);
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        $is_valid_token = $this->authorization_token->validateToken();
+        
+            $Filter = $this->input->post('Filter');
+
+            // $tag_data = [
+            //     'Rec_ID' => $this->input->post('Rec_ID'),
+               
+            // ];
+
+            $output = $this->StockMonitor_Model->select_stockgrade($Filter);
+
+            if (isset($output) && $output) {
+
+                // Show Detail All Success
+                $message = [
+                    'status' => true,
+                    'data' => $output,
+                    'message' => 'Show Grade successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+    }
+
 }
 
     

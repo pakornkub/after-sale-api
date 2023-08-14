@@ -130,7 +130,7 @@ class RequestSale extends REST_Controller
                             'Quotation_No' => $request_header['Quotation_No'],
                             'Customer_Name' => $request_header['Customer_Name'],
                             'User_Request' => $request_header['User'],
-                            'Plan_Team' => $request_header['Plan_Team'],
+                            'Plan_Team' => $request_header['Plan_Team_ID'],
                             'Ref_No1' => null,
                             'Remark' => (isset($request_header['Request_Remark']) && $request_header['Request_Remark']) ? $request_header['Request_Remark'] : null,
                             'Stock_By' => null,
@@ -140,6 +140,7 @@ class RequestSale extends REST_Controller
                             'Create_By' => $request_token['UserName'],
                             'Update_Date' => null,
                             'Update_By' => null,
+                            'Request_Branch' => $request_header['RequestBranch_No'],
                             
                         ];
 
@@ -282,7 +283,7 @@ class RequestSale extends REST_Controller
                             'Quotation_No' => $request_header['Quotation_No'],
                             'Customer_Name' => $request_header['Customer_Name'],
                             'User_Request' => $request_header['User'],
-                            'Plan_Team' => $request_header['Plan_Team'],
+                            'Plan_Team' => $request_header['Plan_Team_ID'],
                             'Ref_No1' => null,
                             'Remark' => (isset($request_header['Request_Remark']) && $request_header['Request_Remark']) ? $request_header['Request_Remark'] : null,
                             'Stock_By' => null,
@@ -290,6 +291,7 @@ class RequestSale extends REST_Controller
                             'status' => '1',
                             'Update_Date' => date('Y-m-d H:i:s'),
                             'Update_By' => $request_token['UserName'],
+                            'Request_Branch' => $request_header['RequestBranch_No'],
                             
                         ];
 

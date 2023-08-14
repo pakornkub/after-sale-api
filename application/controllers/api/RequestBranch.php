@@ -47,20 +47,12 @@ class RequestBranch extends REST_Controller
                 $message = [
                     'status' => true,
                     'data' => $output,
-                    'message' => 'Show Split Part all successful',
+                    'message' => 'Show Request Branch all successful',
                 ];
 
                 $this->response($message, REST_Controller::HTTP_OK);
 
             } else {
-
-                // Show Split Part All Error
-                // $message = [
-                //     'status' => false,
-                //     'message' => 'Split Part data was not found in the database',
-                // ];
-
-                // $this->response($message, REST_Controller::HTTP_NOT_FOUND);
 
             }
 
@@ -288,29 +280,72 @@ class RequestBranch extends REST_Controller
                    // Update RequestBranch Function
                     $request_output = $this->RequestBranch_Model->update_requestbranch($request_data);
 
-
-
                     if (isset($request_output) && $request_output) {
+                        
+                        $delete_output = $this->RequestBranch_Model->delete_requestbranch_item($request_data);
+                        //Create Item Success
+                        $request_item = json_decode($this->input->post('data2'), true); 
+                        
+                        foreach ($request_item as $value) {
+                            
+                            $request_data_item['data'] = [
+                                'RequestBranch_ID' => $request_header['Request_Index'],
+                                'RequestBranchItem_Datetime' => date('Y-m-d H:i:s'),
+                                'ITEM_ID' => $value['ITEM_ID'],
+                                'Status' => '1',
+                                'Create_Date' => date('Y-m-d H:i:s'),
+                                'Create_By' => $request_token['UserName'],
+                                
+                            ];
 
-                            // Update RequestBranch Success
+                            $request_output_item = $this->RequestBranch_Model->insert_requestbranch_item($request_data_item);
+                            
+
+                        }
+                        
+
                         $message = [
                             'status' => true,
-                            'message' => 'Update Request Branch Successful',
+                            'message' => 'Create Request Branch Successful',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_OK);
 
+
+
                     } else {
 
-                        // Update RequestBranch Error
+                        // Create Request Branch Error
                         $message = [
                             'status' => false,
-                            'message' => 'Update Request Branch Fail : [Update Data Fail]',
+                            'message' => 'Create Request Branch Fail : [Insert Data Fail]',
                         ];
 
                         $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
 
-                    }
+                    }    
+
+                    // if (isset($request_output) && $request_output) {
+
+                    //         // Update RequestBranch Success
+                    //     $message = [
+                    //         'status' => true,
+                    //         'message' => 'Update Request Branch Successful',
+                    //     ];
+
+                    //     $this->response($message, REST_Controller::HTTP_OK);
+
+                    // } else {
+
+                    //     // Update RequestBranch Error
+                    //     $message = [
+                    //         'status' => false,
+                    //         'message' => 'Update Request Branch Fail : [Update Data Fail]',
+                    //     ];
+
+                    //     $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+
+                    // }
 
 
                 } else {
@@ -377,7 +412,13 @@ class RequestBranch extends REST_Controller
                     $RequestBranch_No = json_decode($this->input->post('data1'), true); 
 
                     $request_del['RequestBranch_No'] = $RequestBranch_No;
-                    $request_del['username'] = $request_token['UserName'];
+                    $request_del['data'] = [
+                        'status' => -1,
+                        'Update_Date' => date('Y-m-d H:i:s'),
+                        'Update_By' => $request_token['UserName'],
+                        
+                    ];
+
 
                     // Delete RequestBranch Function
                     $request_output = $this->RequestBranch_Model->delete_requestbranch($request_del);
@@ -468,94 +509,55 @@ class RequestBranch extends REST_Controller
 
     }
 
-        /**
-     * Confirm Request API
+    
+
+
+
+    /**
+     * Show RequestBranch Quotation API
      * ---------------------------------
-     * @param: FormData
-     * ---------------------------------
-     * @method : POST
-     * @link : requestbranch/confirm_request
+     * @method : GET
+     * @link : quotation_requestbranch/index
      */
-    public function confirm_request_post()
+    public function quotation_requestbranch_get()
     {
 
         header("Access-Control-Allow-Origin: *");
 
-        # XSS Filtering  (https://codeigniter.com/userguide3/libraries/security.html)
-        $_POST = $this->security->xss_clean($_POST);
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
 
-        
-            // Load Authorization Token Library
-            $this->load->library('Authorization_Token');
+        // RequestBranch Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
 
-            // request Token Validation
-            $is_valid_token = $this->authorization_token->validateToken();
+        if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            // Load RequestBranch Function
+            $output = $this->RequestBranch_Model->select_quotation_requestbranch();
 
-            if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            if (isset($output) && $output) {
 
-                $request_token = json_decode(json_encode($this->authorization_token->userData()), true);
-                $check_permission = [
-                    'username' => $request_token['UserName'],
-                  ];
-                $permission_output = $this->Auth_Model->select_permission_new($check_permission);
-
-                $request_permission = array_filter($permission_output, function ($permission) {
-                    return $permission['MenuId'] == $this->MenuId;
-                });
-
-                if ($request_permission[array_keys($request_permission)[0]]['Approved1']) {
-
-                    
-                    $request_data = [
-                        'RequestBranch_ID' => $this->input->post('RequestBranch_ID'),
-                        'username' => $request_token['UserName'],
-                       
-                    ];
-
-                    // request Confirm Function
-                    $request_output = $this->RequestBranch_Model->confirm_request($request_data);
-
-                    if (isset($request_output) && $request_output) {
-
-                        // Confirm Request Success
-                        $message = [
-                            'status' => true,
-                            'message' => 'Confirm Request completed',
-                        ];
-
-                        $this->response($message, REST_Controller::HTTP_OK);
-
-                    } else {
-
-                        // Confirm Request Error
-                        $message = [
-                            'status' => false,
-                            'message' => 'Confirm Request Fail : [Insert Data Fail]',
-                        ];
-
-                        $this->response($message, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
-
-                    }
-
-                } else {
-                    // Permission Error
-                    $message = [
-                        'status' => false,
-                        'message' => 'You don’t currently have permission to Approve',
-                    ];
-
-                    $this->response($message, REST_Controller::HTTP_NOT_FOUND);
-                }
-
-            } else {
-                // Validate Error
+                // Show RequestBranch All Success
                 $message = [
-                    'status' => false,
-                    'message' => $is_valid_token['message'],
+                    'status' => true,
+                    'data' => $output,
+                    'message' => 'Show Quotation Request Branch all successful',
                 ];
 
-                $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            } else {
+
             }
+
+        } else {
+            // Validate Error
+            $message = [
+                'status' => false,
+                'message' => $is_valid_token['message'],
+            ];
+
+            $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+        }
 
     }
 

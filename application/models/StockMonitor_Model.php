@@ -125,6 +125,36 @@ class StockMonitor_Model extends MY_Model
 
 
     }
+
+
+    /**
+     * Stock Grade
+     * ---------------------------------
+     * @param : null
+     */
+    public function select_stockgrade($param)
+    {
+
+        $this->set_db('default');
+
+        $sql = "
+        select ms_Item.ITEM_ID as [key],ms_Item.ITEM_ID as ITEM_ID,ms_Item.ITEM_CODE as ITEM_CODE,ms_Item.ITEM_DESCRIPTION as ITEM_DESCRIPTION,
+		ms_ProductType.Product_DESCRIPTION as Product_DESCRIPTION 
+        from ms_Item
+        inner join ms_ProductType on ms_Item.Product_ID = ms_ProductType.Product_ID $param
+
+            
+        ";
+
+        $query = $this->db->query($sql,$param);
+
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false;
+
+        return $result;
+
+
+
+    }
     
 }
 

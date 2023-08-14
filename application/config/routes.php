@@ -193,6 +193,7 @@ $route['bomforjob'] = 'api/BomForJob/index';
 $route['select_gradeplan'] = 'api/BomForJob/selectgrade';
 $route['select_bomrev'] = 'api/BomForJob/selectrev';
 $route['select_bomitem'] = 'api/BomForJob/selectitem';
+$route['select_bomitem_v1'] = 'api/BomForJob/selectitem_v1';
 
 // Job Plan API Routes
 $route['jobplan'] = 'api/jobplan/index';
@@ -228,6 +229,7 @@ $route['stockmonitordetail'] = 'api/StockMonitor/stockdetail';
 $route['stockmonitorwh'] = 'api/StockMonitor/stockwh';
 $route['stockmonitorwh_header'] = 'api/StockMonitor/stockwhheader';
 $route['reportissue'] = 'api/StockMonitor/reportissue';
+$route['stockmonitorgrade'] = 'api/StockMonitor/stockgrade';
 
 // Permission API Routes
 $route['permission'] = 'api/permission/index';
@@ -367,4 +369,6 @@ $route['create_requestbranch'] = 'api/requestbranch/create';
 $route['update_requestbranch'] = 'api/requestbranch/update';
 $route['delete_requestbranch'] = 'api/requestbranch/delete';
 $route['requestbranch_item'] = 'api/requestbranch/requestbranchitem';
-$route['confirm_request'] = 'api/requestbranch/confirm_request';
+$route['quotation_requestbranch'] = 'api/requestbranch/quotation_requestbranch';
+
+

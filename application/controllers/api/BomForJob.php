@@ -59,7 +59,7 @@ class BomForJob extends REST_Controller
                     'message' => 'Bom data was not found in the database',
                 ];
 
-                $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+                //$this->response($message, REST_Controller::HTTP_NOT_FOUND);
 
             }
 
@@ -212,6 +212,59 @@ class BomForJob extends REST_Controller
             ];
 
             $bom_output = $this->BomForJob_Model->select_bomitem($grade_data);
+
+            if (isset($bom_output) && $bom_output) {
+
+                // Show Bom All Success
+                $message = [
+                    'status' => true,
+                    'data' => $bom_output,
+                    'message' => 'Show bom item all successful',
+                ];
+
+                $this->response($message, REST_Controller::HTTP_OK);
+
+            }
+
+        // } else {
+        //     // Validate Error
+        //     $message = [
+        //         'status' => false,
+        //         'message' => $is_valid_token['message'],
+        //     ];
+
+        //     $this->response($message, REST_Controller::HTTP_UNAUTHORIZED);
+        // }
+    }
+
+    /**
+     * Show Bom Iten API
+     * ---------------------------------
+     * @method : POST
+     * @link : BomForJob/selectitem_v1
+     */
+    public function selectitem_v1_post()
+    {
+        header("Access-Control-Allow-Origin: *");
+
+        $_POST = $this->security->xss_clean($_POST);
+
+        // Load Authorization Token Library
+        $this->load->library('Authorization_Token');
+
+        // Bom Token Validation
+        $is_valid_token = $this->authorization_token->validateToken();
+
+        //if (isset($is_valid_token) && boolval($is_valid_token['status']) === true) {
+            // Load Bom Function
+            
+
+            $grade_data = [
+                'BOM_ID' => $this->input->post('BOM_ID'),
+               
+            ];
+
+            $bom_output = $this->BomForJob_Model->select_bomitem_v1($grade_data);
 
             if (isset($bom_output) && $bom_output) {
 
