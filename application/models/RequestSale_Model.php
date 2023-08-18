@@ -159,7 +159,7 @@ class RequestSale_Model extends MY_Model
 
         $sql = "
 
-        exec [dbo].[SP_CancelWithdraw]  ?,?
+        exec [dbo].[SP_CancelWithdraw] ?,?
           
         ";
 

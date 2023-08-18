@@ -70,18 +70,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
-
-
 $active_group = 'default';
 $query_builder = TRUE;
 
-
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '127.0.0.1',
-	'username' => 'vendor2',
-	'password' => 'v3nd0r@gogo',
-	'database' => 'toto_aftersale',
+	'hostname' => '119.59.105.14',
+	'username' => 'sa',
+	'password' => 'Dev@2022',
+	'database' => 'TOTO_AfterSale',
+//   'hostname' => '127.0.0.1',
+// 	'username' => 'afterservice',
+// 	'password' => 'v3nd0r@toto',
+// 	'database' => 'toto_aftersale',
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => TRUE,
